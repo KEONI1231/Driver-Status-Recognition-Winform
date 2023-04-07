@@ -22,7 +22,7 @@ namespace Semi_Auto_Labeling
 
         List<string> DataSetImgNameList = new List<string>(); //이미지를 불러오고 이미지의 이름을 저장할 list
         List<string> DataSetImgFilePath = new List<string>(); //이미지 경로를 저장할 파일 패스 list
-
+        string fileContent;
         public Form1()
         {
             InitializeComponent();
@@ -146,9 +146,9 @@ namespace Semi_Auto_Labeling
             {
 
                 string filePathText = openFileDialog1.FileName;
-                string fileContent = File.ReadAllText(filePathText);
+                 fileContent = File.ReadAllText(filePathText);
                 JsonTextBox.Text = fileContent;
-                foreach (string filePath in openFileDialog1.FileNames)
+                foreach (string filePath in openFileDialog1.FileNames) //json 파일 여러개 가지고 오기
                 {
                     try
                     {
@@ -220,6 +220,39 @@ namespace Semi_Auto_Labeling
         private void richTextBox2_TextChanged_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Form form2 = new Form();
+            RichTextBox json_text_box = new RichTextBox();
+
+            form2.Size = new Size(600, 500);
+            json_text_box.Size = new Size(500, 400);
+            json_text_box.Text = fileContent;
+            richTextBox1.ReadOnly = true;
+            form2.Controls.Add(json_text_box);
+            form2.Show();
         }
     }
 
