@@ -101,8 +101,8 @@ namespace Semi_Auto_Labeling
             openFileDialog1.InitialDirectory = "C:\\";
 
             // 파일 필터 설정
-            openFileDialog1.Filter = "Image files (*.jpg, *.jpeg, *.png) | *.jpg; *.jpeg; *.png";
-
+            openFileDialog1.Filter = "Image files (*.jpg, *.jpeg, *.png,*.json) | *.jpg; *.jpeg; *.png; *.json" ;
+            openFileDialog1.Title = "Select a Dataset files";
             // 다중 선택 가능하도록 설정
             openFileDialog1.Multiselect = true;
 
@@ -113,8 +113,37 @@ namespace Semi_Auto_Labeling
             {
                 foreach (string file in openFileDialog1.FileNames)
                 {
-                    dataSetImgFilePath.Add(file);
-                    dataSetImgNameList.Add(Path.GetFileName(file));
+                    if (Path.GetFileName(file).Contains(".png") || Path.GetFileName(file).Contains(".jpg") || Path.GetFileName(file).Contains("jpeg"))
+                    {
+                        dataSetImgFilePath.Add(file);
+                        dataSetImgNameList.Add(Path.GetFileName(file));
+                    }
+                    else if(Path.GetFileName(file).Contains(".json"))
+                    {
+                        dataSetJsonFilePath.Add(file);
+                        dataSetJsonNameList.Add(Path.GetFileName(file));
+                        
+                        try
+                        {
+                            // JSON 파일 읽기
+                            using (StreamReader streamReader = new StreamReader(file))
+                            {
+                                Log.Text = file;
+                                string jsonString = streamReader.ReadToEnd();
+
+                                // JSON 문자열 파싱
+                                var jsonDoc = JsonDocument.Parse(jsonString);
+
+                                // JSON 객체에서 원하는 데이터 가져오기
+                                // var value = jsonDoc.RootElement.GetProperty("metadata").GetProperty("description").GetString();
+
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error: {ex.Message}");
+                        }
+                    }
                 }
                 // 첫 번째 이미지 파일 경로 출력
                
@@ -140,6 +169,7 @@ namespace Semi_Auto_Labeling
                     btn.Size = new Size(120, 30);
                     btn.Name = String.Format("_Button_{0}", flowLayoutPanel1.Controls.Count);
                     int captured_i = i;
+                    
                     btn.Click += (sender1, e1) => btn_Click(sender, e, captured_i); // 람다식을 이용하여 클로저를 전달
 
                     fl_panel.Controls.Add(picture_box);
@@ -151,29 +181,7 @@ namespace Semi_Auto_Labeling
 
             }
         }
-        private void btn_Click(object sender, EventArgs e, int i)
-        {
-            pictureBox1.Image = Image.FromFile(dataSetImgFilePath[i]);
-        }
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
-        {
-
-        }
-
-        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+   
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -185,32 +193,10 @@ namespace Semi_Auto_Labeling
             {
 
                 string filePathText = openFileDialog1.FileName;
-                fileContent = File.ReadAllText(filePathText);
-                JsonTextBox.Text = fileContent;
+                
                 foreach (string filePath in openFileDialog1.FileNames) //json 파일 여러개 가지고 오기
                 {
-                    dataSetJsonFilePath.Add(filePath);
-                    dataSetJsonNameList.Add(Path.GetFileName(filePath));
-                    try
-                    { 
-                        // JSON 파일 읽기
-                        using (StreamReader streamReader = new StreamReader(filePath))
-                        {
-                            Log.Text = filePath;
-                            string jsonString = streamReader.ReadToEnd();
-
-                            // JSON 문자열 파싱
-                            var jsonDoc = JsonDocument.Parse(jsonString);
-
-                            // JSON 객체에서 원하는 데이터 가져오기
-                           // var value = jsonDoc.RootElement.GetProperty("metadata").GetProperty("description").GetString();
-                           
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error: {ex.Message}");
-                    }
+                    
                 }
                 /*
                 string testJsonName = "";
@@ -225,7 +211,33 @@ namespace Semi_Auto_Labeling
             // 검색 버튼 클릭 이벤트 추가
             SearchButton.Click += SearchButton_Click;
         }
+        private void btn_Click(object sender, EventArgs e, int i)
+        {
+            
+            pictureBox1.Image = Image.FromFile(dataSetImgFilePath[i]);
+            fileContent = "";
+            fileContent = File.ReadAllText(dataSetJsonFilePath[i]);
+            JsonTextBox.Text = fileContent;
+        }
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
 
+        }
+
+        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+
+        }
+
+        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
         private void richTextBox2_TextChanged(object sender, EventArgs e)
         {
 

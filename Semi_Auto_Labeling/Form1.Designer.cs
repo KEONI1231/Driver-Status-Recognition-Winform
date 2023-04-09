@@ -32,7 +32,6 @@
             this.Log = new System.Windows.Forms.RichTextBox();
             this.ImageOpen = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.JsonOpen = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.JsonTextBox = new System.Windows.Forms.RichTextBox();
             this.SearchTextBox = new System.Windows.Forms.RichTextBox();
@@ -103,18 +102,6 @@
             this.flowLayoutPanel1.TabIndex = 8;
             this.flowLayoutPanel1.WrapContents = false;
             this.flowLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel1_Paint);
-            // 
-            // JsonOpen
-            // 
-            this.JsonOpen.FlatAppearance.BorderSize = 2;
-            this.JsonOpen.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.JsonOpen.Location = new System.Drawing.Point(98, 12);
-            this.JsonOpen.Name = "JsonOpen";
-            this.JsonOpen.Size = new System.Drawing.Size(80, 23);
-            this.JsonOpen.TabIndex = 9;
-            this.JsonOpen.Text = "Json";
-            this.JsonOpen.UseVisualStyleBackColor = true;
-            this.JsonOpen.Click += new System.EventHandler(this.button2_Click);
             // 
             // pictureBox1
             // 
@@ -427,7 +414,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.SearchButton);
             this.Controls.Add(this.SearchTextBox);
-            this.Controls.Add(this.JsonOpen);
             this.Controls.Add(this.flowLayoutPanel3);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.ImageOpen);
@@ -456,7 +442,6 @@
         private System.Windows.Forms.RichTextBox Log;
         private System.Windows.Forms.Button ImageOpen;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Button JsonOpen;
         private System.Windows.Forms.RichTextBox JsonTextBox;
         private System.Windows.Forms.RichTextBox SearchTextBox;
         private System.Windows.Forms.Button SearchButton;
