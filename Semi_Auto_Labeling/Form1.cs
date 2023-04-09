@@ -17,6 +17,7 @@ using System.Drawing;
 
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using iText.StyledXmlParser.Jsoup.Select;
+using System.Diagnostics;
 
 namespace Semi_Auto_Labeling
 {
@@ -334,6 +335,18 @@ namespace Semi_Auto_Labeling
         {
 
         }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/KEONI1231/Driver-Status-Recognition-Winform");
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/KEONI1231/Driver-Status-Recognition-Winform");
+        }
+
+       
     }
 
 
