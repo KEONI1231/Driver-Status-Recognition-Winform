@@ -33,9 +33,11 @@ namespace Semi_Auto_Labeling
         List<string> dataSetJsonNameList = new List<string>(); //이미지를 불러오고 이미지의 이름을 저장할 list
         List<string> dataSetJsonFilePath = new List<string>(); //이미지 경로를 저장할 파일 패스 list
 
+        //레이블링 표시유무
+        Boolean eyeClosedLabel = false;
 
-        List<String> statusDriverList = new List<string>();
-        
+        //status 출력 상태 표시 변수
+        List<String> abnormalBehaviorList = new List<string>();
         Boolean statusEyeClosed = false;
         Boolean statusDrowsiness = false;
         Boolean statusForwardLooking = false;
@@ -49,48 +51,18 @@ namespace Semi_Auto_Labeling
             InitializeComponent();
 
             driver_status_text.Text = "";
-            statusDriverList.Add("정상");
-            statusDriverList.Add("화장하는 중 (비정상)");
-            statusDriverList.Add("핸드폰 하는 중 (비정상)");
-            statusDriverList.Add("조는 중 (비정상)");
+            abnormalBehaviorList.Add("정상");
+            abnormalBehaviorList.Add("화장하는 중 (비정상)");
+            abnormalBehaviorList.Add("핸드폰 하는 중 (비정상)");
+            abnormalBehaviorList.Add("조는 중 (비정상)");
 
             String status_text = "• 눈 감김 : " + statusEyeClosed + "\n\n• 졸음 : " + statusDrowsiness +
                 "\n\n• " + "전방미주시 : " + statusForwardLooking + "\n\n• 고개 돌림 : " + statusTurnHead +
-                "\n\n• 운전전환가능상태 : " + statusConvertibility + "\n\n• 이상행동 : " + statusDriverList[0];
+                "\n\n• 운전전환가능상태 : " + statusConvertibility + "\n\n• 이상행동 : " + abnormalBehaviorList[0];
             
             driver_status_text.Text = status_text;   
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void richTextBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void richTextBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -117,18 +89,22 @@ namespace Semi_Auto_Labeling
                     {
                         dataSetImgFilePath.Add(file);
                         dataSetImgNameList.Add(Path.GetFileName(file));
+                        dataSetImgFilePath.Sort();
+                        dataSetImgNameList.Sort();
                     }
                     else if(Path.GetFileName(file).Contains(".json"))
                     {
                         dataSetJsonFilePath.Add(file);
                         dataSetJsonNameList.Add(Path.GetFileName(file));
-                        
+                        dataSetJsonFilePath.Sort();
+                        dataSetJsonFilePath.Sort();
+
                         try
                         {
                             // JSON 파일 읽기
                             using (StreamReader streamReader = new StreamReader(file))
                             {
-                                Log.Text = file;
+                                
                                 string jsonString = streamReader.ReadToEnd();
 
                                 // JSON 문자열 파싱
@@ -218,6 +194,11 @@ namespace Semi_Auto_Labeling
             fileContent = "";
             fileContent = File.ReadAllText(dataSetJsonFilePath[i]);
             JsonTextBox.Text = fileContent;
+            for(int j = 0; j < dataSetImgFilePath.Count; j++)
+            {
+                Log.Text += "json 파일경로 : " + dataSetJsonFilePath[j] + ",json 파일이름 : "
+                    + dataSetJsonNameList[j] + "\n이미지 파일경로 : " + dataSetImgFilePath[j] + "이미지 파일이름 : " + dataSetImgNameList[j] + "\n\n";
+            }
         }
         private void groupBox1_Enter(object sender, EventArgs e)
         {
@@ -286,22 +267,7 @@ namespace Semi_Auto_Labeling
         {
 
         }
-
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBox5_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBox6_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
+       
         private void button1_Click_1(object sender, EventArgs e)
         {
             Form form2 = new Form();
@@ -320,9 +286,51 @@ namespace Semi_Auto_Labeling
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-
+            //눈 감김 레이블 체크박스
+            Log.Text = eyeClosedCheckBox.CheckState.ToString();
+           
+        }
+        private void drowsnissCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            //졸음 레이블 체크박스
+            Log.Text = drowsnissCheckBox.CheckState.ToString();
+        }
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            //전방 미주시 레이블 체크박스
+            Log.Text = eyeGazeCheckBox.CheckState.ToString();
         }
 
+        private void headDirectionCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            //고개 돌림 레이블 체크박스
+            Log.Text = headDirectionCheckBox.CheckState.ToString();
+        }
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            //운전전환가능상태 체크박스
+            Log.Text = ConvertibilityCheckBox.CheckState.ToString();
+        }
+        private void abnormalBehaviorCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            //운전자 이상행동 레이블 체크박스
+            Log.Text = abnormalBehaviorCheckBox.CheckState.ToString();
+        }
+        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        {
+            //얼굴 특징점 랜드마크 키포인트
+            Log.Text = faceLandmarkCheckBox.CheckState.ToString();
+        }
+        private void poseCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            //자세 특징점 랜드마크 키포인트
+            Log.Text = poseCheckBox.CheckState.ToString();
+        }
+        private void eyeLandmarkCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            //눈동자 특징점 랜드마크 키포인트
+            Log.Text = eyeLandmarkCheckBox.CheckState.ToString();
+        }
         private void label4_Click(object sender, EventArgs e)
         {
 
@@ -358,7 +366,39 @@ namespace Semi_Auto_Labeling
             Process.Start("https://github.com/KEONI1231/Driver-Status-Recognition-Winform");
         }
 
-       
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void richTextBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void richTextBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 
 
