@@ -151,13 +151,9 @@ namespace Semi_Auto_Labeling
                     fl_panel.Controls.Add(picture_box);
                     fl_panel.Controls.Add(btn);
                     flowLayoutPanel1.Controls.Add(fl_panel);
-
-                   
                 }
-
             }
         }
-   
 
         private void button2_Click(object sender, EventArgs e)
         {
