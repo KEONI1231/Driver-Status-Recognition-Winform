@@ -64,7 +64,7 @@ namespace Semi_Auto_Labeling
         }
 
 
-        private void button1_Click(object sender, EventArgs e)
+        private void imageOpen_Click(object sender, EventArgs e)
         {
             
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
@@ -111,13 +111,20 @@ namespace Semi_Auto_Labeling
                                 var jsonDoc = JsonDocument.Parse(jsonString);
 
                                 // JSON 객체에서 원하는 데이터 가져오기
-                                // var value = jsonDoc.RootElement.GetProperty("metadata").GetProperty("description").GetString();
+                                for(int idx = 0; idx < 478; ++idx)
+                                {
+                                    var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + idx);
+                                    MessageBox.Show("" + value[0] + ", " + value[1], "");
+                                     
+                                }
+                                
 
                             }
                         }
                         catch (Exception ex)
                         {
                             Console.WriteLine($"Error: {ex.Message}");
+                            MessageBox.Show(ex.Message, "");
                         }
                     }
                 }

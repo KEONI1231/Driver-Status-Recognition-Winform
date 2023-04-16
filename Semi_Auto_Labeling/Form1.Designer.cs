@@ -65,7 +65,7 @@
             this.Log.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.Log.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Log.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.Log.Location = new System.Drawing.Point(724, 779);
+            this.Log.Location = new System.Drawing.Point(713, 788);
             this.Log.Name = "Log";
             this.Log.Size = new System.Drawing.Size(776, 165);
             this.Log.TabIndex = 6;
@@ -84,7 +84,7 @@
             this.ImageOpen.TabIndex = 7;
             this.ImageOpen.Text = "Image";
             this.ImageOpen.UseVisualStyleBackColor = true;
-            this.ImageOpen.Click += new System.EventHandler(this.button1_Click);
+            this.ImageOpen.Click += new System.EventHandler(this.imageOpen_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -107,11 +107,11 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(322, 38);
+            this.pictureBox1.Location = new System.Drawing.Point(310, 38);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(20);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.pictureBox1.Size = new System.Drawing.Size(1178, 678);
+            this.pictureBox1.Size = new System.Drawing.Size(1280, 720);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
@@ -122,11 +122,11 @@
             this.JsonTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.JsonTextBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.JsonTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.JsonTextBox.Location = new System.Drawing.Point(1509, 421);
+            this.JsonTextBox.Location = new System.Drawing.Point(1595, 421);
             this.JsonTextBox.Name = "JsonTextBox";
             this.JsonTextBox.ReadOnly = true;
             this.JsonTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
-            this.JsonTextBox.Size = new System.Drawing.Size(263, 295);
+            this.JsonTextBox.Size = new System.Drawing.Size(177, 295);
             this.JsonTextBox.TabIndex = 4;
             this.JsonTextBox.Text = " ";
             this.JsonTextBox.TextChanged += new System.EventHandler(this.richTextBox2_TextChanged);
@@ -159,7 +159,7 @@
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label3.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label3.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label3.Location = new System.Drawing.Point(322, 754);
+            this.label3.Location = new System.Drawing.Point(311, 763);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(56, 22);
             this.label3.TabIndex = 15;
@@ -172,7 +172,7 @@
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(586, 754);
+            this.label1.Location = new System.Drawing.Point(575, 763);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(76, 22);
             this.label1.TabIndex = 16;
@@ -202,7 +202,7 @@
             this.flowLayoutPanel2.Controls.Add(this.ConvertibilityCheckBox);
             this.flowLayoutPanel2.Controls.Add(this.abnormalBehaviorCheckBox);
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(322, 779);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(311, 788);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(247, 165);
             this.flowLayoutPanel2.TabIndex = 18;
@@ -280,7 +280,7 @@
             this.flowLayoutPanel3.Controls.Add(this.poseCheckBox);
             this.flowLayoutPanel3.Controls.Add(this.eyeLandmarkCheckBox);
             this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(585, 779);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(574, 788);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(123, 165);
             this.flowLayoutPanel3.TabIndex = 24;
@@ -332,7 +332,7 @@
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label2.Location = new System.Drawing.Point(1509, 396);
+            this.label2.Location = new System.Drawing.Point(1595, 396);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(42, 22);
             this.label2.TabIndex = 25;
@@ -356,7 +356,7 @@
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label4.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label4.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label4.Location = new System.Drawing.Point(724, 754);
+            this.label4.Location = new System.Drawing.Point(713, 763);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 22);
             this.label4.TabIndex = 27;
@@ -368,9 +368,9 @@
             this.driver_status_text.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.driver_status_text.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.driver_status_text.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.driver_status_text.Location = new System.Drawing.Point(1509, 38);
+            this.driver_status_text.Location = new System.Drawing.Point(1595, 38);
             this.driver_status_text.Name = "driver_status_text";
-            this.driver_status_text.Size = new System.Drawing.Size(263, 338);
+            this.driver_status_text.Size = new System.Drawing.Size(177, 338);
             this.driver_status_text.TabIndex = 28;
             this.driver_status_text.Text = " ";
             // 
@@ -381,7 +381,7 @@
             this.label5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label5.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label5.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label5.Location = new System.Drawing.Point(322, 13);
+            this.label5.Location = new System.Drawing.Point(310, 13);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(56, 22);
             this.label5.TabIndex = 29;
@@ -394,7 +394,7 @@
             this.label6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label6.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label6.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label6.Location = new System.Drawing.Point(1509, 13);
+            this.label6.Location = new System.Drawing.Point(1595, 13);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(91, 22);
             this.label6.TabIndex = 30;
