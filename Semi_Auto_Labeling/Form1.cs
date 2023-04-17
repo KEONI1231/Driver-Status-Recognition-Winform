@@ -99,33 +99,7 @@ namespace Semi_Auto_Labeling
                         dataSetJsonFilePath.Sort();
                         dataSetJsonFilePath.Sort();
 
-                        try
-                        {
-                            // JSON 파일 읽기
-                            using (StreamReader streamReader = new StreamReader(file))
-                            {
-                                
-                                string jsonString = streamReader.ReadToEnd();
-
-                                // JSON 문자열 파싱
-                                var jsonDoc = JsonDocument.Parse(jsonString);
-
-                                // JSON 객체에서 원하는 데이터 가져오기
-                                for(int idx = 0; idx < 478; ++idx)
-                                {
-                                    var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + idx);
-                                    MessageBox.Show("" + value[0] + ", " + value[1], "");
-                                     
-                                }
-                                
-
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Error: {ex.Message}");
-                            MessageBox.Show(ex.Message, "");
-                        }
+                        
                     }
                 }
                 // 첫 번째 이미지 파일 경로 출력
@@ -190,17 +164,48 @@ namespace Semi_Auto_Labeling
             // 검색 버튼 클릭 이벤트 추가
             SearchButton.Click += SearchButton_Click;
         }
+
+        //여기버튼
         private void btn_Click(object sender, EventArgs e, int i)
         {
-            
+
+           
+
+
             pictureBox1.Image = Image.FromFile(dataSetImgFilePath[i]);
             fileContent = "";
             fileContent = File.ReadAllText(dataSetJsonFilePath[i]);
             JsonTextBox.Text = fileContent;
-            for(int j = 0; j < dataSetImgFilePath.Count; j++)
+            try
             {
-                Log.Text += "json 파일경로 : " + dataSetJsonFilePath[j] + ",json 파일이름 : "
-                    + dataSetJsonNameList[j] + "\n이미지 파일경로 : " + dataSetImgFilePath[j] + "이미지 파일이름 : " + dataSetImgNameList[j] + "\n\n";
+                string output = "";
+                // JSON 파일 읽기
+                using (StreamReader streamReader = new StreamReader(dataSetJsonFilePath[i]))
+                {
+
+                    string jsonString = streamReader.ReadToEnd();
+
+                    // JSON 문자열 파싱
+                    var jsonDoc = JsonDocument.Parse(jsonString);
+
+                    // JSON 객체에서 원하는 데이터 가져오기
+                    for (int idx = 0; idx < 478; ++idx)
+                    {
+                        var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + idx);
+                        output += (idx + 1) + "번째 : " + value[0] + ", " + value[1] + " name: " + dataSetJsonNameList[i] + " \n";
+
+                    }
+                }
+                string folderPath = "JsonFiles";
+                string filePath = Path.Combine(folderPath, "json" + i + ".txt");
+                
+                System.IO.File.WriteAllText(filePath, output, Encoding.Default);
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                MessageBox.Show(ex.Message, "");
             }
         }
         private void groupBox1_Enter(object sender, EventArgs e)
