@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using System.Text.Json.Nodes;
 
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using iText.StyledXmlParser.Jsoup.Select;
@@ -66,7 +67,7 @@ namespace Semi_Auto_Labeling
             
             driver_status_text.Text = status_text;   
         }
-
+        int captured_i;
 
         private void imageOpen_Click(object sender, EventArgs e)
         {
@@ -131,7 +132,7 @@ namespace Semi_Auto_Labeling
                     btn.Font = new Font("맑은 고딕", 10, FontStyle.Bold);
                     btn.Size = new Size(120, 30);
                     btn.Name = String.Format("_Button_{0}", flowLayoutPanel1.Controls.Count);
-                    int captured_i = i;
+                    captured_i = i;
 
                     btn.Click += (sender1, e1) => btn_Click(sender, e, captured_i); // 람다식을 이용하여 클로저를 전달
 
@@ -139,8 +140,6 @@ namespace Semi_Auto_Labeling
                     fl_panel.Controls.Add(btn);
                     flowLayoutPanel1.Controls.Add(fl_panel);
                 }
-
-
             }
         }
 
@@ -149,7 +148,7 @@ namespace Semi_Auto_Labeling
         int beforeYCoordinate = 0;
         int selectedPointIndex = -1;
    
-        //여기버튼
+
         private void btn_Click(object sender, EventArgs e, int i)
         { 
             pictureBox1.Image = Image.FromFile(dataSetImgFilePath[i]);
@@ -257,28 +256,47 @@ namespace Semi_Auto_Labeling
             }
             selectedPointIndex = -1;
         }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
+        private void saveBtn_Click(object sender, EventArgs e)
         {
-
+            string inputFilePath = dataSetJsonFilePath[captured_i];
+            string outputFilePath = dataSetJsonFilePath[captured_i];
+            jsonUpdateOutput(inputFilePath, outputFilePath);
         }
-
-        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        private void jsonUpdateOutput(string inputFilePath, string outputFilePath)
         {
+            // 기존 JSON 파일을 읽어 들입니다.
+            string jsonString = File.ReadAllText(inputFilePath);
+            var jsonDoc = JsonDocument.Parse(jsonString);
 
-        }
+            // 기존 JSON 객체를 Dictionary 형태로 변환합니다.
+            var jsonObject = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonString);
 
-        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
-        {
+            // 기존 JSON 객체에 옮겨진 좌표를 업데이트합니다.
+            var updatedFaceLabels = labelPoints.Select((point, index) => new
+            {
+                Index = index,
+                X = point.X / 2,
+                Y = point.Y / 2
+            }).ToDictionary(item => item.Index.ToString(), item => new[] { item.X, item.Y });
 
-        }
+            JsonElement updatedFaceLabelsJsonElement;
+            using (var jsonDocUpdate = JsonDocument.Parse(JsonSerializer.Serialize(updatedFaceLabels)))
+            {
+                updatedFaceLabelsJsonElement = jsonDocUpdate.RootElement.Clone();
+            }
+            jsonObject["face_labels"] = updatedFaceLabelsJsonElement;
 
-        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
+            // 업데이트된 JSON 객체를 문자열로 변환합니다.
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true // 이 옵션을 사용하여 JSON 문자열의 가독성을 높입니다.
+            };
+            jsonString = JsonSerializer.Serialize(jsonObject, options);
 
-        }
-        private void richTextBox2_TextChanged(object sender, EventArgs e)
-        {
+            // JSON 문자열을 파일에 저장합니다.
+            File.WriteAllText(outputFilePath, jsonString);
+            
+            MessageBox.Show("저장 완료");
 
         }
         private void SearchButton_Click(object sender, EventArgs e)
@@ -316,15 +334,6 @@ namespace Semi_Auto_Labeling
             }
         }
 
-        private void richTextBox2_TextChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
        
         private void button1_Click_1(object sender, EventArgs e)
         {
@@ -452,6 +461,41 @@ namespace Semi_Auto_Labeling
         }
 
         private void richTextBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void richTextBox2_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+
+        }
+
+        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+        private void richTextBox2_TextChanged(object sender, EventArgs e)
         {
 
         }

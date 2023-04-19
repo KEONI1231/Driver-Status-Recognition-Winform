@@ -55,6 +55,7 @@
             this.driver_status_text = new System.Windows.Forms.RichTextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.saveBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -401,6 +402,17 @@
             this.label6.Text = "운전자 상태";
             this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
+            // saveBtn
+            // 
+            this.saveBtn.AllowDrop = true;
+            this.saveBtn.Location = new System.Drawing.Point(1510, 856);
+            this.saveBtn.Name = "saveBtn";
+            this.saveBtn.Size = new System.Drawing.Size(80, 23);
+            this.saveBtn.TabIndex = 31;
+            this.saveBtn.Text = "저장";
+            this.saveBtn.UseVisualStyleBackColor = true;
+            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -408,6 +420,7 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.ClientSize = new System.Drawing.Size(1516, 925);
+            this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.driver_status_text);
@@ -470,6 +483,7 @@
         private System.Windows.Forms.RichTextBox driver_status_text;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button saveBtn;
     }
 }
 
