@@ -26,7 +26,7 @@ namespace Semi_Auto_Labeling
     public partial class Form1 : Form
     {
 
-       
+        int imageRatio = 2;
         List<string> dataSetImgNameList = new List<string>(); //이미지를 불러오고 이미지의 이름을 저장할 list
         List<string> dataSetImgFilePath = new List<string>(); //이미지 경로를 저장할 파일 패스 list
 
@@ -49,6 +49,10 @@ namespace Semi_Auto_Labeling
         {
           
             InitializeComponent();
+            Log.Text = "";
+           
+        
+
 
             driver_status_text.Text = "";
             abnormalBehaviorList.Add("정상");
@@ -66,49 +70,51 @@ namespace Semi_Auto_Labeling
 
         private void imageOpen_Click(object sender, EventArgs e)
         {
-            
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
 
             // 초기 디렉토리 설정
-            openFileDialog1.InitialDirectory = "C:\\";
-
-            // 파일 필터 설정
-            openFileDialog1.Filter = "Image files (*.jpg, *.jpeg, *.png,*.json) | *.jpg; *.jpeg; *.png; *.json" ;
-            openFileDialog1.Title = "Select a Dataset files";
-            // 다중 선택 가능하도록 설정
-            openFileDialog1.Multiselect = true;
+            folderBrowserDialog.SelectedPath = "C:\\";
 
             // Dialog 열기
-            DialogResult result = openFileDialog1.ShowDialog();
-            
+            DialogResult result = folderBrowserDialog.ShowDialog();
+
             if (result == DialogResult.OK)
             {
-                foreach (string file in openFileDialog1.FileNames)
+                // 선택한 폴더의 경로를 가져옴
+                string folderPath = folderBrowserDialog.SelectedPath;
+
+                // 해당 폴더와 하위 폴더의 모든 파일을 가져옴
+                string[] allFiles = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories);
+
+                // 파일 목록을 처리
+
+
+                foreach (string file in allFiles)
                 {
-                    if (Path.GetFileName(file).Contains(".png") || Path.GetFileName(file).Contains(".jpg") || Path.GetFileName(file).Contains("jpeg"))
+                    // 이미지 파일 처리
+                    if (Path.GetExtension(file).ToLower() == ".png" || Path.GetExtension(file).ToLower() == ".jpg" || Path.GetExtension(file).ToLower() == ".jpeg")
                     {
                         dataSetImgFilePath.Add(file);
                         dataSetImgNameList.Add(Path.GetFileName(file));
                         dataSetImgFilePath.Sort();
                         dataSetImgNameList.Sort();
+                        // 여기에 이미지 파일 처리 코드를 추가하세요.
                     }
-                    else if(Path.GetFileName(file).Contains(".json"))
+                    // JSON 파일 처리
+                    else if (Path.GetExtension(file).ToLower() == ".json")
                     {
+                        // 여기에 JSON 파일 처리 코드를 추가하세요.
                         dataSetJsonFilePath.Add(file);
                         dataSetJsonNameList.Add(Path.GetFileName(file));
                         dataSetJsonFilePath.Sort();
                         dataSetJsonFilePath.Sort();
-
-                        
                     }
                 }
-                // 첫 번째 이미지 파일 경로 출력
-               
-                // PictureBox에 이미지 표시
                 for (int i = 0; i < dataSetImgFilePath.Count; i++)
                 {
                     FlowLayoutPanel fl_panel = new FlowLayoutPanel();
-                   
+
                     fl_panel.Size = new Size(265, 250);
                     fl_panel.FlowDirection = FlowDirection.TopDown; // Top to Bottom 설정
                     fl_panel.BackColor = Color.White;
@@ -126,88 +132,132 @@ namespace Semi_Auto_Labeling
                     btn.Size = new Size(120, 30);
                     btn.Name = String.Format("_Button_{0}", flowLayoutPanel1.Controls.Count);
                     int captured_i = i;
-                    
+
                     btn.Click += (sender1, e1) => btn_Click(sender, e, captured_i); // 람다식을 이용하여 클로저를 전달
 
                     fl_panel.Controls.Add(picture_box);
                     fl_panel.Controls.Add(btn);
                     flowLayoutPanel1.Controls.Add(fl_panel);
                 }
+
+
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "JSON Files|*.json";
-            openFileDialog1.Title = "Select a JSON File";
-            openFileDialog1.Multiselect = true;
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-
-                string filePathText = openFileDialog1.FileName;
-                
-                foreach (string filePath in openFileDialog1.FileNames) //json 파일 여러개 가지고 오기
-                {
-                    
-                }
-                /*
-                string testJsonName = "";
-                for (int i = 0; i < dataSetJsonNameList.Count; i++)
-                {
-                    testJsonName += (i + ". " + dataSetJsonNameList[i]);
-                       
-                }
-                Log.Text = testJsonName;
-                */
-            }
-            // 검색 버튼 클릭 이벤트 추가
-            SearchButton.Click += SearchButton_Click;
-        }
-
+        List<Point> labelPoints = new List<Point>();
+        int beforeXCoordinate = 0;
+        int beforeYCoordinate = 0;
+        int selectedPointIndex = -1;
+   
         //여기버튼
         private void btn_Click(object sender, EventArgs e, int i)
-        {
-
-           
-
-
+        { 
             pictureBox1.Image = Image.FromFile(dataSetImgFilePath[i]);
             fileContent = "";
             fileContent = File.ReadAllText(dataSetJsonFilePath[i]);
             JsonTextBox.Text = fileContent;
+            int x;
+            int y;
+
+            labelPoints.Clear();
             try
             {
                 string output = "";
                 // JSON 파일 읽기
                 using (StreamReader streamReader = new StreamReader(dataSetJsonFilePath[i]))
                 {
-
                     string jsonString = streamReader.ReadToEnd();
-
                     // JSON 문자열 파싱
                     var jsonDoc = JsonDocument.Parse(jsonString);
-
                     // JSON 객체에서 원하는 데이터 가져오기
                     for (int idx = 0; idx < 478; ++idx)
                     {
+                        
                         var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + idx);
-                        output += (idx + 1) + "번째 : " + value[0] + ", " + value[1] + " name: " + dataSetJsonNameList[i] + " \n";
 
+                        labelPoints.Add(new Point(value[0].GetInt32()*imageRatio, value[1].GetInt32() * imageRatio));
+                        output += (idx + 1) + "번째 : " + value[0] + ", " + value[1] + " name: " + dataSetJsonNameList[i] + " \n";
                     }
                 }
+                pictureBox1.Paint += PictureBox1_Paint;
+
+
                 string folderPath = "JsonFiles";
                 string filePath = Path.Combine(folderPath, "json" + i + ".txt");
-                
                 System.IO.File.WriteAllText(filePath, output, Encoding.Default);
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
                 MessageBox.Show(ex.Message, "");
             }
+
+            pictureBox1.Invalidate();
         }
+        private void PictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            // 그래픽 객체 가져오기
+            Graphics g = e.Graphics;
+
+            // 펜 설정
+            using (SolidBrush brush = new SolidBrush(Color.Red))
+            {
+                // JSON에서 불러온 좌표를 사용하여 원 그리기
+                for(int i = 0; i<labelPoints.Count; i++)
+                {
+                    int radius = 4;
+                    g.FillEllipse(brush, labelPoints[i].X - radius, labelPoints[i].Y - radius, radius * 2, radius * 2);
+                  
+                }
+
+            }
+            pictureBox1.MouseDown += PictureBox1_MouseDown;
+
+            pictureBox1.MouseMove += PictureBox1_MouseMove;
+
+
+            // (sender1, e1) => btn_Click(sender, e, captured_i); // 람다식을 이용하여 클로저를 전달
+            pictureBox1.MouseUp += PictureBox1_MouseUp;
+
+
+        }
+        private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            int radius = 5;
+            for (int i = 0; i < labelPoints.Count; i++)
+            {
+                if (Math.Abs(e.X - labelPoints[i].X) <= radius && Math.Abs(e.Y - labelPoints[i].Y) <= radius)
+                {
+                    beforeXCoordinate = labelPoints[i].X;
+                    beforeYCoordinate = labelPoints[i].Y;
+                    selectedPointIndex = i;
+                    break;
+                }
+            }
+        }
+ 
+        private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (selectedPointIndex != -1 && e.Button == MouseButtons.Left)
+            {
+                labelPoints[selectedPointIndex] = new Point(e.X, e.Y);
+                pictureBox1.Invalidate();
+            }
+        }
+        
+        private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (selectedPointIndex != -1)
+            {
+                Log.Text += "\n[ " + selectedPointIndex + " ]" + "\n-> 변경 전 좌표(x, y) : (" + beforeXCoordinate / imageRatio + ", " + beforeYCoordinate / imageRatio + ") " +
+                    "\n-> 변경 후 좌표(x, y) : (" + labelPoints[selectedPointIndex].X / imageRatio + ", " + labelPoints[selectedPointIndex].Y / imageRatio + ") \n";
+
+                Log.SelectionStart = Log.Text.Length;
+                Log.ScrollToCaret();
+            }
+            selectedPointIndex = -1;
+        }
+
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
