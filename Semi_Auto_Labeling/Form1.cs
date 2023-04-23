@@ -168,13 +168,15 @@ namespace Semi_Auto_Labeling
                     string jsonString = streamReader.ReadToEnd();
                     // JSON 문자열 파싱
                     var jsonDoc = JsonDocument.Parse(jsonString);
+                    
                     // JSON 객체에서 원하는 데이터 가져오기
-                    for (int idx = 0; idx < 478; ++idx)
+                    for (int idx = 0; idx < 82; ++idx)
                     {
                         
                         var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + idx);
-
+                        
                         labelPoints.Add(new Point(value[0].GetInt32()*imageRatio, value[1].GetInt32() * imageRatio));
+                        
                         output += (idx + 1) + "번째 : " + value[0] + ", " + value[1] + " name: " + dataSetJsonNameList[i] + " \n";
                     }
                 }
