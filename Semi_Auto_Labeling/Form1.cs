@@ -34,6 +34,14 @@ namespace Semi_Auto_Labeling
         List<string> dataSetJsonNameList = new List<string>(); //이미지를 불러오고 이미지의 이름을 저장할 list
         List<string> dataSetJsonFilePath = new List<string>(); //이미지 경로를 저장할 파일 패스 list
 
+        List<int> leftEyeLandmarkList = new List<int>() { 362, 382, 381, 380, 374, 373, 390, 249, 263, 466, 388, 387, 386, 385, 384, 398, 473 };
+        List<int> rightEyeLandmarkList = new List<int>() { 33, 7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246, 468 };
+        List<int> leftMouthLandmarkList = new List<int>() { 78, 13, 14 };
+        List<int> rightMouthLandmarkList = new List<int>() { 308, 13, 14 };
+        List<int> faceFormLandmarkList = new List<int>() { 33, 263, 1, 61, 291, 199 };
+        List<int> faceEdgeLandmarkList = new List<int>() {  10, 109, 67, 103, 54,21, 162, 127, 234, 93, 132, 58, 172, 136, 150, 149, 176, 148, 152, 377,
+            400, 378, 379, 365, 397, 288, 361, 323, 454, 356, 389, 251, 284, 332, 297, 338};
+        List<int> mouthEdgeLandmarkList = new List<int>() {0, 37, 39, 40, 185, 57, 146, 91, 181, 84, 17, 314, 405,321, 375, 287, 409, 270, 269, 267 };
         //레이블링 표시유무
         Boolean eyeClosedLabel = false;
 
@@ -51,9 +59,10 @@ namespace Semi_Auto_Labeling
           
             InitializeComponent();
             Log.Text = "";
-           
-        
 
+            
+
+            
 
             driver_status_text.Text = "";
             abnormalBehaviorList.Add("정상");
@@ -69,6 +78,7 @@ namespace Semi_Auto_Labeling
         }
         int captured_i;
 
+        
         private void imageOpen_Click(object sender, EventArgs e)
         {
 
@@ -161,7 +171,7 @@ namespace Semi_Auto_Labeling
             labelPoints.Clear();
             try
             {
-                string output = "";
+               // string output = "";
                 // JSON 파일 읽기
                 using (StreamReader streamReader = new StreamReader(dataSetJsonFilePath[i]))
                 {
@@ -170,14 +180,40 @@ namespace Semi_Auto_Labeling
                     var jsonDoc = JsonDocument.Parse(jsonString);
                     
                     // JSON 객체에서 원하는 데이터 가져오기
-                    for (int idx = 0; idx < 82; ++idx)
+                    for (int idx = 0; idx < leftEyeLandmarkList.Count; ++idx)
                     {
-                        
-                        var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + idx);
-                        
+                        var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + leftEyeLandmarkList[idx]);
                         labelPoints.Add(new Point(value[0].GetInt32()*imageRatio, value[1].GetInt32() * imageRatio));
-                        
-                        output += (idx + 1) + "번째 : " + value[0] + ", " + value[1] + " name: " + dataSetJsonNameList[i] + " \n";
+                    }
+                    for (int idx = 0; idx < rightEyeLandmarkList.Count; ++idx)
+                    {
+                        var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + rightEyeLandmarkList[idx]);
+                        labelPoints.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
+                    }
+                    for (int idx = 0; idx < leftMouthLandmarkList.Count; ++idx)
+                    {
+                        var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + leftMouthLandmarkList[idx]);
+                        labelPoints.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
+                    }
+                    for (int idx = 0; idx < rightMouthLandmarkList.Count; ++idx)
+                    {
+                        var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + rightMouthLandmarkList[idx]);
+                        labelPoints.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
+                    }
+                    for (int idx = 0; idx < faceFormLandmarkList.Count; ++idx)
+                    {
+                        var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + faceFormLandmarkList[idx]);
+                        labelPoints.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
+                    }
+                    for (int idx = 0; idx < faceEdgeLandmarkList.Count; ++idx)
+                    {
+                        var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + faceEdgeLandmarkList[idx]);
+                        labelPoints.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
+                    }
+                    for (int idx = 0; idx < mouthEdgeLandmarkList.Count; ++idx)
+                    {
+                        var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + mouthEdgeLandmarkList[idx]);
+                        labelPoints.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
                     }
                 }
                 pictureBox1.Paint += PictureBox1_Paint;
@@ -185,7 +221,7 @@ namespace Semi_Auto_Labeling
 
                 string folderPath = "JsonFiles";
                 string filePath = Path.Combine(folderPath, "json" + i + ".txt");
-                System.IO.File.WriteAllText(filePath, output, Encoding.Default);
+               // System.IO.File.WriteAllText(filePath, output, Encoding.Default);
             }
             catch (Exception ex)
             {
@@ -503,6 +539,36 @@ namespace Semi_Auto_Labeling
         }
 
         
+
+     /*   public void landmarkInit()
+        {
+            
+            landmarkList.Add(362);
+            landmarkList.Add(382);
+            landmarkList.Add(381);
+            landmarkList.Add(380);
+            landmarkList.Add(374);
+            landmarkList.Add(373);
+            landmarkList.Add(390);
+            landmarkList.Add(249);
+            landmarkList.Add(263);
+            landmarkList.Add(466);
+            landmarkList.Add(388);
+            landmarkList.Add(387);
+            landmarkList.Add(386);
+            landmarkList.Add(385);
+            landmarkList.Add(384);
+            landmarkList.Add(398);
+            landmarkList.Add(473);
+
+            landmarkList.Add(362);
+
+            landmarkList.Add(362);
+
+            landmarkList.Add(362);
+
+
+        }*/
     }
 
 
