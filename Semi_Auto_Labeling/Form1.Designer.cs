@@ -65,6 +65,7 @@
             this.checkBox20 = new System.Windows.Forms.CheckBox();
             this.checkBox21 = new System.Windows.Forms.CheckBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.mouthLandmarkCheckBox = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
@@ -243,6 +244,7 @@
             this.flowLayoutPanel3.Controls.Add(this.faceLandmarkCheckBox);
             this.flowLayoutPanel3.Controls.Add(this.poseCheckBox);
             this.flowLayoutPanel3.Controls.Add(this.eyeLandmarkCheckBox);
+            this.flowLayoutPanel3.Controls.Add(this.mouthLandmarkCheckBox);
             this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel3.Location = new System.Drawing.Point(574, 788);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
@@ -542,6 +544,20 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
+            // mouthLandmarkCheckBox
+            // 
+            this.mouthLandmarkCheckBox.AutoSize = true;
+            this.mouthLandmarkCheckBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.mouthLandmarkCheckBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.mouthLandmarkCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.mouthLandmarkCheckBox.Location = new System.Drawing.Point(3, 84);
+            this.mouthLandmarkCheckBox.Name = "mouthLandmarkCheckBox";
+            this.mouthLandmarkCheckBox.Size = new System.Drawing.Size(97, 21);
+            this.mouthLandmarkCheckBox.TabIndex = 20;
+            this.mouthLandmarkCheckBox.Text = "입술 특징점";
+            this.mouthLandmarkCheckBox.UseVisualStyleBackColor = false;
+            this.mouthLandmarkCheckBox.CheckedChanged += new System.EventHandler(this.mouthLandmarkCheckBox_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -627,6 +643,7 @@
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox checkBox6;
+        private System.Windows.Forms.CheckBox mouthLandmarkCheckBox;
     }
 }
 
