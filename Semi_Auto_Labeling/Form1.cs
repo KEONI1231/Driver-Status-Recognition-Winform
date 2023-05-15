@@ -24,12 +24,18 @@ namespace Semi_Auto_Labeling
 {
     public partial class Form1 : Form
     {
+        int vidioState = 1; // 0일때 정면, 1일때 사이드
+
         int imageRatio = 2;
         int currentImg = 0;
         List<string> dataSetImgNameList = new List<string>(); //이미지를 불러오고 이미지의 이름을 저장할 list
         List<string> dataSetImgFilePath = new List<string>(); //이미지 경로를 저장할 파일 패스 list
-        List<string> dataSetJsonNameList = new List<string>(); //이미지를 불러오고 이미지의 이름을 저장할 list
-        List<string> dataSetJsonFilePath = new List<string>(); //이미지 경로를 저장할 파일 패스 list
+
+        List<string> dataSetSideImgNameList = new List<string>(); //이미지를 불러오고 이미지의 이름을 저장할 list
+        List<string> dataSetSideImgFilePath = new List<string>(); //이미지 경로를 저장할 파일 패스 list
+
+        string dataSetJsonNameList; //이미지를 불러오고 이미지의 이름을 저장할 list
+        string dataSetJsonFilePath; //이미지 경로를 저장할 파일 패스 list
         List<int> leftEyeLandmarkList = new List<int>() { 362, 382, 381, 380, 374, 373, 390, 249, 263, 466, 388, 387, 386, 385, 384, 398, 473 };
         List<int> rightEyeLandmarkList = new List<int>() { 33, 7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246, 468 };
         List<int> leftMouthLandmarkList = new List<int>() { 78, 13, 14 };
@@ -38,6 +44,9 @@ namespace Semi_Auto_Labeling
         List<int> faceEdgeLandmarkList = new List<int>() {  10, 109, 67, 103, 54,21, 162, 127, 234, 93, 132, 58, 172, 136, 150, 149, 176, 148, 152, 377,
             400, 378, 379, 365, 397, 288, 361, 323, 454, 356, 389, 251, 284, 332, 297, 338};
         List<int> mouthEdgeLandmarkList = new List<int>() {0, 37, 39, 40, 185, 57, 146, 91, 181, 84, 17, 314, 405,321, 375, 287, 409, 270, 269, 267 };
+
+        List<int> poseLandmarkList = new List<int>() {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,-1 };
+        
         //레이블링 표시유무
         Boolean eyeClosedLabel = false;
         //status 출력 상태 표시 변수
@@ -50,13 +59,19 @@ namespace Semi_Auto_Labeling
         string fileContent;
         public Form1()
         {
+            
             InitializeComponent();
+            
             Log.Text = "";
           
         }
         int captured_i;
+        int side_captured_i;
+
         private void imageOpen_Click(object sender, EventArgs e)
         {
+          
+           
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
             // 초기 디렉토리 설정
             folderBrowserDialog.SelectedPath = "C:\\";
@@ -74,26 +89,37 @@ namespace Semi_Auto_Labeling
                     // 이미지 파일 처리
                     if (Path.GetExtension(file).ToLower() == ".png" || Path.GetExtension(file).ToLower() == ".jpg" || Path.GetExtension(file).ToLower() == ".jpeg")
                     {
-                        dataSetImgFilePath.Add(file);
-                        dataSetImgNameList.Add(Path.GetFileName(file));
+
+                        if (file.ToString().Contains("side"))
+                        {
+                            dataSetSideImgFilePath.Add(file);
+                            dataSetSideImgNameList.Add(Path.GetFileName(file));
+                        }
+                        else
+                        {
+                            dataSetImgFilePath.Add(file);
+                            dataSetImgNameList.Add(Path.GetFileName(file));
+                        }
+
                         dataSetImgFilePath.Sort();
                         dataSetImgNameList.Sort();
+
+                        
                         // 여기에 이미지 파일 처리 코드를 추가하세요.
                     }
                     // JSON 파일 처리
                     else if (Path.GetExtension(file).ToLower() == ".json")
                     {
                         // 여기에 JSON 파일 처리 코드를 추가하세요.
-                        dataSetJsonFilePath.Add(file);
-                        dataSetJsonNameList.Add(Path.GetFileName(file));
-                        dataSetJsonFilePath.Sort();
-                        dataSetJsonFilePath.Sort();
+                        dataSetJsonFilePath = file;
+                        dataSetJsonNameList = Path.GetFileName(file);
+                        
                     }
                 }
                 for (int i = 0; i < dataSetImgFilePath.Count; i++)
                 {
                     FlowLayoutPanel fl_panel = new FlowLayoutPanel();
-                    fl_panel.Size = new Size(265, 250);
+                    fl_panel.Size = new Size(265, 280);
                     fl_panel.FlowDirection = FlowDirection.TopDown; // Top to Bottom 설정
                     fl_panel.BackColor = Color.White;
                     fl_panel.BorderStyle = BorderStyle.FixedSingle;
@@ -102,26 +128,60 @@ namespace Semi_Auto_Labeling
                     picture_box.SizeMode = PictureBoxSizeMode.Zoom;
                     picture_box.Size = new Size(260, 200);
                     picture_box.Image = Image.FromFile(dataSetImgFilePath[i]);
-                    System.Windows.Forms.Button btn = new System.Windows.Forms.Button();
-                    btn.Text = "landmark 수정";
-                    btn.ForeColor = Color.FromArgb(250, 250, 250);
-                    btn.Font = new Font("맑은 고딕", 10, FontStyle.Bold);
-                    btn.Size = new Size(120, 30);
-                    btn.Name = String.Format("_Button_{0}", flowLayoutPanel1.Controls.Count);
+                    System.Windows.Forms.Button landmarkModifyBtn = new System.Windows.Forms.Button();
+
+                    landmarkModifyBtn.Text = "landmark 수정";
+                    landmarkModifyBtn.ForeColor = Color.FromArgb(250, 250, 250);
+                    landmarkModifyBtn.Font = new Font("맑은 고딕", 10, FontStyle.Bold);
+                    landmarkModifyBtn.Size = new Size(120, 30);
+                    landmarkModifyBtn.Name = String.Format("_Button_{0}", flowLayoutPanel1.Controls.Count);
                     captured_i = i;
-                    btn.Click += (sender1, e1) => btn_Click(sender, e, captured_i); // 람다식을 이용하여 클로저를 전달
+
+                    landmarkModifyBtn.Click += (sender1, e1) => btn_Click(sender, e, captured_i); // 람다식을 이용하여 클로저를 전달
+                    Log.Text += landmarkModifyBtn.Location.X.ToString() + " : "+landmarkModifyBtn.Location.Y.ToString();
+                   
                     fl_panel.Controls.Add(picture_box);
-                    fl_panel.Controls.Add(btn);
+                    fl_panel.Controls.Add(landmarkModifyBtn);
+                  
                     flowLayoutPanel1.Controls.Add(fl_panel);
                 }
             }
         }
+
+        private void SideViewBtn_Click(object sender, EventArgs e)
+        {
+            if (vidioState == 1)
+            {
+                pictureBox1.Invalidate();
+                faceLandmarkCheckBox.Enabled = true;
+                pictureBox1.Image = null;
+                pictureBox1.Image = Image.FromFile(dataSetSideImgFilePath[captured_i]);
+                faceLandmarkCheckBox.Checked = false;
+                faceLandmarkCheckBox.Enabled = false;
+                vidioState = 0;
+            }
+            else if (vidioState == 0)
+            {
+                pictureBox1.Invalidate();
+                pictureBox1.Image = null;
+                pictureBox1.Image = Image.FromFile(dataSetImgFilePath[captured_i]);
+                vidioState = 1;
+
+            }
+            
+            //PaintEventArgs e2;
+
+            
+
+        }
+
         List<Point> totalLabelPoints = new List<Point>();
         List<Point> controlLabelPoints = new List<Point>();
         List<Point> faceLabelPoints = new List<Point>();
         List<Point> poseLabelPoints = new List<Point>();
         List<Point> eyeLabelPoints = new List<Point>();
         List<Point> mouthLabelPoints = new List<Point>();
+        List<Point> ClearPoint = new List<Point>();
         int beforeXCoordinate = 0;
         int beforeYCoordinate = 0;
         int selectedPointIndex = -1;
@@ -131,7 +191,7 @@ namespace Semi_Auto_Labeling
         {
             pictureBox1.Image = Image.FromFile(dataSetImgFilePath[i]);
             fileContent = "";
-            fileContent = File.ReadAllText(dataSetJsonFilePath[i]);
+            fileContent = File.ReadAllText(dataSetJsonFilePath);
             int x;
             int y;
             totalLabelPoints.Clear();
@@ -143,7 +203,7 @@ namespace Semi_Auto_Labeling
             {
                 // string output = "";
                 // JSON 파일 읽기
-                using (StreamReader streamReader = new StreamReader(dataSetJsonFilePath[i]))
+                using (StreamReader streamReader = new StreamReader(dataSetJsonFilePath))
                 {
                     string jsonString = streamReader.ReadToEnd();
                     // JSON 문자열 파싱
@@ -151,16 +211,18 @@ namespace Semi_Auto_Labeling
                     //Console.WriteLine($"faceLandmarkCheckBox.Checked: {jsonDoc.GetType()}");
                     // JSON 객체에서 원하는 데이터 가져오기
                     
-                    GetJsonDataPoint(eyeLabelPoints, leftEyeLandmarkList,i);
-                    GetJsonDataPoint(eyeLabelPoints, rightEyeLandmarkList, i);
+                    GetJsonDataPoint(eyeLabelPoints, leftEyeLandmarkList,i , 0);
+                    GetJsonDataPoint(eyeLabelPoints, rightEyeLandmarkList, i, 0);
                     
-                    GetJsonDataPoint(mouthLabelPoints, leftMouthLandmarkList,i);
-                    GetJsonDataPoint(mouthLabelPoints, rightMouthLandmarkList, i);
+                    GetJsonDataPoint(mouthLabelPoints, leftMouthLandmarkList,i, 0);
+                    GetJsonDataPoint(mouthLabelPoints, rightMouthLandmarkList, i, 0);
 
-                    GetJsonDataPoint(faceLabelPoints, faceFormLandmarkList, i);
-                    GetJsonDataPoint(faceLabelPoints, faceEdgeLandmarkList, i);
+                    GetJsonDataPoint(faceLabelPoints, faceFormLandmarkList, i, 0);
+                    GetJsonDataPoint(faceLabelPoints, faceEdgeLandmarkList, i, 0);
 
-                    GetJsonDataPoint(mouthLabelPoints, mouthEdgeLandmarkList, i);
+                    GetJsonDataPoint(mouthLabelPoints, mouthEdgeLandmarkList, i, 0);
+
+                    GetJsonDataPoint(poseLabelPoints, poseLandmarkList, i, 1);
                 }
                 pictureBox1.Paint += PictureBox1_Paint;
                 string folderPath = "JsonFiles";
@@ -174,49 +236,74 @@ namespace Semi_Auto_Labeling
             }
             pictureBox1.Invalidate();
         }
-        private void GetJsonDataPoint(List<Point> labelPoint, List<int> labelPointList, int i)
+        private void GetJsonDataPoint(List<Point> labelPoint, List<int> labelPointList, int i, int discri)
         {
-            using (StreamReader streamReader = new StreamReader(dataSetJsonFilePath[i]))
+            using (StreamReader streamReader = new StreamReader(dataSetJsonFilePath))
             {
                 string jsonString = streamReader.ReadToEnd();
                 // JSON 문자열 파싱
                 var jsonDoc = JsonDocument.Parse(jsonString);
-                for (int idx = 0; idx < labelPointList.Count; ++idx)
+                //   Log.Text = "here2";
+
+
+
+                if (discri == 1)
                 {
-                    var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + labelPointList[idx]);
-                    labelPoint.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
+                    for (int idx = 0; idx < labelPointList.Count- 1; ++idx)
+                    {
+                        var value = jsonDoc.RootElement.GetProperty("pose_labels").GetProperty("" + labelPointList[idx]);
+                        labelPoint.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
+                    }
+                }
+                else if (discri == 0)
+                {
+                    //Log.Text = "here1";
+                    for (int idx = 0; idx < labelPointList.Count; ++idx)
+                    {
+                        var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + labelPointList[idx]);
+                        labelPoint.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
+                    }
                     // controlLabelPoints.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
                 }
-            }
+                   
+                        
+                    
+                
+             }
         }
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             totalLabelPoints.Clear(); // totalLabelPoints 초기화
-            
+
+            if(vidioState == 1)
+            {
+                drawPoint(e, ClearPoint);
+                Log.Text = "test";
+            }
             if (faceLandmarkCheckBox.Checked)
             {
-                drowPoint(e, faceLabelPoints);
+                drawPoint(e, faceLabelPoints);
                 pictureBox1.MouseDown += (sender1, e1) => PictureBox1_MouseDown(sender, e1, faceLabelPoints); // 람다식을 이용하여 클로저를 전달
                 pictureBox1.MouseMove += (sender1, e1) => PictureBox1_MouseMove(sender, e1, faceLabelPoints);
                 pictureBox1.MouseUp += (sender1, e1) => PictureBox1_MouseUp(sender, e1, faceLabelPoints);
             }
             if (eyeLandmarkCheckBox.Checked)
             {
-                drowPoint(e, eyeLabelPoints);
+                drawPoint(e, eyeLabelPoints);
                 pictureBox1.MouseDown += (sender1, e1) => PictureBox1_MouseDown(sender, e1, eyeLabelPoints); // 람다식을 이용하여 클로저를 전달
                 pictureBox1.MouseMove += (sender1, e1) => PictureBox1_MouseMove(sender, e1, eyeLabelPoints);
                 pictureBox1.MouseUp += (sender1, e1) => PictureBox1_MouseUp(sender, e1, eyeLabelPoints);
             }
             if(mouthLandmarkCheckBox.Checked)
             {
-                drowPoint(e, mouthLabelPoints);
+                drawPoint(e, mouthLabelPoints);
                 pictureBox1.MouseDown += (sender1, e1) => PictureBox1_MouseDown(sender, e1, mouthLabelPoints); // 람다식을 이용하여 클로저를 전달
                 pictureBox1.MouseMove += (sender1, e1) => PictureBox1_MouseMove(sender, e1, mouthLabelPoints);
                 pictureBox1.MouseUp += (sender1, e1) => PictureBox1_MouseUp(sender, e1, mouthLabelPoints);
             }
             if (poseCheckBox.Checked)
             {
-                drowPoint(e, poseLabelPoints);
+                drawPoint(e, poseLabelPoints);
             }
         }
         private void PictureBox1_MouseDown(object sender,MouseEventArgs e, List<Point> labelPoints)
@@ -278,8 +365,8 @@ namespace Semi_Auto_Labeling
             {
                 totalLabelPoints.Add(poseLabelPoints[i]);
             }
-            string inputFilePath = dataSetJsonFilePath[captured_i];
-            string outputFilePath = dataSetJsonFilePath[captured_i];
+            string inputFilePath = dataSetJsonFilePath;
+            string outputFilePath = dataSetJsonFilePath;
             jsonUpdateOutput(inputFilePath, outputFilePath);
         }
 
@@ -443,7 +530,7 @@ namespace Semi_Auto_Labeling
         { }
 
 
-        private void drowPoint(PaintEventArgs e, List<Point> labelPoint)
+        private void drawPoint(PaintEventArgs e, List<Point> labelPoint)
         {
             Graphics g = e.Graphics;
 
@@ -486,6 +573,8 @@ namespace Semi_Auto_Labeling
             Console.WriteLine($"mouthLandmarkCheckBox.Checked: {mouthLandmarkCheckBox.Checked}");
             pictureBox1.Invalidate();
         }
+
+        
 
 
         //여기 수정

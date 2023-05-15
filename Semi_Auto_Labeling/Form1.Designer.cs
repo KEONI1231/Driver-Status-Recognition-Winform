@@ -45,6 +45,7 @@
             this.faceLandmarkCheckBox = new System.Windows.Forms.CheckBox();
             this.poseCheckBox = new System.Windows.Forms.CheckBox();
             this.eyeLandmarkCheckBox = new System.Windows.Forms.CheckBox();
+            this.mouthLandmarkCheckBox = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -65,7 +66,7 @@
             this.checkBox20 = new System.Windows.Forms.CheckBox();
             this.checkBox21 = new System.Windows.Forms.CheckBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.mouthLandmarkCheckBox = new System.Windows.Forms.CheckBox();
+            this.SideViewBtn = new System.Windows.Forms.Button();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
@@ -291,6 +292,20 @@
             this.eyeLandmarkCheckBox.Text = "눈동자 특징점";
             this.eyeLandmarkCheckBox.UseVisualStyleBackColor = false;
             this.eyeLandmarkCheckBox.CheckedChanged += new System.EventHandler(this.eyeLandmarkCheckBox_CheckedChanged);
+            // 
+            // mouthLandmarkCheckBox
+            // 
+            this.mouthLandmarkCheckBox.AutoSize = true;
+            this.mouthLandmarkCheckBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.mouthLandmarkCheckBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.mouthLandmarkCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.mouthLandmarkCheckBox.Location = new System.Drawing.Point(3, 84);
+            this.mouthLandmarkCheckBox.Name = "mouthLandmarkCheckBox";
+            this.mouthLandmarkCheckBox.Size = new System.Drawing.Size(97, 21);
+            this.mouthLandmarkCheckBox.TabIndex = 20;
+            this.mouthLandmarkCheckBox.Text = "입술 특징점";
+            this.mouthLandmarkCheckBox.UseVisualStyleBackColor = false;
+            this.mouthLandmarkCheckBox.CheckedChanged += new System.EventHandler(this.mouthLandmarkCheckBox_CheckedChanged);
             // 
             // label2
             // 
@@ -544,19 +559,17 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // mouthLandmarkCheckBox
+            // SideViewBtn
             // 
-            this.mouthLandmarkCheckBox.AutoSize = true;
-            this.mouthLandmarkCheckBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
-            this.mouthLandmarkCheckBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.mouthLandmarkCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.mouthLandmarkCheckBox.Location = new System.Drawing.Point(3, 84);
-            this.mouthLandmarkCheckBox.Name = "mouthLandmarkCheckBox";
-            this.mouthLandmarkCheckBox.Size = new System.Drawing.Size(97, 21);
-            this.mouthLandmarkCheckBox.TabIndex = 20;
-            this.mouthLandmarkCheckBox.Text = "입술 특징점";
-            this.mouthLandmarkCheckBox.UseVisualStyleBackColor = false;
-            this.mouthLandmarkCheckBox.CheckedChanged += new System.EventHandler(this.mouthLandmarkCheckBox_CheckedChanged);
+            this.SideViewBtn.FlatAppearance.BorderSize = 2;
+            this.SideViewBtn.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SideViewBtn.Location = new System.Drawing.Point(1516, 787);
+            this.SideViewBtn.Name = "SideViewBtn";
+            this.SideViewBtn.Size = new System.Drawing.Size(80, 23);
+            this.SideViewBtn.TabIndex = 32;
+            this.SideViewBtn.Text = "사이드 뷰";
+            this.SideViewBtn.UseVisualStyleBackColor = true;
+            this.SideViewBtn.Click += new System.EventHandler(this.SideViewBtn_Click);
             // 
             // Form1
             // 
@@ -565,6 +578,7 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.ClientSize = new System.Drawing.Size(1884, 999);
+            this.Controls.Add(this.SideViewBtn);
             this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -644,6 +658,7 @@
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.CheckBox mouthLandmarkCheckBox;
+        private System.Windows.Forms.Button SideViewBtn;
     }
 }
 
