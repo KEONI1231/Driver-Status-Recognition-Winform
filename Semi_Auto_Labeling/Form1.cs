@@ -56,6 +56,10 @@ namespace Semi_Auto_Labeling
             
             InitializeComponent();
             poseCheckBox.Enabled = false;
+
+            pictureBox1.MouseDown += PictureBox1_MouseDown;
+            pictureBox1.MouseMove += PictureBox1_MouseMove;
+            pictureBox1.MouseUp += PictureBox1_MouseUp;
             Log.Text = "";
           
         }
@@ -246,7 +250,15 @@ namespace Semi_Auto_Labeling
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error: {ex.Source}\n");
                 Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"Source: {ex.Source}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+                MessageBox.Show($"Error: {ex.Message}\nSource: {ex.Source}\nStack Trace: {ex.StackTrace}", "");
                 MessageBox.Show(ex.Message, "");
             }
             pictureBox1.Invalidate();
@@ -272,8 +284,6 @@ namespace Semi_Auto_Labeling
                 var jsonDoc = JsonDocument.Parse(jsonString);
 
                 var drowsinessStatus = jsonDoc.RootElement.GetProperty("driver status").GetProperty("DROWSINESS");
-
-
                 statusEyeClosed = drowsinessStatus.GetProperty("EYE OPENED").GetBoolean();
                 statusYawn = drowsinessStatus.GetProperty("YAWN").GetBoolean();
                 statusDrophead = drowsinessStatus.GetProperty("DROP HEAD").GetBoolean();
@@ -310,10 +320,12 @@ namespace Semi_Auto_Labeling
                             labelPoint.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
                         }
                     }
-                }catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     labelPoint = null;
                 }
-                
+
                 if (discri == 0)
                 {
                     //Log.Text = "here1";
@@ -324,109 +336,107 @@ namespace Semi_Auto_Labeling
                     }
                     // controlLabelPoints.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
                 }
-                
+
             }
         }
+
+        private void faceLandmarkCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+           
+            pictureBox1.Invalidate();
+        }
+
+        private void eyeLandmarkCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+           
+            pictureBox1.Invalidate();
+        }
+
+        private void mouthLandmarkCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+         
+            pictureBox1.Invalidate();
+        }
+
+        private void poseCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+        
+            pictureBox1.Invalidate();
+        }
+
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             totalLabelPoints.Clear(); // totalLabelPoints 초기화
-            int discri = -1;
             controlLabelPoints.Clear();
+
+        
             if (faceLandmarkCheckBox.Checked)
             {
                 drawPoint(e, faceLabelPoints);
-                pictureBox1.MouseDown += (sender1, e1) => PictureBox1_MouseDown(sender, e1, 0); // 람다식을 이용하여 클로저를 전달
-                pictureBox1.MouseMove += (sender1, e1) => PictureBox1_MouseMove(sender, e1, 0);
-                pictureBox1.MouseUp += (sender1, e1) => PictureBox1_MouseUp(sender, e1, 0);
-                discri = 0;
             }
             if (eyeLandmarkCheckBox.Checked)
             {
                 drawPoint(e, eyeLabelPoints);
-
-                pictureBox1.MouseDown += (sender1, e1) => PictureBox1_MouseDown(sender, e1, 1); // 람다식을 이용하여 클로저를 전달
-                pictureBox1.MouseMove += (sender1, e1) => PictureBox1_MouseMove(sender, e1, 1);
-                pictureBox1.MouseUp += (sender1, e1) => PictureBox1_MouseUp(sender, e1, 1);
-                discri = 1;
             }
-            if(mouthLandmarkCheckBox.Checked)
+            if (mouthLandmarkCheckBox.Checked)
             {
                 drawPoint(e, mouthLabelPoints);
-                pictureBox1.MouseDown += (sender1, e1) => PictureBox1_MouseDown(sender, e1, 2); // 람다식을 이용하여 클로저를 전달
-                pictureBox1.MouseMove += (sender1, e1) => PictureBox1_MouseMove(sender, e1, 2);
-                pictureBox1.MouseUp += (sender1, e1) => PictureBox1_MouseUp(sender, e1, 2);
-                discri = 2;
             }
             if (poseCheckBox.Checked)
             {
                 drawLinePoint(e, poseLabelPoints);
-                pictureBox1.MouseDown += (sender1, e1) => PictureBox1_MouseDown(sender, e1, 3); // 람다식을 이용하여 클로저를 전달
-                pictureBox1.MouseMove += (sender1, e1) => PictureBox1_MouseMove(sender, e1, 3);
-                pictureBox1.MouseUp += (sender1, e1) => PictureBox1_MouseUp(sender, e1, 3);
-                discri = 3;
             }
-            /*if (discri != -1)
-            {
-                pictureBox1.MouseDown += (sender1, e1) => PictureBox1_MouseDown(sender, e1, discri); // 람다식을 이용하여 클로저를 전달
-                pictureBox1.MouseMove += (sender1, e1) => PictureBox1_MouseMove(sender, e1, discri);
-                pictureBox1.MouseUp += (sender1, e1) => PictureBox1_MouseUp(sender, e1, discri);
-                discri = -1;
-            }*/
-
-
         }
-        List<Point> labelPointsMouse;
-        private void PictureBox1_MouseDown(object sender,MouseEventArgs e, int discri)
+        private List<Point> selectedList = null;
+        private int selectedIndex = -1;
+        private Point? originalPoint = null;
+
+        private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            if(discri == 0)
+            selectedList = null;
+            selectedIndex = -1;
+            originalPoint = null;
+            int radiusSquared = 5 * 5;  // 반경을 제곱하여 거리를 비교
+                                        // 모든 포인트를 검사하고 클릭 위치가 반경 내에 있는 포인트를 선택
+            foreach (var pointList in new[] { faceLabelPoints, eyeLabelPoints, mouthLabelPoints, poseLabelPoints })
             {
-                labelPointsMouse = faceLabelPoints;
-            }
-            else if(discri == 1)
-            {
-                labelPointsMouse = eyeLabelPoints;
-            }
-            else if(discri == 2)
-            {
-                labelPointsMouse = mouthLabelPoints;
-            }
-            else if(discri == 3)
-            {
-                labelPointsMouse = poseLabelPoints;
-            }
-            int radius = 5;
-            for (int i = 0; i < labelPointsMouse.Count; i++)
-            {
-                if (Math.Abs(e.X - labelPointsMouse[i].X) <= radius && Math.Abs(e.Y - labelPointsMouse[i].Y) <= radius)
+                for (int i = 0; i < pointList.Count; i++)
                 {
-                    beforeXCoordinate = labelPointsMouse[i].X;
-                    beforeYCoordinate = labelPointsMouse[i].Y;
-                    selectedPointIndex = i;
-                    break;
+                    var point = pointList[i];
+                    int distSquared = (point.X - e.X) * (point.X - e.X) + (point.Y - e.Y) * (point.Y - e.Y);
+                    if (distSquared <= radiusSquared)
+                    {
+                        selectedList = pointList;
+                        selectedIndex = i;
+                        originalPoint = new Point(point.X, point.Y);
+                        return;  // 가장 먼저 찾은 포인트를 선택하고 루프 종료
+                    }
                 }
             }
         }
 
-        private void PictureBox1_MouseMove(object sender, MouseEventArgs e, int discri)
+        private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (selectedPointIndex != -1 && e.Button == MouseButtons.Left)
+            if (selectedList != null && selectedIndex != -1 && e.Button == MouseButtons.Left)
             {
-                labelPointsMouse[selectedPointIndex] = new Point(e.X, e.Y);
-                pictureBox1.Invalidate();
+                // 선택된 포인트를 마우스 위치로 이동
+                selectedList[selectedIndex] = e.Location;
+                pictureBox1.Invalidate();  // PictureBox를 다시 그림
             }
         }
 
-        private void PictureBox1_MouseUp(object sender, MouseEventArgs e, int discri)
+        private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (selectedPointIndex != -1)
+            if (selectedList != null && selectedIndex != -1 && originalPoint.HasValue)
             {
-                Log.Text += "\n[ " + selectedPointIndex + " ]" + "\n-> 변경 전 좌표(x, y) : (" + beforeXCoordinate / imageRatio + ", " + beforeYCoordinate / imageRatio + ") " +
-                    "\n-> 변경 후 좌표(x, y) : (" + labelPointsMouse[selectedPointIndex].X / imageRatio + ", " + labelPointsMouse[selectedPointIndex].Y / imageRatio + ") \n";
+                // Log the move
+                Log.Text += $"Moved point from ({originalPoint.Value.X}, {originalPoint.Value.Y}) to ({e.X}, {e.Y})\n";
 
-                Log.SelectionStart = Log.Text.Length;
-                Log.ScrollToCaret();
+                // Clear the selected point
+                selectedList = null;
+                selectedIndex = -1;
+                originalPoint = null;
             }
-            selectedPointIndex = -1;
         }
 
 
@@ -451,6 +461,7 @@ namespace Semi_Auto_Labeling
                 totalLabelPoints.Add(poseLabelPoints[i]);
             }
             string inputFilePath = dataSetJsonFilePath;
+            Log.Text=  inputFilePath;
             string outputFilePath = dataSetJsonFilePath;
             jsonUpdateOutput(inputFilePath, outputFilePath);
         }
@@ -681,6 +692,14 @@ namespace Semi_Auto_Labeling
 
 
             }
+            using (SolidBrush brush = new SolidBrush(Color.Red))
+            {
+                int radius = 4;
+                for (int i = 0; i < 33; i++)
+                {
+                    g.FillEllipse(brush, labelPoint[i].X - radius, labelPoint[i].Y - radius, radius * 2, radius * 2);
+                }
+            }
         }
 
 
@@ -688,26 +707,7 @@ namespace Semi_Auto_Labeling
         {
             pictureBox1.Invalidate();
         }
-        private void faceLandmarkCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Console.WriteLine($"faceLandmarkCheckBox.Checked: {faceLandmarkCheckBox.Checked}");
-            pictureBox1.Invalidate();
-        }
-        private void poseCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Console.WriteLine($"posemarkCheckBox.Checked: {poseCheckBox.Checked}");
-            pictureBox1.Invalidate();
-        }
-        private void eyeLandmarkCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Console.WriteLine($"eyeLandmarkCheckBox.Checked: {eyeLandmarkCheckBox.Checked}");
-            pictureBox1.Invalidate();
-        }
-        private void mouthLandmarkCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            Console.WriteLine($"mouthLandmarkCheckBox.Checked: {mouthLandmarkCheckBox.Checked}");
-            pictureBox1.Invalidate();
-        }
+        
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
