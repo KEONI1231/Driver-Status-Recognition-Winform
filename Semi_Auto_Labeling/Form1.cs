@@ -25,6 +25,7 @@ namespace Semi_Auto_Labeling
 {
     public partial class Form1 : Form
     {
+        static int MAX_LABELING_COUNT = 478;
         int vidioState = 1; // 0일때 정면, 1일때 사이드
 
         int imageRatio = 2;
@@ -196,7 +197,7 @@ namespace Semi_Auto_Labeling
             //PaintEventArgs e2;
         }
 
-        List<Point> totalLabelPoints = new List<Point>();
+        Point[] totalLabelPoints = new Point[MAX_LABELING_COUNT];
         List<Point> controlLabelPoints = new List<Point>();
         List<Point> faceLabelPoints = new List<Point>();
         List<Point> poseLabelPoints = new List<Point>();
@@ -213,7 +214,7 @@ namespace Semi_Auto_Labeling
             fileContent = File.ReadAllText(dataSetJsonFilePath);
             int x;
             int y;
-            totalLabelPoints.Clear();
+//            totalLabelPoints.Clear();
             faceLabelPoints.Clear();
             eyeLabelPoints.Clear();
             poseLabelPoints.Clear();
@@ -328,7 +329,7 @@ namespace Semi_Auto_Labeling
 
                 if (discri == 0)
                 {
-                    //Log.Text = "here1";
+                    Log.Text = "here1";
                     for (int idx = 0; idx < labelPointList.Count; ++idx)
                     {
                         var value = jsonDoc.RootElement.GetProperty("face_labels").GetProperty("" + labelPointList[idx]);
@@ -366,7 +367,7 @@ namespace Semi_Auto_Labeling
 
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            totalLabelPoints.Clear(); // totalLabelPoints 초기화
+            //totalLabelPoints.Clear(); // totalLabelPoints 초기화
             controlLabelPoints.Clear();
 
         
@@ -440,26 +441,70 @@ namespace Semi_Auto_Labeling
         }
 
 
+        /*  for (int i = 0; i < faceLabelPoints.Count; i++)
+           {
+               totalLabelPoints.Add(faceLabelPoints[i]);
+           }
+           for (int i = 0; i < eyeLabelPoints.Count; i++)
+           {
+               totalLabelPoints.Add(eyeLabelPoints[i]);
+           }
+           for (int i = 0; i < mouthLabelPoints.Count; i++)
+           {
+               totalLabelPoints.Add(mouthLabelPoints[i]);
+           }
+           for (int i = 0; i < poseLabelPoints.Count; i++)
+           {
+               totalLabelPoints.Add(poseLabelPoints[i]);
+           }*/
+        //List<int> leftEyeLandmarkList = new List<int>() { 362, 382, 381, 380, 374, 373, 390, 249, 263, 466, 388, 387, 386, 385, 384, 398, 473 };
+        //List<int> rightEyeLandmarkList = new List<int>() { 33, 7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246, 468 };
+        //List<int> leftMouthLandmarkList = new List<int>() { 78, 13, 14 };
+        //List<int> rightMouthLandmarkList = new List<int>() { 308, 13, 14 };
+        //List<int> faceFormLandmarkList = new List<int>() { 33, 263, 1, 61, 291, 199 };
+        //List<int> faceEdgeLandmarkList = new List<int>() {  10, 109, 67, 103, 54,21, 162, 127, 234, 93, 132, 58, 172, 136, 150, 149, 176, 148, 152, 377,
+        //   400, 378, 379, 365, 397, 288, 361, 323, 454, 356, 389, 251, 284, 332, 297, 338};
+        //List<int> mouthEdgeLandmarkList = new List<int>() { 0, 37, 39, 40, 185, 57, 146, 91, 181, 84, 17, 314, 405, 321, 375, 287, 409, 270, 269, 267 };
+
+        //List<int> poseLandmarkList = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, -2 };
+
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            totalLabelPoints.Clear();
-            for (int i = 0; i < faceLabelPoints.Count; i++)
+            //totalLabelPoints[10] = new Point(12,12);
+            
+            //Log.Text = leftEyeLandmarkList[10].ToString();
+            for(int i = 0; i < leftEyeLandmarkList.Count + rightEyeLandmarkList.Count; i++)
             {
-                totalLabelPoints.Add(faceLabelPoints[i]);
+
+                totalLabelPoints[leftEyeLandmarkList[i]] = eyeLabelPoints[i];
+                Log.Text += "ASDF1";
+                totalLabelPoints[rightEyeLandmarkList[i]] = eyeLabelPoints[i];
+                Log.Text += "ASDF2";
             }
-            for (int i = 0; i < eyeLabelPoints.Count; i++)
+            for(int i = 0; i < leftMouthLandmarkList.Count + rightEyeLandmarkList.Count; i++)
             {
-                totalLabelPoints.Add(eyeLabelPoints[i]);
+                totalLabelPoints[leftMouthLandmarkList[i]] = faceLabelPoints[i];
+                totalLabelPoints[rightMouthLandmarkList[i]] = faceLabelPoints[i];
             }
-            for (int i = 0; i < mouthLabelPoints.Count; i++)
+            for(int i = 0; i < faceFormLandmarkList.Count; i++)
             {
-                totalLabelPoints.Add(mouthLabelPoints[i]);
+                totalLabelPoints[faceFormLandmarkList[i]] = faceLabelPoints[i];
             }
-            for (int i = 0; i < poseLabelPoints.Count; i++)
+            for (int i =0; i < faceEdgeLandmarkList.Count; i++)
             {
-                totalLabelPoints.Add(poseLabelPoints[i]);
+                totalLabelPoints[faceEdgeLandmarkList[i]] = faceLabelPoints[i];
             }
+            for(int i = 0; i < mouthEdgeLandmarkList.Count; i++)
+            {
+                totalLabelPoints[mouthEdgeLandmarkList[i]] = mouthLabelPoints[i];
+            }
+            for(int i = 0; i < poseLandmarkList.Count - 1; i++)
+            {
+                totalLabelPoints[poseLandmarkList[i]] = poseLabelPoints[i];
+            }
+            
+
             string inputFilePath = dataSetJsonFilePath;
             Log.Text=  inputFilePath;
             string outputFilePath = dataSetJsonFilePath;
@@ -479,8 +524,9 @@ namespace Semi_Auto_Labeling
             var updatedFaceLabels = totalLabelPoints.Select((point, index) => new
             {
                 Index = index,
-                X = (double)point.X / 2,
-                Y = (double)point.Y / 2
+                X = Math.Round((double)point.X / 2),
+                Y = Math.Round((double)point.Y / 2)
+                
             }).ToDictionary(item => item.Index.ToString(), item => new[] { item.X, item.Y });
 
             // 수정사항: JsonElement를 직접 사용하는 대신 Dictionary 형태로 변환한 후, 다시 JsonElement로 변환하여 문제를 해결합니다.
