@@ -472,41 +472,90 @@ namespace Semi_Auto_Labeling
         private void saveBtn_Click(object sender, EventArgs e)
         {
             //totalLabelPoints[10] = new Point(12,12);
-            
+            int j = 0;
             //Log.Text = leftEyeLandmarkList[10].ToString();
-            for(int i = 0; i < leftEyeLandmarkList.Count + rightEyeLandmarkList.Count; i++)
+            for (int i = 0; i < (leftEyeLandmarkList.Count + rightEyeLandmarkList.Count); i++)
             {
 
-                totalLabelPoints[leftEyeLandmarkList[i]] = eyeLabelPoints[i];
-                Log.Text += "ASDF1";
-                totalLabelPoints[rightEyeLandmarkList[i]] = eyeLabelPoints[i];
-                Log.Text += "ASDF2";
+               // Log.Text = "1: " + eyeLabelPoints.Count.ToString() + ", 2: " + (leftEyeLandmarkList.Count + rightEyeLandmarkList.Count).ToString() + "\n"
+                //    + "<> " + leftEyeLandmarkList.Count.ToString() + "<> " + rightEyeLandmarkList.Count.ToString();
+
+                if (i < 17)
+                {
+                    totalLabelPoints[leftEyeLandmarkList[i]] = eyeLabelPoints[i];
+                }
+                else if(i >= 17)
+                {
+                //    Log.Text += i.ToString() +", ";
+                    totalLabelPoints[rightEyeLandmarkList[j]] = eyeLabelPoints[i];
+                    //Log.Text += eyeLabelPoints[i].ToString() + "\n";
+                    //Log.Text += totalLabelPoints[leftEyeLandmarkList[i]].ToString() + "\n";
+                    j++;
+                }
             }
-            for(int i = 0; i < leftMouthLandmarkList.Count + rightEyeLandmarkList.Count; i++)
+            int k = 0;
+            for(int i = 0; i < leftMouthLandmarkList.Count + rightMouthLandmarkList.Count; i++)
             {
-                totalLabelPoints[leftMouthLandmarkList[i]] = faceLabelPoints[i];
-                totalLabelPoints[rightMouthLandmarkList[i]] = faceLabelPoints[i];
+                if (i < leftMouthLandmarkList.Count)
+                    totalLabelPoints[leftMouthLandmarkList[i]] = faceLabelPoints[i];
+                else
+                {
+                    totalLabelPoints[rightMouthLandmarkList[k]] = faceLabelPoints[i];
+                    k++;
+                }
+
             }
+            int l = 0;
+            int x = 0;
             for(int i = 0; i < faceFormLandmarkList.Count; i++)
             {
-                totalLabelPoints[faceFormLandmarkList[i]] = faceLabelPoints[i];
+                totalLabelPoints[faceFormLandmarkList[i]] = faceLabelPoints[l];
+                l++;
             }
             for (int i =0; i < faceEdgeLandmarkList.Count; i++)
             {
-                totalLabelPoints[faceEdgeLandmarkList[i]] = faceLabelPoints[i];
+                totalLabelPoints[faceEdgeLandmarkList[i]] = faceLabelPoints[l];
+                l++;
             }
             for(int i = 0; i < mouthEdgeLandmarkList.Count; i++)
             {
-                totalLabelPoints[mouthEdgeLandmarkList[i]] = mouthLabelPoints[i];
+                totalLabelPoints[mouthEdgeLandmarkList[i]] = mouthLabelPoints[x];
+                x++;
+                
             }
-            for(int i = 0; i < poseLandmarkList.Count - 1; i++)
+
+
+
+
+          /*  for (int i = 0; i < leftMouthLandmarkList.Count; i++)
+            {
+                totalLabelPoints[leftMouthLandmarkList[i]] = mouthLabelPoints[x];
+                x++;
+            }
+
+
+            for (int i = 0; i < rightMouthLandmarkList.Count; i++)
+            {
+                totalLabelPoints[rightMouthLandmarkList[i]] = mouthLabelPoints[x];
+                x++;
+            }*/
+            Log.Text += "1: " + mouthEdgeLandmarkList.Count.ToString() + "2: " + mouthLabelPoints.Count.ToString();
+
+
+
+
+
+
+
+            for (int i = 0; i < poseLandmarkList.Count - 1; i++)
             {
                 totalLabelPoints[poseLandmarkList[i]] = poseLabelPoints[i];
+                
             }
             
 
             string inputFilePath = dataSetJsonFilePath;
-            Log.Text=  inputFilePath;
+           // Log.Text=  inputFilePath;
             string outputFilePath = dataSetJsonFilePath;
             jsonUpdateOutput(inputFilePath, outputFilePath);
         }

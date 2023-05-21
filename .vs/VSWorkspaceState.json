@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Semi_Auto_Labeling"
+    "\\Semi_Auto_Labeling",
+    "\\Semi_Auto_Labeling\\bin",
+    "\\Semi_Auto_Labeling\\obj",
+    "\\Semi_Auto_Labeling\\Properties"
   ],
-  "SelectedNode": "\\Semi_Auto_Labeling.sln",
   "PreviewInSolutionExplorer": false
 }
