@@ -40,12 +40,12 @@ namespace Semi_Auto_Labeling
         string dataSetJsonFilePath; //이미지 경로를 저장할 파일 패스 list
         List<int> leftEyeLandmarkList = new List<int>() { 362, 382, 381, 380, 374, 373, 390, 249, 263, 466, 388, 387, 386, 385, 384, 398, 473 };
         List<int> rightEyeLandmarkList = new List<int>() { 33, 7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246, 468 };
-        List<int> leftMouthLandmarkList = new List<int>() { 78, 13, 14 };
-        List<int> rightMouthLandmarkList = new List<int>() { 308, 13, 14 };
-        List<int> faceFormLandmarkList = new List<int>() { 33, 263, 1, 61, 291, 199 };
+        List<int> leftMouthLandmarkList = new List<int>() { 78 };
+        List<int> rightMouthLandmarkList = new List<int>() { 308 };
+        List<int> faceFormLandmarkList = new List<int>() { 33, 1, 61, 291, 199 };
         List<int> faceEdgeLandmarkList = new List<int>() {  10, 109, 67, 103, 54,21, 162, 127, 234, 93, 132, 58, 172, 136, 150, 149, 176, 148, 152, 377,
             400, 378, 379, 365, 397, 288, 361, 323, 454, 356, 389, 251, 284, 332, 297, 338};
-        List<int> mouthEdgeLandmarkList = new List<int>() {0, 37, 39, 40, 185, 57, 146, 91, 181, 84, 17, 314, 405,321, 375, 287, 409, 270, 269, 267 };
+        List<int> mouthEdgeLandmarkList = new List<int>() {13,14,0, 37, 39, 40, 185, 57, 146, 91, 181, 84, 17, 314, 405,321, 375, 287, 409, 270, 269, 267 };
 
         List<int> poseLandmarkList = new List<int>() {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,-2 };
         
@@ -198,6 +198,7 @@ namespace Semi_Auto_Labeling
         }
 
         Point[] totalLabelPoints = new Point[MAX_LABELING_COUNT];
+        Point[] totalPoseLabelPoints = new Point[33];
         List<Point> controlLabelPoints = new List<Point>();
         List<Point> faceLabelPoints = new List<Point>();
         List<Point> poseLabelPoints = new List<Point>();
@@ -309,8 +310,6 @@ namespace Semi_Auto_Labeling
                 modifyFaceForwardCB.Checked = statusFaceForward;
                 modifyGazeForwardCB.Checked = statusGazeForward;
                 modifyYawnCB.Checked = statusYawn;
-                //   Log.Text = "here2";
-
                 try
                 {
                     if (discri == 1)
@@ -326,7 +325,6 @@ namespace Semi_Auto_Labeling
                 {
                     labelPoint = null;
                 }
-
                 if (discri == 0)
                 {
                     Log.Text = "here1";
@@ -337,40 +335,32 @@ namespace Semi_Auto_Labeling
                     }
                     // controlLabelPoints.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
                 }
-
             }
         }
-
         private void faceLandmarkCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           
             pictureBox1.Invalidate();
         }
 
         private void eyeLandmarkCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-           
             pictureBox1.Invalidate();
         }
 
         private void mouthLandmarkCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-         
             pictureBox1.Invalidate();
         }
 
         private void poseCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-        
             pictureBox1.Invalidate();
         }
 
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             //totalLabelPoints.Clear(); // totalLabelPoints 초기화
-            controlLabelPoints.Clear();
-
-        
+            controlLabelPoints.Clear();        
             if (faceLandmarkCheckBox.Checked)
             {
                 drawPoint(e, faceLabelPoints);
@@ -519,6 +509,8 @@ namespace Semi_Auto_Labeling
             }
             for(int i = 0; i < mouthEdgeLandmarkList.Count; i++)
             {
+                Console.WriteLine($"faceLandmarkCheckBox.Checked: {mouthLabelPoints}");
+                Console.WriteLine($"faceLandmarkCheckBox.Checked: {mouthEdgeLandmarkList}");
                 totalLabelPoints[mouthEdgeLandmarkList[i]] = mouthLabelPoints[x];
                 x++;
                 
@@ -549,7 +541,7 @@ namespace Semi_Auto_Labeling
 
             for (int i = 0; i < poseLandmarkList.Count - 1; i++)
             {
-                totalLabelPoints[poseLandmarkList[i]] = poseLabelPoints[i];
+                totalPoseLabelPoints[i] = poseLabelPoints[i];
                 
             }
             
@@ -575,7 +567,6 @@ namespace Semi_Auto_Labeling
                 Index = index,
                 X = Math.Round((double)point.X / 2),
                 Y = Math.Round((double)point.Y / 2)
-                
             }).ToDictionary(item => item.Index.ToString(), item => new[] { item.X, item.Y });
 
             // 수정사항: JsonElement를 직접 사용하는 대신 Dictionary 형태로 변환한 후, 다시 JsonElement로 변환하여 문제를 해결합니다.
@@ -585,6 +576,21 @@ namespace Semi_Auto_Labeling
                 faceLabelsDictionary[item.Key] = item.Value;
             }
             jsonObject["face_labels"] = JsonDocument.Parse(JsonSerializer.Serialize(faceLabelsDictionary)).RootElement;
+
+            // totalPoseLabelPoints를 pose_labels에 저장합니다.
+            var updatedPoseLabels = totalPoseLabelPoints.Select((point, index) => new
+            {
+                Index = index,
+                X = Math.Round((double)point.X / 2),
+                Y = Math.Round((double)point.Y / 2)
+            }).ToDictionary(item => item.Index.ToString(), item => new[] { item.X, item.Y });
+
+            var poseLabelsDictionary = JsonSerializer.Deserialize<Dictionary<string, double[]>>(jsonObject["pose_labels"].GetRawText());
+            foreach (var item in updatedPoseLabels)
+            {
+                poseLabelsDictionary[item.Key] = item.Value;
+            }
+            jsonObject["pose_labels"] = JsonDocument.Parse(JsonSerializer.Serialize(poseLabelsDictionary)).RootElement;
 
             // 업데이트된 JSON 객체를 문자열로 변환합니다.
             var options = new JsonSerializerOptions
@@ -597,6 +603,7 @@ namespace Semi_Auto_Labeling
             File.WriteAllText(outputFilePath, jsonString);
             MessageBox.Show("저장 완료");
         }
+
 
 
         private void button1_Click_1(object sender, EventArgs e)
