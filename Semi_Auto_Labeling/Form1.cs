@@ -27,7 +27,6 @@ namespace Semi_Auto_Labeling
     {
         static int MAX_LABELING_COUNT = 478;
         int vidioState = 1; // 0일때 정면, 1일때 사이드
-
         int imageRatio = 2;
         int currentImg = 0;
         List<string> dataSetImgNameList = new List<string>(); //이미지를 불러오고 이미지의 이름을 저장할 list
@@ -39,11 +38,11 @@ namespace Semi_Auto_Labeling
         string dataSetJsonNameList; //이미지를 불러오고 이미지의 이름을 저장할 list
         string dataSetJsonFilePath; //이미지 경로를 저장할 파일 패스 list
         List<int> leftEyeLandmarkList = new List<int>() { 362, 382, 381, 380, 374, 373, 390, 249, 263, 466, 388, 387, 386, 385, 384, 398, 473 };
-        List<int> rightEyeLandmarkList = new List<int>() { 33, 7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246, 468 };
+        List<int> rightEyeLandmarkList = new List<int>() { 33,   7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246, 468 };
         List<int> leftMouthLandmarkList = new List<int>() { 78 };
         List<int> rightMouthLandmarkList = new List<int>() { 308 };
-        List<int> faceFormLandmarkList = new List<int>() { 33, 1, 61, 291, 199 };
-        List<int> faceEdgeLandmarkList = new List<int>() {  10, 109, 67, 103, 54,21, 162, 127, 234, 93, 132, 58, 172, 136, 150, 149, 176, 148, 152, 377,
+        List<int> faceFormLandmarkList = new List<int>() { 226, 446 , 1,   61, 291, 199 };
+        List<int> faceEdgeLandmarkList = new List<int>() { 10, 109, 67, 103, 54, 21, 162, 127, 234, 93, 132, 58, 172, 136, 150, 149, 176, 148, 152, 377,
             400, 378, 379, 365, 397, 288, 361, 323, 454, 356, 389, 251, 284, 332, 297, 338};
         List<int> mouthEdgeLandmarkList = new List<int>() {13,14,0, 37, 39, 40, 185, 57, 146, 91, 181, 84, 17, 314, 405,321, 375, 287, 409, 270, 269, 267 };
 
@@ -431,34 +430,15 @@ namespace Semi_Auto_Labeling
         }
 
 
-        /*  for (int i = 0; i < faceLabelPoints.Count; i++)
-           {
-               totalLabelPoints.Add(faceLabelPoints[i]);
-           }
-           for (int i = 0; i < eyeLabelPoints.Count; i++)
-           {
-               totalLabelPoints.Add(eyeLabelPoints[i]);
-           }
-           for (int i = 0; i < mouthLabelPoints.Count; i++)
-           {
-               totalLabelPoints.Add(mouthLabelPoints[i]);
-           }
-           for (int i = 0; i < poseLabelPoints.Count; i++)
-           {
-               totalLabelPoints.Add(poseLabelPoints[i]);
-           }*/
-        //List<int> leftEyeLandmarkList = new List<int>() { 362, 382, 381, 380, 374, 373, 390, 249, 263, 466, 388, 387, 386, 385, 384, 398, 473 };
-        //List<int> rightEyeLandmarkList = new List<int>() { 33, 7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246, 468 };
-        //List<int> leftMouthLandmarkList = new List<int>() { 78, 13, 14 };
-        //List<int> rightMouthLandmarkList = new List<int>() { 308, 13, 14 };
-        //List<int> faceFormLandmarkList = new List<int>() { 33, 263, 1, 61, 291, 199 };
-        //List<int> faceEdgeLandmarkList = new List<int>() {  10, 109, 67, 103, 54,21, 162, 127, 234, 93, 132, 58, 172, 136, 150, 149, 176, 148, 152, 377,
-        //   400, 378, 379, 365, 397, 288, 361, 323, 454, 356, 389, 251, 284, 332, 297, 338};
-        //List<int> mouthEdgeLandmarkList = new List<int>() { 0, 37, 39, 40, 185, 57, 146, 91, 181, 84, 17, 314, 405, 321, 375, 287, 409, 270, 269, 267 };
+        bool eyeClosedCbState;
+        bool yawnCbState;
+        bool dropHeadCbState;
 
-        //List<int> poseLandmarkList = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, -2 };
+        bool gazeFoewardCbState;
+        bool faceForwardCbState;
 
 
+       
         private void saveBtn_Click(object sender, EventArgs e)
         {
             //totalLabelPoints[10] = new Point(12,12);
@@ -512,39 +492,31 @@ namespace Semi_Auto_Labeling
                 Console.WriteLine($"faceLandmarkCheckBox.Checked: {mouthLabelPoints}");
                 Console.WriteLine($"faceLandmarkCheckBox.Checked: {mouthEdgeLandmarkList}");
                 totalLabelPoints[mouthEdgeLandmarkList[i]] = mouthLabelPoints[x];
-                x++;
                 
-            }
-
-
-
-
-          /*  for (int i = 0; i < leftMouthLandmarkList.Count; i++)
-            {
-                totalLabelPoints[leftMouthLandmarkList[i]] = mouthLabelPoints[x];
                 x++;
             }
 
-
-            for (int i = 0; i < rightMouthLandmarkList.Count; i++)
-            {
-                totalLabelPoints[rightMouthLandmarkList[i]] = mouthLabelPoints[x];
-                x++;
-            }*/
-            Log.Text += "1: " + mouthEdgeLandmarkList.Count.ToString() + "2: " + mouthLabelPoints.Count.ToString();
-
-
-
-
-
-
+            totalLabelPoints[78] = mouthLabelPoints[x];
+            x++;
+            totalLabelPoints[308] = mouthLabelPoints[x];
 
             for (int i = 0; i < poseLandmarkList.Count - 1; i++)
             {
-                totalPoseLabelPoints[i] = poseLabelPoints[i];
-                
+                totalPoseLabelPoints[i] = poseLabelPoints[i];  
             }
-            
+
+            //get checkbox state
+            eyeClosedCbState = modifyEyeClosedCB.Checked;
+            yawnCbState = modifyYawnCB.Checked;
+            dropHeadCbState = modifyDropHeadCB.Checked;
+            gazeFoewardCbState = modifyGazeForwardCB.Checked;
+            faceForwardCbState = modifyFaceForwardCB.Checked;
+
+
+            Console.WriteLine(eyeClosedCbState);
+            Console.WriteLine(yawnCbState);
+            Console.WriteLine(dropHeadCbState);
+            Console.WriteLine(gazeFoewardCbState);
 
             string inputFilePath = dataSetJsonFilePath;
            // Log.Text=  inputFilePath;
