@@ -20,6 +20,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using iText.StyledXmlParser.Jsoup.Select;
 using System.Diagnostics;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
+using System.Text.RegularExpressions;
 
 namespace Semi_Auto_Labeling
 {
@@ -68,8 +69,6 @@ namespace Semi_Auto_Labeling
 
         private void imageOpen_Click(object sender, EventArgs e)
         {
-          
-           
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
             // 초기 디렉토리 설정
             folderBrowserDialog.SelectedPath = "C:\\";
@@ -437,8 +436,11 @@ namespace Semi_Auto_Labeling
         bool gazeFoewardCbState;
         bool faceForwardCbState;
 
+        int setDrowsinessValue;
+        int setlookForwardValueJson;
+        int settextBox1;
+        int settextBox2;
 
-       
         private void saveBtn_Click(object sender, EventArgs e)
         {
             //totalLabelPoints[10] = new Point(12,12);
@@ -512,28 +514,38 @@ namespace Semi_Auto_Labeling
             gazeFoewardCbState = modifyGazeForwardCB.Checked;
             faceForwardCbState = modifyFaceForwardCB.Checked;
 
+            /*int setDrowsinessValue;
+            int setlookForwardValueJson;
+            int settextBox1;
+            int settextBox2;*/
+            setDrowsinessValue = Int32.Parse(DrowsinessTextBox.Text);
+            setlookForwardValueJson = Int32.Parse(lookForwardValueTextBox.Text);
+            settextBox1 = Int32.Parse(textBox1.Text);
+            settextBox2 = Int32.Parse(textBox2.Text);
+
+
 
             Console.WriteLine(eyeClosedCbState);
             Console.WriteLine(yawnCbState);
             Console.WriteLine(dropHeadCbState);
             Console.WriteLine(gazeFoewardCbState);
-
+            Console.WriteLine(faceForwardCbState);
             string inputFilePath = dataSetJsonFilePath;
            // Log.Text=  inputFilePath;
             string outputFilePath = dataSetJsonFilePath;
             jsonUpdateOutput(inputFilePath, outputFilePath);
+
+            Console.WriteLine(setDrowsinessValue);
+            Console.WriteLine(setlookForwardValueJson);
+            Console.WriteLine(settextBox1);
+            Console.WriteLine(settextBox2);
         }
 
         private void jsonUpdateOutput(string inputFilePath, string outputFilePath)
         {
-            // 기존 JSON 파일을 읽어 들입니다.
             string jsonString = File.ReadAllText(inputFilePath);
-            var jsonDoc = JsonDocument.Parse(jsonString);
-
-            // 기존 JSON 객체를 Dictionary 형태로 변환합니다.
             var jsonObject = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonString);
 
-            // 기존 JSON 객체에 옮겨진 좌표를 업데이트합니다.
             var updatedFaceLabels = totalLabelPoints.Select((point, index) => new
             {
                 Index = index,
@@ -541,7 +553,6 @@ namespace Semi_Auto_Labeling
                 Y = Math.Round((double)point.Y / 2)
             }).ToDictionary(item => item.Index.ToString(), item => new[] { item.X, item.Y });
 
-            // 수정사항: JsonElement를 직접 사용하는 대신 Dictionary 형태로 변환한 후, 다시 JsonElement로 변환하여 문제를 해결합니다.
             var faceLabelsDictionary = JsonSerializer.Deserialize<Dictionary<string, double[]>>(jsonObject["face_labels"].GetRawText());
             foreach (var item in updatedFaceLabels)
             {
@@ -549,7 +560,6 @@ namespace Semi_Auto_Labeling
             }
             jsonObject["face_labels"] = JsonDocument.Parse(JsonSerializer.Serialize(faceLabelsDictionary)).RootElement;
 
-            // totalPoseLabelPoints를 pose_labels에 저장합니다.
             var updatedPoseLabels = totalPoseLabelPoints.Select((point, index) => new
             {
                 Index = index,
@@ -564,17 +574,42 @@ namespace Semi_Auto_Labeling
             }
             jsonObject["pose_labels"] = JsonDocument.Parse(JsonSerializer.Serialize(poseLabelsDictionary)).RootElement;
 
-            // 업데이트된 JSON 객체를 문자열로 변환합니다.
+            // 상태 정보를 JSON에 추가합니다.
+            var driverStatusDictionary = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonObject["driver status"].GetRawText());
+
+            // DROWSINESS 상태 정보 업데이트
+            var drowsinessDictionary = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(driverStatusDictionary["DROWSINESS"].GetRawText());
+            drowsinessDictionary["EYE OPENED"] = JsonDocument.Parse(JsonSerializer.Serialize(eyeClosedCbState)).RootElement;
+            drowsinessDictionary["YAWN"] = JsonDocument.Parse(JsonSerializer.Serialize(yawnCbState)).RootElement;
+            drowsinessDictionary["DROP HEAD"] = JsonDocument.Parse(JsonSerializer.Serialize(dropHeadCbState)).RootElement;
+            drowsinessDictionary["DROWSINESS VALUE"] = JsonDocument.Parse(JsonSerializer.Serialize(setDrowsinessValue)).RootElement;
+            driverStatusDictionary["DROWSINESS"] = JsonDocument.Parse(JsonSerializer.Serialize(drowsinessDictionary)).RootElement;
+
+            // LOOK FORWARD 상태 정보 업데이트
+            var lookForwardDictionary = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(driverStatusDictionary["LOOK FORWARD"].GetRawText());
+            lookForwardDictionary["GAZE FORWARD"] = JsonDocument.Parse(JsonSerializer.Serialize(gazeFoewardCbState)).RootElement;
+            lookForwardDictionary["FACE FORWARD"] = JsonDocument.Parse(JsonSerializer.Serialize(faceForwardCbState)).RootElement;
+            lookForwardDictionary["LOOK FORWARD VALUE"] = JsonDocument.Parse(JsonSerializer.Serialize(setlookForwardValueJson)).RootElement;
+            driverStatusDictionary["LOOK FORWARD"] = JsonDocument.Parse(JsonSerializer.Serialize(lookForwardDictionary)).RootElement;
+
+            // ABNORMAL CATION 상태 정보 업데이트
+            var abnormalCationDictionary = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(driverStatusDictionary["ABNORMAL CATION"].GetRawText());
+            abnormalCationDictionary["ABNORMAL CATION VALUE"] = JsonDocument.Parse(JsonSerializer.Serialize(settextBox1)).RootElement;
+            abnormalCationDictionary["DRIABLE STATE VALUE"] = JsonDocument.Parse(JsonSerializer.Serialize(settextBox2)).RootElement;
+            driverStatusDictionary["ABNORMAL CATION"] = JsonDocument.Parse(JsonSerializer.Serialize(abnormalCationDictionary)).RootElement;
+
+            jsonObject["driver status"] = JsonDocument.Parse(JsonSerializer.Serialize(driverStatusDictionary)).RootElement;
+
             var options = new JsonSerializerOptions
             {
-                WriteIndented = true // 이 옵션을 사용하여 JSON 문자열의 가독성을 높입니다.
+                WriteIndented = true
             };
             jsonString = JsonSerializer.Serialize(jsonObject, options);
-
-            // JSON 문자열을 파일에 저장합니다.
             File.WriteAllText(outputFilePath, jsonString);
             MessageBox.Show("저장 완료");
         }
+
+
 
 
 
@@ -781,17 +816,54 @@ namespace Semi_Auto_Labeling
         {
             pictureBox1.Invalidate();
         }
-        
+
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-
+            Regex regexNumber = new Regex(@"^[0-9]*$"); // 이 정규 표현식은 숫자만 허용합니다.
+            if (!regexNumber.IsMatch(DrowsinessTextBox.Text))
+            {
+                MessageBox.Show("숫자만 입력 가능합니다."); // 사용자에게 오류 메시지를 표시합니다.
+                DrowsinessTextBox.Text = ""; // 텍스트박스의 값을 공백으로 설정합니다.
+            }
+        }
+        private void lookForwardValueTextBox_TextChanged(object sender, EventArgs e)
+        {
+            Regex regexNumber = new Regex(@"^[0-9]*$"); // 이 정규 표현식은 숫자만 허용합니다.
+            if (!regexNumber.IsMatch(lookForwardValueTextBox.Text))
+            {
+                MessageBox.Show("숫자만 입력 가능합니다."); // 사용자에게 오류 메시지를 표시합니다.
+                lookForwardValueTextBox.Text = ""; // 텍스트박스의 값을 공백으로 설정합니다.
+            }
+        }
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            
+            Regex regexNumber = new Regex(@"^[0-9]*$"); // 이 정규 표현식은 숫자만 허용합니다.
+            if (!regexNumber.IsMatch(textBox1.Text))
+            {
+                MessageBox.Show("숫자만 입력 가능합니다."); // 사용자에게 오류 메시지를 표시합니다.
+                textBox1.Text = ""; // 텍스트박스의 값을 공백으로 설정합니다.
+            }
+        }
+        private void textBox2_TextChanged_1(object sender, EventArgs e)
+        {
+            Regex regexNumber = new Regex(@"^[0-9]*$"); // 이 정규 표현식은 숫자만 허용합니다.
+            if (!regexNumber.IsMatch(textBox2.Text))
+            {
+                MessageBox.Show("숫자만 입력 가능합니다."); // 사용자에게 오류 메시지를 표시합니다.
+                textBox2.Text = ""; // 텍스트박스의 값을 공백으로 설정합니다.
+            }
         }
 
         private void label8_Click(object sender, EventArgs e)
         {
 
         }
+
+      
+
+
 
 
 

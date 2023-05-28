@@ -60,30 +60,30 @@
             this.modifyYawnCB = new System.Windows.Forms.CheckBox();
             this.modifyDropHeadCB = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
-            this.modifyGazeForwardCB = new System.Windows.Forms.CheckBox();
-            this.modifyFaceForwardCB = new System.Windows.Forms.CheckBox();
-            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.SideViewBtn = new System.Windows.Forms.Button();
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
             this.lookForwardValueTextBox = new System.Windows.Forms.TextBox();
+            this.modifyGazeForwardCB = new System.Windows.Forms.CheckBox();
+            this.modifyFaceForwardCB = new System.Windows.Forms.CheckBox();
+            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel9 = new System.Windows.Forms.FlowLayoutPanel();
             this.label9 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
             this.label10 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.SideViewBtn = new System.Windows.Forms.Button();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
             this.flowLayoutPanel5.SuspendLayout();
-            this.flowLayoutPanel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.flowLayoutPanel8.SuspendLayout();
+            this.flowLayoutPanel6.SuspendLayout();
             this.flowLayoutPanel9.SuspendLayout();
             this.flowLayoutPanel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // Log
@@ -443,10 +443,12 @@
             // DrowsinessTextBox
             // 
             this.DrowsinessTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.DrowsinessTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.DrowsinessTextBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DrowsinessTextBox.ForeColor = System.Drawing.Color.White;
             this.DrowsinessTextBox.Location = new System.Drawing.Point(89, 0);
             this.DrowsinessTextBox.Margin = new System.Windows.Forms.Padding(50, 0, 0, 0);
+            this.DrowsinessTextBox.MaxLength = 100;
             this.DrowsinessTextBox.Name = "DrowsinessTextBox";
             this.DrowsinessTextBox.Size = new System.Drawing.Size(116, 25);
             this.DrowsinessTextBox.TabIndex = 20;
@@ -505,6 +507,42 @@
             this.flowLayoutPanel5.TabIndex = 25;
             this.flowLayoutPanel5.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel5_Paint);
             // 
+            // flowLayoutPanel8
+            // 
+            this.flowLayoutPanel8.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.flowLayoutPanel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.flowLayoutPanel8.Controls.Add(this.label8);
+            this.flowLayoutPanel8.Controls.Add(this.lookForwardValueTextBox);
+            this.flowLayoutPanel8.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel8.Name = "flowLayoutPanel8";
+            this.flowLayoutPanel8.Size = new System.Drawing.Size(210, 35);
+            this.flowLayoutPanel8.TabIndex = 26;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label8.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label8.Location = new System.Drawing.Point(0, 0);
+            this.label8.Margin = new System.Windows.Forms.Padding(0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(84, 20);
+            this.label8.TabIndex = 33;
+            this.label8.Text = "전방미주시";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
+            // 
+            // lookForwardValueTextBox
+            // 
+            this.lookForwardValueTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.lookForwardValueTextBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lookForwardValueTextBox.ForeColor = System.Drawing.Color.White;
+            this.lookForwardValueTextBox.Location = new System.Drawing.Point(84, 0);
+            this.lookForwardValueTextBox.Margin = new System.Windows.Forms.Padding(0);
+            this.lookForwardValueTextBox.Name = "lookForwardValueTextBox";
+            this.lookForwardValueTextBox.Size = new System.Drawing.Size(116, 25);
+            this.lookForwardValueTextBox.TabIndex = 20;
+            this.lookForwardValueTextBox.TextChanged += new System.EventHandler(this.lookForwardValueTextBox_TextChanged);
+            // 
             // modifyGazeForwardCB
             // 
             this.modifyGazeForwardCB.AutoSize = true;
@@ -544,67 +582,6 @@
             this.flowLayoutPanel6.TabIndex = 26;
             this.flowLayoutPanel6.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel6_Paint);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(316, 36);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(20);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.pictureBox1.Size = new System.Drawing.Size(1280, 720);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
-            // SideViewBtn
-            // 
-            this.SideViewBtn.FlatAppearance.BorderSize = 2;
-            this.SideViewBtn.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.SideViewBtn.Location = new System.Drawing.Point(1516, 787);
-            this.SideViewBtn.Name = "SideViewBtn";
-            this.SideViewBtn.Size = new System.Drawing.Size(80, 23);
-            this.SideViewBtn.TabIndex = 32;
-            this.SideViewBtn.Text = "사이드 뷰";
-            this.SideViewBtn.UseVisualStyleBackColor = true;
-            this.SideViewBtn.Click += new System.EventHandler(this.SideViewBtn_Click);
-            // 
-            // flowLayoutPanel8
-            // 
-            this.flowLayoutPanel8.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.flowLayoutPanel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
-            this.flowLayoutPanel8.Controls.Add(this.label8);
-            this.flowLayoutPanel8.Controls.Add(this.lookForwardValueTextBox);
-            this.flowLayoutPanel8.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel8.Name = "flowLayoutPanel8";
-            this.flowLayoutPanel8.Size = new System.Drawing.Size(210, 35);
-            this.flowLayoutPanel8.TabIndex = 26;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label8.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label8.Location = new System.Drawing.Point(0, 0);
-            this.label8.Margin = new System.Windows.Forms.Padding(0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(84, 20);
-            this.label8.TabIndex = 33;
-            this.label8.Text = "전방미주시";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
-            // 
-            // lookForwardValueTextBox
-            // 
-            this.lookForwardValueTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
-            this.lookForwardValueTextBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lookForwardValueTextBox.ForeColor = System.Drawing.Color.White;
-            this.lookForwardValueTextBox.Location = new System.Drawing.Point(84, 0);
-            this.lookForwardValueTextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.lookForwardValueTextBox.Name = "lookForwardValueTextBox";
-            this.lookForwardValueTextBox.Size = new System.Drawing.Size(116, 25);
-            this.lookForwardValueTextBox.TabIndex = 20;
-            // 
             // flowLayoutPanel9
             // 
             this.flowLayoutPanel9.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -639,6 +616,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(116, 25);
             this.textBox1.TabIndex = 20;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // flowLayoutPanel10
             // 
@@ -674,6 +652,33 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(116, 25);
             this.textBox2.TabIndex = 20;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged_1);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Location = new System.Drawing.Point(316, 36);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(20);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.pictureBox1.Size = new System.Drawing.Size(1280, 720);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // SideViewBtn
+            // 
+            this.SideViewBtn.FlatAppearance.BorderSize = 2;
+            this.SideViewBtn.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SideViewBtn.Location = new System.Drawing.Point(1516, 787);
+            this.SideViewBtn.Name = "SideViewBtn";
+            this.SideViewBtn.Size = new System.Drawing.Size(80, 23);
+            this.SideViewBtn.TabIndex = 32;
+            this.SideViewBtn.Text = "사이드 뷰";
+            this.SideViewBtn.UseVisualStyleBackColor = true;
+            this.SideViewBtn.Click += new System.EventHandler(this.SideViewBtn_Click);
             // 
             // Form1
             // 
@@ -716,14 +721,14 @@
             this.flowLayoutPanel7.PerformLayout();
             this.flowLayoutPanel5.ResumeLayout(false);
             this.flowLayoutPanel5.PerformLayout();
-            this.flowLayoutPanel6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.flowLayoutPanel8.ResumeLayout(false);
             this.flowLayoutPanel8.PerformLayout();
+            this.flowLayoutPanel6.ResumeLayout(false);
             this.flowLayoutPanel9.ResumeLayout(false);
             this.flowLayoutPanel9.PerformLayout();
             this.flowLayoutPanel10.ResumeLayout(false);
             this.flowLayoutPanel10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
