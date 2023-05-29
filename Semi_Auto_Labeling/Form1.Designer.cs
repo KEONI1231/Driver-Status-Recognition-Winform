@@ -73,7 +73,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.SideViewBtn = new System.Windows.Forms.Button();
+            this.sideViewSwitch = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
@@ -668,17 +668,18 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // SideViewBtn
+            // sideViewSwitch
             // 
-            this.SideViewBtn.FlatAppearance.BorderSize = 2;
-            this.SideViewBtn.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.SideViewBtn.Location = new System.Drawing.Point(1516, 787);
-            this.SideViewBtn.Name = "SideViewBtn";
-            this.SideViewBtn.Size = new System.Drawing.Size(80, 23);
-            this.SideViewBtn.TabIndex = 32;
-            this.SideViewBtn.Text = "사이드 뷰";
-            this.SideViewBtn.UseVisualStyleBackColor = true;
-            this.SideViewBtn.Click += new System.EventHandler(this.SideViewBtn_Click);
+            this.sideViewSwitch.Appearance = System.Windows.Forms.Appearance.Button;
+            this.sideViewSwitch.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.sideViewSwitch.Location = new System.Drawing.Point(1516, 787);
+            this.sideViewSwitch.Name = "sideViewSwitch";
+            this.sideViewSwitch.Size = new System.Drawing.Size(80, 23);
+            this.sideViewSwitch.TabIndex = 33;
+            this.sideViewSwitch.Text = "사이드 뷰";
+            this.sideViewSwitch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.sideViewSwitch.UseVisualStyleBackColor = true;
+            this.sideViewSwitch.CheckedChanged += new System.EventHandler(this.sideViewSwitch_CheckedChanged);
             // 
             // Form1
             // 
@@ -687,7 +688,7 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.ClientSize = new System.Drawing.Size(1884, 999);
-            this.Controls.Add(this.SideViewBtn);
+            this.Controls.Add(this.sideViewSwitch);
             this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -769,7 +770,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.CheckBox mouthLandmarkCheckBox;
-        private System.Windows.Forms.Button SideViewBtn;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox DrowsinessTextBox;
@@ -782,6 +782,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel10;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.CheckBox sideViewSwitch;
     }
 }
 
