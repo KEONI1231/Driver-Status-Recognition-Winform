@@ -27,8 +27,8 @@ namespace Semi_Auto_Labeling
 {
     public partial class Form1 : Form
     {
-        static int MAX_LABELING_COUNT = 500;
-      
+        static int MAX_LABELING_COUNT = 478;
+
         int imageRatio = 2;
         List<string> dataSetImgNameList = new List<string>(); //이미지를 불러오고 이미지의 이름을 저장할 list
         List<string> dataSetImgFilePath = new List<string>(); //이미지 경로를 저장할 파일 패스 list
@@ -39,15 +39,15 @@ namespace Semi_Auto_Labeling
         string dataSetJsonNameList; //이미지를 불러오고 이미지의 이름을 저장할 list
         string dataSetJsonFilePath; //이미지 경로를 저장할 파일 패스 list
         List<int> leftEyeLandmarkList = new List<int>() { 362, 382, 381, 380, 374, 373, 390, 249, 263, 466, 388, 387, 386, 385, 384, 398, 473 };
-        List<int> rightEyeLandmarkList = new List<int>() { 33,   7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246, 468 };
+        List<int> rightEyeLandmarkList = new List<int>() { 33, 7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246, 468 };
         List<int> leftMouthLandmarkList = new List<int>() { 78 };
         List<int> rightMouthLandmarkList = new List<int>() { 308 };
-        List<int> faceFormLandmarkList = new List<int>() { 226, 446 , 1,   61, 291, 199 };
+        List<int> faceFormLandmarkList = new List<int>() { 226, 446, 1, 61, 291, 199 };
         List<int> faceEdgeLandmarkList = new List<int>() { 10, 109, 67, 103, 54, 21, 162, 127, 234, 93, 132, 58, 172, 136, 150, 149, 176, 148, 152, 377,
             400, 378, 379, 365, 397, 288, 361, 323, 454, 356, 389, 251, 284, 332, 297, 338};
-        List<int> mouthEdgeLandmarkList = new List<int>() {13,14,0, 37, 39, 40, 185, 57, 146, 91, 181, 84, 17, 314, 405,321, 375, 287, 409, 270, 269, 267 };
+        List<int> mouthEdgeLandmarkList = new List<int>() { 13, 14, 0, 37, 39, 40, 185, 57, 146, 91, 181, 84, 17, 314, 405, 321, 375, 287, 409, 270, 269, 267 };
 
-        List<int> poseLandmarkList = new List<int>() {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,-2 };
+        List<int> poseLandmarkList = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, -2 };
 
         //레이블링 표시유무
         int maxImageCount = 0;
@@ -61,8 +61,8 @@ namespace Semi_Auto_Labeling
             pictureBox1.MouseUp += PictureBox1_MouseUp;
             Log.Text = "";
         }
-       
-       
+
+
         int caputed_index;
         private void imageOpen_Click(object sender, EventArgs e)
         {
@@ -130,7 +130,7 @@ namespace Semi_Auto_Labeling
                         // 여기에 JSON 파일 처리 코드를 추가하세요.
                         dataSetJsonFilePath = file;
                         dataSetJsonNameList = Path.GetFileName(file);
-                        
+
                     }
                 }
                 Console.WriteLine(dataSetImgNameList.Count);
@@ -168,11 +168,11 @@ namespace Semi_Auto_Labeling
                     int captured_i = i;
 
                     landmarkModifyBtn.Click += (sender1, e1) => btn_Click(sender, e, captured_i); // 람다식을 이용하여 클로저를 전달
-                    Log.Text += landmarkModifyBtn.Location.X.ToString() + " : "+landmarkModifyBtn.Location.Y.ToString();
-                   
+                    Log.Text += landmarkModifyBtn.Location.X.ToString() + " : " + landmarkModifyBtn.Location.Y.ToString();
+
                     fl_panel.Controls.Add(picture_box);
                     fl_panel.Controls.Add(landmarkModifyBtn);
-                  
+
                     flowLayoutPanel1.Controls.Add(fl_panel);
                 }
             }
@@ -190,7 +190,7 @@ namespace Semi_Auto_Labeling
         }
         private void sideViewSwitch_CheckedChanged(object sender, EventArgs e)
         {
-            if(sideViewSwitch.Checked)
+            if (sideViewSwitch.Checked)
             {
                 pictureBox1.Invalidate();
                 faceLandmarkCheckBox.Enabled = true;
@@ -209,7 +209,7 @@ namespace Semi_Auto_Labeling
                 //poseCheckBox.Checked = true;
                 poseCheckBox.Enabled = true;
 
-           
+
             }
             else
             {
@@ -230,11 +230,11 @@ namespace Semi_Auto_Labeling
                 poseCheckBox.Enabled = false;
 
 
-              
+
 
             }
         }
-   
+
 
         List<bool> statusEyeClosedList = new List<bool>();
         List<bool> statusDropheadList = new List<bool>();
@@ -245,9 +245,9 @@ namespace Semi_Auto_Labeling
         List<int> lookForwardValueList = new List<int>();
         List<int> abnormalCationValueList = new List<int>();
         List<int> driableStateValueList = new List<int>();
-        
 
-        
+
+
         List<List<Point>> controlLabelPoints = new List<List<Point>>();
         List<List<Point>> faceLabelPoints = new List<List<Point>>();
         List<List<Point>> poseLabelPoints = new List<List<Point>>();
@@ -255,7 +255,7 @@ namespace Semi_Auto_Labeling
         List<List<Point>> mouthLabelPoints = new List<List<Point>>();
 
 
-     
+
         private void btn_Click(object sender, EventArgs e, int i)
         {
             sideViewSwitch.Checked = false;
@@ -277,7 +277,7 @@ namespace Semi_Auto_Labeling
             fileContent = File.ReadAllText(dataSetJsonFilePath);
             int x;
             int y;
-//            totalLabelPoints.Clear();
+            //            totalLabelPoints.Clear();
 
             try
             {
@@ -314,7 +314,7 @@ namespace Semi_Auto_Labeling
                 string folderPath = "JsonFiles";
                 string filePath = Path.Combine(folderPath, "json" + i + ".txt");
                 // System.IO.File.WriteAllText(filePath, output, Encoding.Default);
-                
+
                 //Console.WriteLine("asdf" + faceLabelPoints[0].Count);
 
             }
@@ -382,25 +382,25 @@ namespace Semi_Auto_Labeling
                 abnormalCationValueList.Add(abnormalCationValue);
                 driableStateValueList.Add(driableStateValue);
 
-              
-               if (discri == 1)
-               {
-                   List<Point> poseLabelPointsFrame = new List<Point>();
+
+                if (discri == 1)
+                {
+                    List<Point> poseLabelPointsFrame = new List<Point>();
                     for (int idx = 0; idx < labelPointList.Count - 1; ++idx)
-                       {
-                            var value = frame.GetProperty("pose_labels").GetProperty(labelPointList[idx].ToString());
-                            poseLabelPointsFrame.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
-                        }
-                    //labelPoint[i] = new List<Point>();
-                    for (int index = 0; index < poseLabelPointsFrame.Count; index ++)
-                        {
-                            labelPoint[i].Add(poseLabelPointsFrame[index]);
-                        }
-                       
-                        
+                    {
+                        var value = frame.GetProperty("pose_labels").GetProperty(labelPointList[idx].ToString());
+                        poseLabelPointsFrame.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
                     }
-                
-                
+                    //labelPoint[i] = new List<Point>();
+                    for (int index = 0; index < poseLabelPointsFrame.Count; index++)
+                    {
+                        labelPoint[i].Add(poseLabelPointsFrame[index]);
+                    }
+
+
+                }
+
+
                 if (discri == 0)
                 {
                     Log.Text = "here1";
@@ -410,19 +410,19 @@ namespace Semi_Auto_Labeling
                     {
                         var value = frame.GetProperty("face_labels").GetProperty(labelPointList[idx].ToString());
                         faceLabelPointsFrame.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
-                    Console.WriteLine("크기 ? : " + faceLabelPointsFrame[idx] + " : "+i);
+                        Console.WriteLine("크기 ? : " + faceLabelPointsFrame[idx] + " : " + i);
                     }
                     //labelPoint[i] = new List<Point>();
                     for (int index = 0; index < faceLabelPointsFrame.Count; index++)
                     {
-                        Console.WriteLine("왜? : "+ index + " : " +faceLabelPointsFrame[index].ToString());
+                        Console.WriteLine("왜? : " + index + " : " + faceLabelPointsFrame[index].ToString());
                         labelPoint[i].Add(faceLabelPointsFrame[index]);
                     }
 
                     //labelPoint.Add(faceLabelPointsFrame);
                 }
             }
-            
+
 
         }
 
@@ -520,13 +520,13 @@ namespace Semi_Auto_Labeling
                 originalPoint = null;
             }
         }
-      
+
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
 
-            Console.WriteLine("뭔지 진짜 "+maxImageCount);
-            Console.WriteLine("뭔지 진짜2 " + MAX_LABELING_COUNT);
+            /*Console.WriteLine("뭔지 진짜 "+maxImageCount);
+            Console.WriteLine("뭔지 진짜2 " + MAX_LABELING_COUNT);*/
             Point[,] totalLabelPoints = new Point[maxImageCount, MAX_LABELING_COUNT];
             Point[,] totalPoseLabelPoints = new Point[maxImageCount, 33];
             for (int i = 0; i < maxImageCount; i++)
@@ -549,7 +549,7 @@ namespace Semi_Auto_Labeling
                     }
                     else if (i >= 17)
                     {
-                        totalLabelPoints[index,rightEyeLandmarkList[j]] = eyeLabelPoints[index][i];
+                        totalLabelPoints[index, rightEyeLandmarkList[j]] = eyeLabelPoints[index][i];
                         j++;
                     }
                 }
@@ -557,24 +557,24 @@ namespace Semi_Auto_Labeling
                 for (int i = 0; i < leftMouthLandmarkList.Count + rightMouthLandmarkList.Count; i++)
                 {
                     if (i < leftMouthLandmarkList.Count)
-                        totalLabelPoints[index,leftMouthLandmarkList[i]] = faceLabelPoints[index][i];
+                        totalLabelPoints[index, leftMouthLandmarkList[i]] = faceLabelPoints[index][i];
                     else
                     {
-                        totalLabelPoints[index,rightMouthLandmarkList[k]] = faceLabelPoints[index][i];
+                        totalLabelPoints[index, rightMouthLandmarkList[k]] = faceLabelPoints[index][i];
                         k++;
                     }
 
                 }
                 int l = 0;
-               
+
                 for (int i = 0; i < faceFormLandmarkList.Count; i++)
                 {
-                    totalLabelPoints[index,faceFormLandmarkList[i]] = faceLabelPoints[index][l];
+                    totalLabelPoints[index, faceFormLandmarkList[i]] = faceLabelPoints[index][l];
                     l++;
                 }
                 for (int i = 0; i < faceEdgeLandmarkList.Count; i++)
                 {
-                    totalLabelPoints[index,faceEdgeLandmarkList[i]] = faceLabelPoints[index][l];
+                    totalLabelPoints[index, faceEdgeLandmarkList[i]] = faceLabelPoints[index][l];
                     l++;
                 }
                 int x = 0;
@@ -582,21 +582,21 @@ namespace Semi_Auto_Labeling
                 {
                     //Console.WriteLine($"faceLandmarkCheckBox.Checked: {mouthLabelPoints}");
                     //Console.WriteLine($"faceLandmarkCheckBox.Checked: {mouthEdgeLandmarkList}");
-                    Console.WriteLine("여긴가");
-                    totalLabelPoints[index,mouthEdgeLandmarkList[i]] = mouthLabelPoints[index][x];
+                    //Console.WriteLine("여긴가");
+                    totalLabelPoints[index, mouthEdgeLandmarkList[i]] = mouthLabelPoints[index][x];
                     x++;
                 }
-                Console.WriteLine("여긴가1");
-                totalLabelPoints[index,78] = mouthLabelPoints[index][x];
-                Console.WriteLine("여긴가2");
+                // Console.WriteLine("여긴가1");
+                totalLabelPoints[index, 78] = mouthLabelPoints[index][x];
+                //Console.WriteLine("여긴가2");
                 x++;
-                totalLabelPoints[index,308] = mouthLabelPoints[index][x];
-                Console.WriteLine("여긴가3");
+                totalLabelPoints[index, 308] = mouthLabelPoints[index][x];
+                // Console.WriteLine("여긴가3");
                 for (int i = 0; i < poseLandmarkList.Count - 1; i++)
                 {
                     totalPoseLabelPoints[index, i] = poseLabelPoints[index][i];
                 }
-                Console.WriteLine("여긴가4");
+                // Console.WriteLine("여긴가4");
                 bool[] eyeClosedCbState = new bool[maxImageCount];
                 bool[] yawnCbState = new bool[maxImageCount];
                 bool[] dropHeadCbState = new bool[maxImageCount];
@@ -623,8 +623,8 @@ namespace Semi_Auto_Labeling
                 string inputFilePath = dataSetJsonFilePath;
 
                 string outputFilePath = dataSetJsonFilePath;
-                Console.WriteLine(totalLabelPoints[index, 1]);
-                jsonUpdateOutput(inputFilePath, outputFilePath, totalLabelPoints,totalPoseLabelPoints, eyeClosedCbState, yawnCbState, dropHeadCbState, gazeForwardCbState,
+                //  Console.WriteLine(totalLabelPoints[index, 1]);
+                jsonUpdateOutput(inputFilePath, outputFilePath, totalLabelPoints, totalPoseLabelPoints, eyeClosedCbState, yawnCbState, dropHeadCbState, gazeForwardCbState,
                     faceForwardCbState, setDrowsinessValue, setLookForwardValueJson, setTextBox1, setTextBox2);
 
             }
@@ -636,63 +636,67 @@ namespace Semi_Auto_Labeling
         {
             JObject mainObject = new JObject();
             JObject frameObject = new JObject();
-            
-                for (int index = 0; index < maxImageCount; index++)
+
+            for (int index = 0; index < maxImageCount; index++)
+            {
+                Console.WriteLine("시작");
+                JObject driverStatusObject = new JObject(
+                    new JProperty("DROWSINESS", new JObject(
+                        new JProperty("EYE OPENED", eyeClosedCbState[index]),
+                        new JProperty("YAWN", yawnCbState[index]),
+                        new JProperty("DROP HEAD", dropHeadCbState[index]),
+                        new JProperty("DROWSINESS VALUE", setDrowsinessValue[index])
+                    )),
+                    new JProperty("LOOK FORWARD", new JObject(
+                        new JProperty("GAZE FORWARD", gazeForwardCbState[index]),
+                        new JProperty("FACE FORWARD", faceForwardCbState[index]),
+                        new JProperty("LOOK FORWARD VALUE", setLookForwardValueJson[index])
+                    )),
+                    new JProperty("ABNORMAL CATION", new JObject(
+                        new JProperty("ABNORMAL CATION VALUE", setTextBox1[index]),
+                        new JProperty("DRIABLE STATE VALUE", setTextBox2[index])
+                    ))
+                );
+
+                JObject faceLabelsObject = new JObject();
+                for (int i = 0; i < MAX_LABELING_COUNT; i++)
                 {
-                    Console.WriteLine("asdf");
-                    JObject driverStatusObject = new JObject(
-                        new JProperty("DROWSINESS", new JObject(
-                            new JProperty("EYE OPENED", eyeClosedCbState[index]),
-                            new JProperty("YAWN", yawnCbState[index]),
-                            new JProperty("DROP HEAD", dropHeadCbState[index]),
-                            new JProperty("DROWSINESS VALUE", setDrowsinessValue[index])
-                        )),
-                        new JProperty("LOOK FORWARD", new JObject(
-                            new JProperty("GAZE FORWARD", gazeForwardCbState[index]),
-                            new JProperty("FACE FORWARD", faceForwardCbState[index]),
-                            new JProperty("LOOK FORWARD VALUE", setLookForwardValueJson[index])
-                        )),
-                        new JProperty("ABNORMAL CATION", new JObject(
-                            new JProperty("ABNORMAL CATION VALUE", setTextBox1[index]),
-                            new JProperty("DRIABLE STATE VALUE", setTextBox2[index])
-                        ))
-                    );
+                    var point = totalLabelPoints[index, i];
+                    int roundedX = (int)Math.Round((double)point.X / 2); // Add rounding after division by 2
+                    int roundedY = (int)Math.Round((double)point.Y / 2); // Add rounding after division by 2
+                    faceLabelsObject.Add(i.ToString(), new JArray(roundedX, roundedY));
+                }
 
-                    JObject faceLabelsObject = new JObject();
-                    for (int i = 0; i < MAX_LABELING_COUNT; i++)
-                    {
-                        Console.WriteLine("asdfasdf");
-                        var point = totalLabelPoints[index, i];
-                        faceLabelsObject.Add(i.ToString(), new JArray(point.X, point.Y));
-                    }
+                JObject poseLabelsObject = new JObject();
+                for (int i = 0; i < 33; i++)
+                {
+                    var point = totalPoseLabelPoints[index, i];
+                    int roundedX = (int)Math.Round((double)point.X / 2); // Add rounding after division by 2
+                    int roundedY = (int)Math.Round((double)point.Y / 2); // Add rounding after division by 2
+                    poseLabelsObject.Add(i.ToString(), new JArray(roundedX, roundedY));
+                }
 
-                    JObject poseLabelsObject = new JObject();
-                    for (int i = 0; i < 33; i++)
-                    {
-                        Console.WriteLine("그럼 여기?");
-                        var point = totalPoseLabelPoints[index, i];
-                        poseLabelsObject.Add(i.ToString(), new JArray(point.X, point.Y));
-                    }
+                JObject frameItemObject = new JObject(
 
-                    JObject frameItemObject = new JObject(
-                        
                         new JProperty("driver status", driverStatusObject),
                         new JProperty("face_labels", faceLabelsObject),
                         new JProperty("pose_labels", poseLabelsObject)
                     );
-                    Console.WriteLine("아님 여긴가?");
-                    frameObject.Add(index.ToString(), frameItemObject);
-                    Console.WriteLine("아님 여긴가?");
+                //Console.WriteLine("아님 여긴가?");
+                frameObject.Add(index.ToString(), frameItemObject);
+                // Console.WriteLine("아님 여긴가?");
 
-                Console.WriteLine(index);
+                //   Console.WriteLine(frameObject[index]);
+                Console.WriteLine("total : " + maxImageCount + " , index : " + index);
+                Console.WriteLine("한싸이클 끝");
             }
 
-                mainObject.Add("frame", frameObject);
-                Console.WriteLine("아님 그렇담 여긴가?");
-                // Write to outputFilePath
-                System.IO.File.WriteAllText(outputFilePath, mainObject.ToString());
-                Console.WriteLine("아님 그렇담 여긴가?!!");
-            
+            mainObject.Add("frame", frameObject);
+            Console.WriteLine("아님 그렇담 여긴가?");
+            // Write to outputFilePath
+            System.IO.File.WriteAllText(outputFilePath, mainObject.ToString());
+
+
         }
 
         /* private void jsonUpdateOutput(string inputFilePath, string outputFilePath, Point[,] totalLabelPoints, Point[,] totalPoseLabelPoints
@@ -776,7 +780,7 @@ namespace Semi_Auto_Labeling
             RichTextBox json_text_box = new RichTextBox();
 
             form2.Size = new Size(600, 995);
-            form2.BackColor = Color.FromArgb(30, 30, 30); 
+            form2.BackColor = Color.FromArgb(30, 30, 30);
 
             SearchTextbtn.Size = new Size(80, 23);
             SearchTextbtn.Text = "검색";
@@ -808,7 +812,7 @@ namespace Semi_Auto_Labeling
         {
             //눈 감김 레이블 체크박스
             Log.Text = eyeClosedCheckBox.CheckState.ToString();
-           
+
         }
         private void drowsnissCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -842,15 +846,15 @@ namespace Semi_Auto_Labeling
             pictureBox1.Invalidate();
             Log.Text = faceLandmarkCheckBox.CheckState.ToString();
         }
-     
+
         private void label4_Click(object sender, EventArgs e)
-        {    }
+        { }
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         { }
         private void label6_Click(object sender, EventArgs e)
-        {  }
+        { }
         private void label7_Click(object sender, EventArgs e)
-        {  }
+        { }
         private void label5_Click(object sender, EventArgs e)
         { }
         private void Form1_Load(object sender, EventArgs e)
@@ -983,7 +987,7 @@ namespace Semi_Auto_Labeling
                 MessageBox.Show("숫자만 입력 가능합니다."); // 사용자에게 오류 메시지를 표시합니다.
                 DrowsinessTextBox.Text = ""; // 텍스트박스의 값을 공백으로 설정합니다.
             }
-          //  Log.Text = "변경 전 : " + drowsinessValue.ToString() + "변경 후 : " + ;
+            //  Log.Text = "변경 전 : " + drowsinessValue.ToString() + "변경 후 : " + ;
         }
         private void lookForwardValueTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -996,7 +1000,7 @@ namespace Semi_Auto_Labeling
         }
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            
+
             Regex regexNumber = new Regex(@"^[0-9]*$"); // 이 정규 표현식은 숫자만 허용합니다.
             if (!regexNumber.IsMatch(textBox1.Text))
             {
@@ -1019,7 +1023,7 @@ namespace Semi_Auto_Labeling
 
         }
 
-        
+
 
 
 
