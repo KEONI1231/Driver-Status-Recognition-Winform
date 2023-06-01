@@ -62,6 +62,10 @@ namespace Semi_Auto_Labeling
             Log.Text = "";
         }
 
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+
+        }
 
         int caputed_index;
         private void imageOpen_Click(object sender, EventArgs e)
@@ -77,9 +81,14 @@ namespace Semi_Auto_Labeling
                 string folderPath = folderBrowserDialog.SelectedPath;
                 // 해당 폴더와 하위 폴더의 모든 파일을 가져옴
                 string[] allFiles = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories);
+
+                progressBar1.Minimum = 0;
+                progressBar1.Maximum = allFiles.Length;
+                progressBar1.Value = 0;
                 // 파일 목록을 처리
                 foreach (string file in allFiles)
                 {
+                    progressBar1.Value++;
                     // 이미지 파일 처리
                     if (Path.GetExtension(file).ToLower() == ".png" || Path.GetExtension(file).ToLower() == ".jpg" || Path.GetExtension(file).ToLower() == ".jpeg")
                     {
@@ -113,10 +122,10 @@ namespace Semi_Auto_Labeling
                             return aNumber.CompareTo(bNumber);
                         });
 
-                        dataSetSideImgNameList.Sort((a, b) =>
+                        dataSetSideImgFilePath.Sort((a, b) =>
                         {
-                            int aNumber = ExtractNumber(a);
-                            int bNumber = ExtractNumber(b);
+                            int aNumber = ExtractNumberFromFilePath(a);
+                            int bNumber = ExtractNumberFromFilePath(b);
 
                             return aNumber.CompareTo(bNumber);
                         });
@@ -147,7 +156,7 @@ namespace Semi_Auto_Labeling
                 for (int i = 0; i < dataSetImgFilePath.Count; i++)
                 {
                     Console.WriteLine(dataSetImgFilePath[i]);
-
+                    Console.WriteLine(dataSetSideImgFilePath[i]);
                     FlowLayoutPanel fl_panel = new FlowLayoutPanel();
                     fl_panel.Size = new Size(265, 280);
                     fl_panel.FlowDirection = FlowDirection.TopDown; // Top to Bottom 설정
@@ -158,24 +167,87 @@ namespace Semi_Auto_Labeling
                     picture_box.SizeMode = PictureBoxSizeMode.Zoom;
                     picture_box.Size = new Size(260, 200);
                     picture_box.Image = Image.FromFile(dataSetImgFilePath[i]);
+
+                    int captured_i = i;
                     System.Windows.Forms.Button landmarkModifyBtn = new System.Windows.Forms.Button();
+                    
+                    System.Windows.Forms.TextBox FileNameTextBox = new System.Windows.Forms.TextBox();
+                    FileNameTextBox.Text = "파일 명 : " + "Front"+ captured_i.ToString()+".png";
+                    FileNameTextBox.ForeColor = Color.FromArgb(250, 250, 250);
+                    FileNameTextBox.Font = new Font("맑은 고딕", 10, FontStyle.Bold);
+                    FileNameTextBox.BackColor = Color.FromArgb(30, 30, 30);
+                    FileNameTextBox.Size = new Size(200, 30);
 
                     landmarkModifyBtn.Text = "landmark 수정";
                     landmarkModifyBtn.ForeColor = Color.FromArgb(250, 250, 250);
                     landmarkModifyBtn.Font = new Font("맑은 고딕", 10, FontStyle.Bold);
                     landmarkModifyBtn.Size = new Size(120, 30);
                     landmarkModifyBtn.Name = String.Format("_Button_{0}", flowLayoutPanel1.Controls.Count);
-                    int captured_i = i;
+                    
 
                     landmarkModifyBtn.Click += (sender1, e1) => btn_Click(sender, e, captured_i); // 람다식을 이용하여 클로저를 전달
+                   
                     Log.Text += landmarkModifyBtn.Location.X.ToString() + " : " + landmarkModifyBtn.Location.Y.ToString();
 
+                    fl_panel.Controls.Add(FileNameTextBox);
                     fl_panel.Controls.Add(picture_box);
                     fl_panel.Controls.Add(landmarkModifyBtn);
-
                     flowLayoutPanel1.Controls.Add(fl_panel);
                 }
+                for (int index = 0; index < maxImageCount; index++)
+                {
+                    try
+                    {
+                        // string output = "";
+                        // JSON 파일 읽기
+                        using (StreamReader streamReader = new StreamReader(dataSetJsonFilePath))
+                        {
+                            string jsonString = streamReader.ReadToEnd();
+                            // JSON 문자열 파싱
+                            var jsonDoc = JsonDocument.Parse(jsonString);
+                            //Console.WriteLine($"faceLandmarkCheckBox.Checked: {jsonDoc.GetType()}");
+                            // JSON 객체에서 원하는 데이터 가져오기
+
+                            GetJsonDataPoint(eyeLabelPoints, leftEyeLandmarkList, index, 0);
+                            GetJsonDataPoint(eyeLabelPoints, rightEyeLandmarkList, index, 0);
+
+                            GetJsonDataPoint(mouthLabelPoints, leftMouthLandmarkList, index, 0);
+                            GetJsonDataPoint(mouthLabelPoints, rightMouthLandmarkList, index, 0);
+
+                            GetJsonDataPoint(faceLabelPoints, faceFormLandmarkList, index, 0);
+                            GetJsonDataPoint(faceLabelPoints, faceEdgeLandmarkList, index, 0);
+
+                            GetJsonDataPoint(mouthLabelPoints, mouthEdgeLandmarkList, index, 0);
+
+                            GetJsonDataPoint(poseLabelPoints, poseLandmarkList, index, 1);
+
+                            /*for (int j = 0; j < poseLabelPoints[0].Count; j++)
+                            {
+                                Log.Text += poseLabelPoints[caputed_index][j].ToString();
+                            }*/
+                        }
+
+                        // System.IO.File.WriteAllText(filePath, output, Encoding.Default);
+
+                        //Console.WriteLine("asdf" + faceLabelPoints[0].Count);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Source}\n");
+                        Console.WriteLine($"Error: {ex.Message}");
+                        Console.WriteLine($"Source: {ex.Source}");
+                        Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                        if (ex.InnerException != null)
+                        {
+                            Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                        }
+                        MessageBox.Show($"Error: {ex.Message}\nSource: {ex.Source}\nStack Trace: {ex.StackTrace}", "");
+                        MessageBox.Show(ex.Message, "");
+                    }
+                }
             }
+            MessageBox.Show("불러오기 성공");
         }
         static int ExtractNumber(string fileName)
         {
@@ -188,14 +260,17 @@ namespace Semi_Auto_Labeling
             string numericPart = new string(fileName.Where(char.IsDigit).ToArray());
             return int.Parse(numericPart);
         }
-        private void sideViewSwitch_CheckedChanged(object sender, EventArgs e)
+        private void sideViewSwitch_CheckedChanged(object sender, EventArgs e, int i)
         {
+            //Console.WriteLine("side_index = " + i);
+
             if (sideViewSwitch.Checked)
             {
+                currentSelectDataLog.Text = " > 현재 작업 중인 파일 : " + "Side Image" + dataSetImgNameList[i].ToString() + "\n";
                 pictureBox1.Invalidate();
                 faceLandmarkCheckBox.Enabled = true;
-                pictureBox1.Image = null;
-                pictureBox1.Image = Image.FromFile(dataSetSideImgFilePath[caputed_index]);
+                //pictureBox1.Image = null;
+                pictureBox1.Image = Image.FromFile(dataSetSideImgFilePath[i]);
 
                 faceLandmarkCheckBox.Checked = false;
                 faceLandmarkCheckBox.Enabled = false;
@@ -214,8 +289,8 @@ namespace Semi_Auto_Labeling
             else
             {
                 pictureBox1.Invalidate();
-                pictureBox1.Image = null;
-                pictureBox1.Image = Image.FromFile(dataSetImgFilePath[caputed_index]);
+               // pictureBox1.Image = null;
+                pictureBox1.Image = Image.FromFile(dataSetImgFilePath[i]);
 
                 //faceLandmarkCheckBox.Checked = true;
                 faceLandmarkCheckBox.Enabled = true;
@@ -255,9 +330,13 @@ namespace Semi_Auto_Labeling
         List<List<Point>> mouthLabelPoints = new List<List<Point>>();
 
 
+        private bool isSideViewSwitchEventRegistered = false;
 
         private void btn_Click(object sender, EventArgs e, int i)
         {
+            caputed_index = i;
+
+           //Console.WriteLine("front_index = " + caputed_index);
             sideViewSwitch.Checked = false;
             faceLandmarkCheckBox.Checked = false;
             //faceLandmarkCheckBox.Enabled = false;
@@ -271,67 +350,57 @@ namespace Semi_Auto_Labeling
             poseCheckBox.Checked = false;
             //poseCheckBox.Enabled = true;
 
-            Console.WriteLine(caputed_index);
+            //Console.WriteLine(caputed_index);
             pictureBox1.Image = Image.FromFile(dataSetImgFilePath[i]);
             fileContent = "";
             fileContent = File.ReadAllText(dataSetJsonFilePath);
             int x;
             int y;
             //            totalLabelPoints.Clear();
+            
 
-            try
-            {
-                // string output = "";
-                // JSON 파일 읽기
-                using (StreamReader streamReader = new StreamReader(dataSetJsonFilePath))
-                {
-                    string jsonString = streamReader.ReadToEnd();
-                    // JSON 문자열 파싱
-                    var jsonDoc = JsonDocument.Parse(jsonString);
-                    //Console.WriteLine($"faceLandmarkCheckBox.Checked: {jsonDoc.GetType()}");
-                    // JSON 객체에서 원하는 데이터 가져오기
+            //caputed_index = i;
 
-                    GetJsonDataPoint(eyeLabelPoints, leftEyeLandmarkList, i, 0);
-                    GetJsonDataPoint(eyeLabelPoints, rightEyeLandmarkList, i, 0);
 
-                    GetJsonDataPoint(mouthLabelPoints, leftMouthLandmarkList, i, 0);
-                    GetJsonDataPoint(mouthLabelPoints, rightMouthLandmarkList, i, 0);
-
-                    GetJsonDataPoint(faceLabelPoints, faceFormLandmarkList, i, 0);
-                    GetJsonDataPoint(faceLabelPoints, faceEdgeLandmarkList, i, 0);
-
-                    GetJsonDataPoint(mouthLabelPoints, mouthEdgeLandmarkList, i, 0);
-
-                    GetJsonDataPoint(poseLabelPoints, poseLandmarkList, i, 1);
-
-                    /*for (int j = 0; j < poseLabelPoints[0].Count; j++)
-                    {
-                        Log.Text += poseLabelPoints[caputed_index][j].ToString();
-                    }*/
-                }
-                caputed_index = i;
-                pictureBox1.Paint += PictureBox1_Paint;
-                string folderPath = "JsonFiles";
-                string filePath = Path.Combine(folderPath, "json" + i + ".txt");
-                // System.IO.File.WriteAllText(filePath, output, Encoding.Default);
-
-                //Console.WriteLine("asdf" + faceLabelPoints[0].Count);
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Source}\n");
-                Console.WriteLine($"Error: {ex.Message}");
-                Console.WriteLine($"Source: {ex.Source}");
-                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
-                }
-                MessageBox.Show($"Error: {ex.Message}\nSource: {ex.Source}\nStack Trace: {ex.StackTrace}", "");
-                MessageBox.Show(ex.Message, "");
-            }
+            pictureBox1.Paint += PictureBox1_Paint;
+            string folderPath = "JsonFiles";
+            string filePath = Path.Combine(folderPath, "json" + i + ".txt");
             pictureBox1.Invalidate();
+
+           
+            
+            currentSelectDataLog.Text = " > 현재 작업 중인 파일 : " + "Front Image" + i.ToString() + "\n";
+
+            
+            sideViewSwitch.CheckedChanged += (sender1, e1) => sideViewSwitch_CheckedChanged(sender, e, i);
+            
+
+            pictureBox1.Invalidate();
+
+
+            /* statusEyeClosedList.Add(statusEyeClosed);
+             statusDropheadList.Add(statusDrophead);
+             statusGazeForwardList.Add(statusGazeForward);
+             statusFaceForwardList.Add(statusFaceForward);
+             statusYawnList.Add(statusYawn);*/
+
+            //drowsinessValueList.Add(drowsinessValue);
+            //lookForwardValueList.Add(lookForwardValue);
+            //abnormalCationValueList.Add(abnormalCationValue);
+            //driableStateValueList.Add(driableStateValue);
+
+            Console.WriteLine(i);
+            DrowsinessTextBox.Text = drowsinessValueList[i].ToString();
+            lookForwardValueTextBox.Text = lookForwardValueList[i].ToString();
+            
+            textBox1.Text = abnormalCationValueList[i].ToString();
+            textBox2.Text = driableStateValueList[i].ToString();
+            modifyEyeClosedCB.Checked = statusEyeClosedList[i];
+            modifyDropHeadCB.Checked = statusDropheadList[i];
+            modifyFaceForwardCB.Checked = statusFaceForwardList[i];
+            modifyGazeForwardCB.Checked = statusGazeForwardList[i];
+            modifyYawnCB.Checked = statusYawnList[i];
+
         }
 
         private void GetJsonDataPoint(List<List<Point>> labelPoint, List<int> labelPointList, int i, int discri)
@@ -343,45 +412,10 @@ namespace Semi_Auto_Labeling
                 var jsonDoc = JsonDocument.Parse(jsonString);
 
                 // Access the desired frame
-                Console.WriteLine("captured_i : " + i.ToString());
+               // Console.WriteLine("captured_i : " + i.ToString());
                 var frame = jsonDoc.RootElement.GetProperty("frame").GetProperty(i.ToString());
 
-                var drowsinessStatus = frame.GetProperty("driver status").GetProperty("DROWSINESS");
-                bool statusEyeClosed = drowsinessStatus.GetProperty("EYE OPENED").GetBoolean();
-                bool statusYawn = drowsinessStatus.GetProperty("YAWN").GetBoolean();
-                bool statusDrophead = drowsinessStatus.GetProperty("DROP HEAD").GetBoolean();
-                int drowsinessValue = drowsinessStatus.GetProperty("DROWSINESS VALUE").GetInt32();
-
-                var lookForwardStatus = frame.GetProperty("driver status").GetProperty("LOOK FORWARD");
-                bool statusGazeForward = lookForwardStatus.GetProperty("GAZE FORWARD").GetBoolean();
-                bool statusFaceForward = lookForwardStatus.GetProperty("FACE FORWARD").GetBoolean();
-                int lookForwardValue = lookForwardStatus.GetProperty("LOOK FORWARD VALUE").GetInt32();
-
-                var abnormalCation = frame.GetProperty("driver status").GetProperty("ABNORMAL CATION");
-                int abnormalCationValue = abnormalCation.GetProperty("ABNORMAL CATION VALUE").GetInt32();
-                int driableStateValue = abnormalCation.GetProperty("DRIABLE STATE VALUE").GetInt32();
-
-                DrowsinessTextBox.Text = drowsinessValue.ToString();
-                lookForwardValueTextBox.Text = lookForwardValue.ToString();
-                textBox1.Text = abnormalCationValue.ToString();
-                textBox2.Text = driableStateValue.ToString();
-                modifyEyeClosedCB.Checked = statusEyeClosed;
-                modifyDropHeadCB.Checked = statusDrophead;
-                modifyFaceForwardCB.Checked = statusFaceForward;
-                modifyGazeForwardCB.Checked = statusGazeForward;
-                modifyYawnCB.Checked = statusYawn;
-
-                // Update the corresponding lists
-                statusEyeClosedList.Add(statusEyeClosed);
-                statusDropheadList.Add(statusDrophead);
-                statusGazeForwardList.Add(statusGazeForward);
-                statusFaceForwardList.Add(statusFaceForward);
-                statusYawnList.Add(statusYawn);
-                drowsinessValueList.Add(drowsinessValue);
-                lookForwardValueList.Add(lookForwardValue);
-                abnormalCationValueList.Add(abnormalCationValue);
-                driableStateValueList.Add(driableStateValue);
-
+               
 
                 if (discri == 1)
                 {
@@ -397,7 +431,39 @@ namespace Semi_Auto_Labeling
                         labelPoint[i].Add(poseLabelPointsFrame[index]);
                     }
 
+                    var drowsinessStatus = frame.GetProperty("driver status").GetProperty("DROWSINESS");
+                    bool statusEyeClosed = drowsinessStatus.GetProperty("EYE OPENED").GetBoolean();
+                    bool statusYawn = drowsinessStatus.GetProperty("YAWN").GetBoolean();
+                    bool statusDrophead = drowsinessStatus.GetProperty("DROP HEAD").GetBoolean();
+                    int drowsinessValue = drowsinessStatus.GetProperty("DROWSINESS VALUE").GetInt32();
 
+                    var lookForwardStatus = frame.GetProperty("driver status").GetProperty("LOOK FORWARD");
+                    bool statusGazeForward = lookForwardStatus.GetProperty("GAZE FORWARD").GetBoolean();
+                    bool statusFaceForward = lookForwardStatus.GetProperty("FACE FORWARD").GetBoolean();
+                    int lookForwardValue = lookForwardStatus.GetProperty("LOOK FORWARD VALUE").GetInt32();
+
+                    var abnormalCation = frame.GetProperty("driver status").GetProperty("ABNORMAL CATION");
+                    int abnormalCationValue = abnormalCation.GetProperty("ABNORMAL CATION VALUE").GetInt32();
+                    int driableStateValue = abnormalCation.GetProperty("DRIABLE STATE VALUE").GetInt32();
+
+
+
+                    // Update the corresponding lists
+                    statusEyeClosedList.Add(statusEyeClosed);
+                    statusDropheadList.Add(statusDrophead);
+                    statusGazeForwardList.Add(statusGazeForward);
+                    statusFaceForwardList.Add(statusFaceForward);
+                    statusYawnList.Add(statusYawn);
+                    drowsinessValueList.Add(drowsinessValue);
+                    lookForwardValueList.Add(lookForwardValue);
+                    abnormalCationValueList.Add(abnormalCationValue);
+                    driableStateValueList.Add(driableStateValue);
+
+                    Console.WriteLine("-----------------------------");
+                    Console.WriteLine(driableStateValue);
+                    Console.WriteLine(i);
+                    Console.WriteLine(driableStateValueList[i]);
+                    Console.WriteLine("-----------------------------");
                 }
 
 
@@ -405,17 +471,17 @@ namespace Semi_Auto_Labeling
                 {
                     Log.Text = "here1";
                     List<Point> faceLabelPointsFrame = new List<Point>();
-                    Console.WriteLine(labelPointList.Count);
+                   // Console.WriteLine(labelPointList.Count);
                     for (int idx = 0; idx < labelPointList.Count; ++idx)
                     {
                         var value = frame.GetProperty("face_labels").GetProperty(labelPointList[idx].ToString());
                         faceLabelPointsFrame.Add(new Point(value[0].GetInt32() * imageRatio, value[1].GetInt32() * imageRatio));
-                        Console.WriteLine("크기 ? : " + faceLabelPointsFrame[idx] + " : " + i);
+                       // Console.WriteLine("크기 ? : " + faceLabelPointsFrame[idx] + " : " + i);
                     }
                     //labelPoint[i] = new List<Point>();
                     for (int index = 0; index < faceLabelPointsFrame.Count; index++)
                     {
-                        Console.WriteLine("왜? : " + index + " : " + faceLabelPointsFrame[index].ToString());
+                     //   Console.WriteLine("왜? : " + index + " : " + faceLabelPointsFrame[index].ToString());
                         labelPoint[i].Add(faceLabelPointsFrame[index]);
                     }
 
@@ -451,7 +517,7 @@ namespace Semi_Auto_Labeling
         {
             //totalLabelPoints.Clear(); // totalLabelPoints 초기화
             controlLabelPoints.Clear();
-            Console.WriteLine("error : " + caputed_index.ToString());
+            //Console.WriteLine("error : " + caputed_index.ToString());
             if (faceLandmarkCheckBox.Checked)
             {
                 drawPoint(e, faceLabelPoints[caputed_index]);
@@ -459,6 +525,7 @@ namespace Semi_Auto_Labeling
             if (eyeLandmarkCheckBox.Checked)
             {
                 drawPoint(e, eyeLabelPoints[caputed_index]);
+                
             }
             if (mouthLandmarkCheckBox.Checked)
             {
@@ -528,7 +595,30 @@ namespace Semi_Auto_Labeling
             /*Console.WriteLine("뭔지 진짜 "+maxImageCount);
             Console.WriteLine("뭔지 진짜2 " + MAX_LABELING_COUNT);*/
             Point[,] totalLabelPoints = new Point[maxImageCount, MAX_LABELING_COUNT];
-            Point[,] totalPoseLabelPoints = new Point[maxImageCount, 33];
+            Point[,] totalPoseLabelPoints = new Point[maxImageCount, poseLandmarkList.Count-1];
+
+            bool[] eyeClosedCbState = new bool[maxImageCount];
+            bool[] yawnCbState = new bool[maxImageCount];
+            bool[] dropHeadCbState = new bool[maxImageCount];
+
+            bool[] gazeForwardCbState = new bool[maxImageCount];
+            bool[] faceForwardCbState = new bool[maxImageCount];
+
+            int[] setDrowsinessValue = new int[maxImageCount];
+            int[] setLookForwardValueJson = new int[maxImageCount];
+            int[] setTextBox1 = new int[maxImageCount];
+            int[] setTextBox2 = new int[maxImageCount];
+
+        
+
+            string inputFilePath = dataSetJsonFilePath;
+
+            string outputFilePath = dataSetJsonFilePath;
+            for (int i = 0; i < maxImageCount; i++)
+            {
+                Console.WriteLine(totalLabelPoints[i, 0]);
+            }
+
             for (int i = 0; i < maxImageCount; i++)
             {
                 for (int l = 0; l < MAX_LABELING_COUNT; l++)
@@ -537,19 +627,32 @@ namespace Semi_Auto_Labeling
                 }
             }
             //totalLabelPoints[10] = new Point(12,12);
-            int j = 0;
             //Log.Text = leftEyeLandmarkList[10].ToString();
             for (int index = 0; index < dataSetSideImgFilePath.Count; index++)
             {
+                eyeClosedCbState[index] = modifyEyeClosedCB.Checked;
+                yawnCbState[index] = modifyYawnCB.Checked;
+                dropHeadCbState[index] = modifyDropHeadCB.Checked;
+                gazeForwardCbState[index] = modifyGazeForwardCB.Checked;
+                faceForwardCbState[index] = modifyFaceForwardCB.Checked;
+
+                setDrowsinessValue[index] = Int32.Parse(DrowsinessTextBox.Text);
+                setLookForwardValueJson[index] = Int32.Parse(lookForwardValueTextBox.Text);
+                setTextBox1[index] = Int32.Parse(textBox1.Text);
+                setTextBox2[index] = Int32.Parse(textBox2.Text);
+
+                int j = 0;
                 for (int i = 0; i < (leftEyeLandmarkList.Count + rightEyeLandmarkList.Count); i++)
                 {
-                    if (i < 17)
+                    if (i < leftEyeLandmarkList.Count)
                     {
                         totalLabelPoints[index, leftEyeLandmarkList[i]] = eyeLabelPoints[index][i];
+                        Console.WriteLine("i : "+i + ", || " + "index : " +  index + "left : " + totalLabelPoints[index, leftEyeLandmarkList[i]]);
                     }
-                    else if (i >= 17)
+                    else
                     {
                         totalLabelPoints[index, rightEyeLandmarkList[j]] = eyeLabelPoints[index][i];
+                        Console.WriteLine("i : " + j + ", || " + "index : " + index + "right : " + totalLabelPoints[index, leftEyeLandmarkList[j]]);
                         j++;
                     }
                 }
@@ -597,37 +700,12 @@ namespace Semi_Auto_Labeling
                     totalPoseLabelPoints[index, i] = poseLabelPoints[index][i];
                 }
                 // Console.WriteLine("여긴가4");
-                bool[] eyeClosedCbState = new bool[maxImageCount];
-                bool[] yawnCbState = new bool[maxImageCount];
-                bool[] dropHeadCbState = new bool[maxImageCount];
-
-                bool[] gazeForwardCbState = new bool[maxImageCount];
-                bool[] faceForwardCbState = new bool[maxImageCount];
-
-                int[] setDrowsinessValue = new int[maxImageCount];
-                int[] setLookForwardValueJson = new int[maxImageCount];
-                int[] setTextBox1 = new int[maxImageCount];
-                int[] setTextBox2 = new int[maxImageCount];
-
-                eyeClosedCbState[index] = modifyEyeClosedCB.Checked;
-                yawnCbState[index] = modifyYawnCB.Checked;
-                dropHeadCbState[index] = modifyDropHeadCB.Checked;
-                gazeForwardCbState[index] = modifyGazeForwardCB.Checked;
-                faceForwardCbState[index] = modifyFaceForwardCB.Checked;
-
-                setDrowsinessValue[index] = Int32.Parse(DrowsinessTextBox.Text);
-                setLookForwardValueJson[index] = Int32.Parse(lookForwardValueTextBox.Text);
-                setTextBox1[index] = Int32.Parse(textBox1.Text);
-                setTextBox2[index] = Int32.Parse(textBox2.Text);
-
-                string inputFilePath = dataSetJsonFilePath;
-
-                string outputFilePath = dataSetJsonFilePath;
-                //  Console.WriteLine(totalLabelPoints[index, 1]);
-                jsonUpdateOutput(inputFilePath, outputFilePath, totalLabelPoints, totalPoseLabelPoints, eyeClosedCbState, yawnCbState, dropHeadCbState, gazeForwardCbState,
-                    faceForwardCbState, setDrowsinessValue, setLookForwardValueJson, setTextBox1, setTextBox2);
+              
+               
 
             }
+            jsonUpdateOutput(inputFilePath, outputFilePath, totalLabelPoints, totalPoseLabelPoints, eyeClosedCbState, yawnCbState, dropHeadCbState, gazeForwardCbState,
+                   faceForwardCbState, setDrowsinessValue, setLookForwardValueJson, setTextBox1, setTextBox2);
         }
         private void jsonUpdateOutput(string inputFilePath, string outputFilePath, Point[,] totalLabelPoints, Point[,] totalPoseLabelPoints
     , bool[] eyeClosedCbState, bool[] yawnCbState, bool[] dropHeadCbState,
@@ -668,7 +746,7 @@ namespace Semi_Auto_Labeling
                 }
 
                 JObject poseLabelsObject = new JObject();
-                for (int i = 0; i < 33; i++)
+                for (int i = 0; i < poseLandmarkList.Count-1; i++)
                 {
                     var point = totalPoseLabelPoints[index, i];
                     int roundedX = (int)Math.Round((double)point.X / 2); // Add rounding after division by 2
@@ -695,7 +773,7 @@ namespace Semi_Auto_Labeling
             Console.WriteLine("아님 그렇담 여긴가?");
             // Write to outputFilePath
             System.IO.File.WriteAllText(outputFilePath, mainObject.ToString());
-
+            MessageBox.Show("저장 완료");
 
         }
 
@@ -979,6 +1057,8 @@ namespace Semi_Auto_Labeling
                 lookForwardValueTextBox.Text = lookForwardValue.ToString();
                 textBox1.Text = abnormalCationValue.ToString();
                 textBox2.Text = driableStateValue.ToString();*/
+
+
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             Regex regexNumber = new Regex(@"^[0-9]*$"); // 이 정규 표현식은 숫자만 허용합니다.
@@ -1023,6 +1103,7 @@ namespace Semi_Auto_Labeling
 
         }
 
+        
 
 
 
