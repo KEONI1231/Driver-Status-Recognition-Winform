@@ -541,3 +541,4 @@ C:\Users\USER\Desktop\keoni\Driver-Status-Recognition-Winform\Semi_Auto_Labeling
 C:\Users\USER\Desktop\keoni\Driver-Status-Recognition-Winform\Semi_Auto_Labeling\obj\Release\Semi_Auto_Labeling.csproj.CopyComplete
 C:\Users\USER\Desktop\keoni\Driver-Status-Recognition-Winform\Semi_Auto_Labeling\obj\Release\Semi_Auto_Labeling.exe
 C:\Users\USER\Desktop\keoni\Driver-Status-Recognition-Winform\Semi_Auto_Labeling\obj\Release\Semi_Auto_Labeling.pdb
+C:\Users\kh991\OneDrive\바탕 화면\동국대학교\과제\23년 1학기\졸작\Driver-Status-Recognition-Winform\Semi_Auto_Labeling\obj\Release\Semi_Auto_Labeling.csproj.SuggestedBindingRedirects.cache

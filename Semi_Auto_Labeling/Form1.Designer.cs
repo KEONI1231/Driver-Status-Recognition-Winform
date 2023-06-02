@@ -37,10 +37,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.eyeClosedCheckBox = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.drowsnissCheckBox = new System.Windows.Forms.CheckBox();
-            this.eyeGazeCheckBox = new System.Windows.Forms.CheckBox();
-            this.headDirectionCheckBox = new System.Windows.Forms.CheckBox();
-            this.ConvertibilityCheckBox = new System.Windows.Forms.CheckBox();
+            this.yawnCB = new System.Windows.Forms.CheckBox();
+            this.DropHeadCB = new System.Windows.Forms.CheckBox();
+            this.gazeFowardCB = new System.Windows.Forms.CheckBox();
+            this.FaceForwardCB = new System.Windows.Forms.CheckBox();
             this.abnormalBehaviorCheckBox = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.faceLandmarkCheckBox = new System.Windows.Forms.CheckBox();
@@ -79,6 +79,9 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.label2 = new System.Windows.Forms.Label();
+            this.DriableCB = new System.Windows.Forms.CheckBox();
+            this.drowsinessCB = new System.Windows.Forms.CheckBox();
+            this.LookForwardCB = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
@@ -165,6 +168,8 @@
             // eyeClosedCheckBox
             // 
             this.eyeClosedCheckBox.AutoSize = true;
+            this.eyeClosedCheckBox.Checked = true;
+            this.eyeClosedCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.eyeClosedCheckBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.eyeClosedCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.eyeClosedCheckBox.Location = new System.Drawing.Point(3, 3);
@@ -181,11 +186,14 @@
             this.flowLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
             this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel2.Controls.Add(this.eyeClosedCheckBox);
-            this.flowLayoutPanel2.Controls.Add(this.drowsnissCheckBox);
-            this.flowLayoutPanel2.Controls.Add(this.eyeGazeCheckBox);
-            this.flowLayoutPanel2.Controls.Add(this.headDirectionCheckBox);
-            this.flowLayoutPanel2.Controls.Add(this.ConvertibilityCheckBox);
+            this.flowLayoutPanel2.Controls.Add(this.yawnCB);
+            this.flowLayoutPanel2.Controls.Add(this.DropHeadCB);
+            this.flowLayoutPanel2.Controls.Add(this.gazeFowardCB);
+            this.flowLayoutPanel2.Controls.Add(this.FaceForwardCB);
             this.flowLayoutPanel2.Controls.Add(this.abnormalBehaviorCheckBox);
+            this.flowLayoutPanel2.Controls.Add(this.DriableCB);
+            this.flowLayoutPanel2.Controls.Add(this.drowsinessCB);
+            this.flowLayoutPanel2.Controls.Add(this.LookForwardCB);
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(316, 788);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
@@ -193,73 +201,83 @@
             this.flowLayoutPanel2.TabIndex = 18;
             this.flowLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel2_Paint);
             // 
-            // drowsnissCheckBox
+            // yawnCB
             // 
-            this.drowsnissCheckBox.AutoSize = true;
-            this.drowsnissCheckBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.drowsnissCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.drowsnissCheckBox.Location = new System.Drawing.Point(3, 30);
-            this.drowsnissCheckBox.Name = "drowsnissCheckBox";
-            this.drowsnissCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.drowsnissCheckBox.Size = new System.Drawing.Size(58, 21);
-            this.drowsnissCheckBox.TabIndex = 18;
-            this.drowsnissCheckBox.Text = "졸음";
-            this.drowsnissCheckBox.UseVisualStyleBackColor = true;
-            this.drowsnissCheckBox.CheckedChanged += new System.EventHandler(this.drowsnissCheckBox_CheckedChanged);
+            this.yawnCB.AutoSize = true;
+            this.yawnCB.Checked = true;
+            this.yawnCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.yawnCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.yawnCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.yawnCB.Location = new System.Drawing.Point(3, 30);
+            this.yawnCB.Name = "yawnCB";
+            this.yawnCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.yawnCB.Size = new System.Drawing.Size(58, 21);
+            this.yawnCB.TabIndex = 18;
+            this.yawnCB.Text = "하품";
+            this.yawnCB.UseVisualStyleBackColor = true;
+            this.yawnCB.CheckedChanged += new System.EventHandler(this.drowsnissCheckBox_CheckedChanged);
             // 
-            // eyeGazeCheckBox
+            // DropHeadCB
             // 
-            this.eyeGazeCheckBox.AutoSize = true;
-            this.eyeGazeCheckBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.eyeGazeCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.eyeGazeCheckBox.Location = new System.Drawing.Point(3, 57);
-            this.eyeGazeCheckBox.Name = "eyeGazeCheckBox";
-            this.eyeGazeCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.eyeGazeCheckBox.Size = new System.Drawing.Size(102, 21);
-            this.eyeGazeCheckBox.TabIndex = 19;
-            this.eyeGazeCheckBox.Text = "전방 미주시";
-            this.eyeGazeCheckBox.UseVisualStyleBackColor = true;
-            this.eyeGazeCheckBox.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
+            this.DropHeadCB.AutoSize = true;
+            this.DropHeadCB.Checked = true;
+            this.DropHeadCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DropHeadCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.DropHeadCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.DropHeadCB.Location = new System.Drawing.Point(3, 57);
+            this.DropHeadCB.Name = "DropHeadCB";
+            this.DropHeadCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.DropHeadCB.Size = new System.Drawing.Size(89, 21);
+            this.DropHeadCB.TabIndex = 19;
+            this.DropHeadCB.Text = "고개 떨굼";
+            this.DropHeadCB.UseVisualStyleBackColor = true;
+            this.DropHeadCB.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
-            // headDirectionCheckBox
+            // gazeFowardCB
             // 
-            this.headDirectionCheckBox.AutoSize = true;
-            this.headDirectionCheckBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.headDirectionCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.headDirectionCheckBox.Location = new System.Drawing.Point(3, 84);
-            this.headDirectionCheckBox.Name = "headDirectionCheckBox";
-            this.headDirectionCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.headDirectionCheckBox.Size = new System.Drawing.Size(89, 21);
-            this.headDirectionCheckBox.TabIndex = 20;
-            this.headDirectionCheckBox.Text = "고개 돌림";
-            this.headDirectionCheckBox.UseVisualStyleBackColor = true;
-            this.headDirectionCheckBox.CheckedChanged += new System.EventHandler(this.headDirectionCheckBox_CheckedChanged);
+            this.gazeFowardCB.AutoSize = true;
+            this.gazeFowardCB.Checked = true;
+            this.gazeFowardCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.gazeFowardCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gazeFowardCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.gazeFowardCB.Location = new System.Drawing.Point(3, 84);
+            this.gazeFowardCB.Name = "gazeFowardCB";
+            this.gazeFowardCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.gazeFowardCB.Size = new System.Drawing.Size(125, 21);
+            this.gazeFowardCB.TabIndex = 20;
+            this.gazeFowardCB.Text = "전방 주시(시선)";
+            this.gazeFowardCB.UseVisualStyleBackColor = true;
+            this.gazeFowardCB.CheckedChanged += new System.EventHandler(this.headDirectionCheckBox_CheckedChanged);
             // 
-            // ConvertibilityCheckBox
+            // FaceForwardCB
             // 
-            this.ConvertibilityCheckBox.AutoSize = true;
-            this.ConvertibilityCheckBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.ConvertibilityCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.ConvertibilityCheckBox.Location = new System.Drawing.Point(3, 111);
-            this.ConvertibilityCheckBox.Name = "ConvertibilityCheckBox";
-            this.ConvertibilityCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.ConvertibilityCheckBox.Size = new System.Drawing.Size(136, 21);
-            this.ConvertibilityCheckBox.TabIndex = 21;
-            this.ConvertibilityCheckBox.Text = "운전전환가능상태";
-            this.ConvertibilityCheckBox.UseVisualStyleBackColor = true;
-            this.ConvertibilityCheckBox.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            this.FaceForwardCB.AutoSize = true;
+            this.FaceForwardCB.Checked = true;
+            this.FaceForwardCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.FaceForwardCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.FaceForwardCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.FaceForwardCB.Location = new System.Drawing.Point(3, 111);
+            this.FaceForwardCB.Name = "FaceForwardCB";
+            this.FaceForwardCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.FaceForwardCB.Size = new System.Drawing.Size(125, 21);
+            this.FaceForwardCB.TabIndex = 21;
+            this.FaceForwardCB.Text = "전방 주시(얼굴)";
+            this.FaceForwardCB.UseVisualStyleBackColor = true;
+            this.FaceForwardCB.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
             // abnormalBehaviorCheckBox
             // 
             this.abnormalBehaviorCheckBox.AutoSize = true;
+            this.abnormalBehaviorCheckBox.Checked = true;
+            this.abnormalBehaviorCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.abnormalBehaviorCheckBox.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.abnormalBehaviorCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.abnormalBehaviorCheckBox.Location = new System.Drawing.Point(3, 138);
             this.abnormalBehaviorCheckBox.Name = "abnormalBehaviorCheckBox";
             this.abnormalBehaviorCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.abnormalBehaviorCheckBox.Size = new System.Drawing.Size(84, 21);
+            this.abnormalBehaviorCheckBox.Size = new System.Drawing.Size(133, 21);
             this.abnormalBehaviorCheckBox.TabIndex = 23;
-            this.abnormalBehaviorCheckBox.Text = "이상행동";
+            this.abnormalBehaviorCheckBox.Text = "이상행동여부(값)";
             this.abnormalBehaviorCheckBox.UseVisualStyleBackColor = true;
             this.abnormalBehaviorCheckBox.CheckedChanged += new System.EventHandler(this.abnormalBehaviorCheckBox_CheckedChanged);
             // 
@@ -448,7 +466,6 @@
             this.DrowsinessTextBox.Name = "DrowsinessTextBox";
             this.DrowsinessTextBox.Size = new System.Drawing.Size(116, 25);
             this.DrowsinessTextBox.TabIndex = 20;
-           // this.DrowsinessTextBox.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // modifyEyeClosedCB
             // 
@@ -538,7 +555,6 @@
             this.lookForwardValueTextBox.Name = "lookForwardValueTextBox";
             this.lookForwardValueTextBox.Size = new System.Drawing.Size(116, 25);
             this.lookForwardValueTextBox.TabIndex = 20;
-            //this.lookForwardValueTextBox.TextChanged += new System.EventHandler(this.lookForwardValueTextBox_TextChanged);
             // 
             // modifyGazeForwardCB
             // 
@@ -614,7 +630,6 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(116, 25);
             this.textBox1.TabIndex = 20;
-            //this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // flowLayoutPanel10
             // 
@@ -651,8 +666,6 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(116, 25);
             this.textBox2.TabIndex = 20;
-           // this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged_1);
-
             // 
             // pictureBox1
             // 
@@ -708,9 +721,9 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(1230, 916);
+            this.progressBar1.Location = new System.Drawing.Point(1230, 927);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(366, 37);
+            this.progressBar1.Size = new System.Drawing.Size(366, 26);
             this.progressBar1.TabIndex = 36;
             this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
             // 
@@ -724,11 +737,56 @@
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label2.Location = new System.Drawing.Point(1230, 891);
+            this.label2.Location = new System.Drawing.Point(1230, 898);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(91, 22);
             this.label2.TabIndex = 37;
             this.label2.Text = "작업 진행률";
+            // 
+            // DriableCB
+            // 
+            this.DriableCB.AutoSize = true;
+            this.DriableCB.Checked = true;
+            this.DriableCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DriableCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.DriableCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.DriableCB.Location = new System.Drawing.Point(142, 3);
+            this.DriableCB.Name = "DriableCB";
+            this.DriableCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.DriableCB.Size = new System.Drawing.Size(136, 21);
+            this.DriableCB.TabIndex = 24;
+            this.DriableCB.Text = "운전전환가능상태";
+            this.DriableCB.UseVisualStyleBackColor = true;
+            // 
+            // drowsinessCB
+            // 
+            this.drowsinessCB.AutoSize = true;
+            this.drowsinessCB.Checked = true;
+            this.drowsinessCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.drowsinessCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.drowsinessCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.drowsinessCB.Location = new System.Drawing.Point(142, 30);
+            this.drowsinessCB.Name = "drowsinessCB";
+            this.drowsinessCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.drowsinessCB.Size = new System.Drawing.Size(81, 21);
+            this.drowsinessCB.TabIndex = 25;
+            this.drowsinessCB.Text = "졸음(값)";
+            this.drowsinessCB.UseVisualStyleBackColor = true;
+            // 
+            // LookForwardCB
+            // 
+            this.LookForwardCB.AutoSize = true;
+            this.LookForwardCB.Checked = true;
+            this.LookForwardCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.LookForwardCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.LookForwardCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.LookForwardCB.Location = new System.Drawing.Point(142, 57);
+            this.LookForwardCB.Name = "LookForwardCB";
+            this.LookForwardCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.LookForwardCB.Size = new System.Drawing.Size(120, 21);
+            this.LookForwardCB.TabIndex = 26;
+            this.LookForwardCB.Text = "전방미주시(값)";
+            this.LookForwardCB.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -798,10 +856,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox eyeClosedCheckBox;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-        private System.Windows.Forms.CheckBox drowsnissCheckBox;
-        private System.Windows.Forms.CheckBox eyeGazeCheckBox;
-        private System.Windows.Forms.CheckBox headDirectionCheckBox;
-        private System.Windows.Forms.CheckBox ConvertibilityCheckBox;
+        private System.Windows.Forms.CheckBox yawnCB;
+        private System.Windows.Forms.CheckBox DropHeadCB;
+        private System.Windows.Forms.CheckBox gazeFowardCB;
+        private System.Windows.Forms.CheckBox FaceForwardCB;
         private System.Windows.Forms.CheckBox abnormalBehaviorCheckBox;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.CheckBox faceLandmarkCheckBox;
@@ -840,6 +898,9 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox DriableCB;
+        private System.Windows.Forms.CheckBox drowsinessCB;
+        private System.Windows.Forms.CheckBox LookForwardCB;
     }
 }
 
