@@ -101,10 +101,10 @@
             this.Log.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Log.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Log.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.Log.Location = new System.Drawing.Point(713, 788);
+            this.Log.Location = new System.Drawing.Point(732, 788);
             this.Log.Name = "Log";
             this.Log.ReadOnly = true;
-            this.Log.Size = new System.Drawing.Size(502, 165);
+            this.Log.Size = new System.Drawing.Size(483, 165);
             this.Log.TabIndex = 6;
             this.Log.Text = " ";
             this.Log.TextChanged += new System.EventHandler(this.richTextBox4_TextChanged);
@@ -159,7 +159,7 @@
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(575, 763);
+            this.label1.Location = new System.Drawing.Point(598, 763);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(76, 22);
             this.label1.TabIndex = 16;
@@ -197,7 +197,7 @@
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(316, 788);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(247, 165);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(276, 165);
             this.flowLayoutPanel2.TabIndex = 18;
             this.flowLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel2_Paint);
             // 
@@ -275,9 +275,9 @@
             this.abnormalBehaviorCheckBox.Location = new System.Drawing.Point(3, 138);
             this.abnormalBehaviorCheckBox.Name = "abnormalBehaviorCheckBox";
             this.abnormalBehaviorCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.abnormalBehaviorCheckBox.Size = new System.Drawing.Size(133, 21);
+            this.abnormalBehaviorCheckBox.Size = new System.Drawing.Size(146, 21);
             this.abnormalBehaviorCheckBox.TabIndex = 23;
-            this.abnormalBehaviorCheckBox.Text = "이상행동여부(값)";
+            this.abnormalBehaviorCheckBox.Text = "이상행동여부(확률)";
             this.abnormalBehaviorCheckBox.UseVisualStyleBackColor = true;
             this.abnormalBehaviorCheckBox.CheckedChanged += new System.EventHandler(this.abnormalBehaviorCheckBox_CheckedChanged);
             // 
@@ -288,13 +288,14 @@
             this.DriableCB.CheckState = System.Windows.Forms.CheckState.Checked;
             this.DriableCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DriableCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.DriableCB.Location = new System.Drawing.Point(142, 3);
+            this.DriableCB.Location = new System.Drawing.Point(155, 3);
             this.DriableCB.Name = "DriableCB";
             this.DriableCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.DriableCB.Size = new System.Drawing.Size(136, 21);
             this.DriableCB.TabIndex = 24;
             this.DriableCB.Text = "운전전환가능상태";
             this.DriableCB.UseVisualStyleBackColor = true;
+            this.DriableCB.CheckedChanged += new System.EventHandler(this.DriableCB_CheckedChanged);
             // 
             // drowsinessCB
             // 
@@ -303,13 +304,14 @@
             this.drowsinessCB.CheckState = System.Windows.Forms.CheckState.Checked;
             this.drowsinessCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.drowsinessCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.drowsinessCB.Location = new System.Drawing.Point(142, 30);
+            this.drowsinessCB.Location = new System.Drawing.Point(155, 30);
             this.drowsinessCB.Name = "drowsinessCB";
             this.drowsinessCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.drowsinessCB.Size = new System.Drawing.Size(81, 21);
+            this.drowsinessCB.Size = new System.Drawing.Size(94, 21);
             this.drowsinessCB.TabIndex = 25;
-            this.drowsinessCB.Text = "졸음(값)";
+            this.drowsinessCB.Text = "졸음(확률)";
             this.drowsinessCB.UseVisualStyleBackColor = true;
+            this.drowsinessCB.CheckedChanged += new System.EventHandler(this.drowsinessCB_CheckedChanged);
             // 
             // LookForwardCB
             // 
@@ -318,13 +320,14 @@
             this.LookForwardCB.CheckState = System.Windows.Forms.CheckState.Checked;
             this.LookForwardCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.LookForwardCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.LookForwardCB.Location = new System.Drawing.Point(142, 57);
+            this.LookForwardCB.Location = new System.Drawing.Point(155, 57);
             this.LookForwardCB.Name = "LookForwardCB";
             this.LookForwardCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.LookForwardCB.Size = new System.Drawing.Size(120, 21);
             this.LookForwardCB.TabIndex = 26;
             this.LookForwardCB.Text = "전방미주시(값)";
             this.LookForwardCB.UseVisualStyleBackColor = true;
+            this.LookForwardCB.CheckedChanged += new System.EventHandler(this.LookForwardCB_CheckedChanged);
             // 
             // flowLayoutPanel3
             // 
@@ -335,7 +338,7 @@
             this.flowLayoutPanel3.Controls.Add(this.eyeLandmarkCheckBox);
             this.flowLayoutPanel3.Controls.Add(this.mouthLandmarkCheckBox);
             this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(574, 788);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(598, 788);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(123, 165);
             this.flowLayoutPanel3.TabIndex = 24;
@@ -417,7 +420,7 @@
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label4.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label4.Location = new System.Drawing.Point(713, 763);
+            this.label4.Location = new System.Drawing.Point(732, 762);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 22);
             this.label4.TabIndex = 27;
@@ -524,6 +527,7 @@
             this.modifyEyeClosedCB.TabIndex = 17;
             this.modifyEyeClosedCB.Text = "눈 뜸";
             this.modifyEyeClosedCB.UseVisualStyleBackColor = true;
+            this.modifyEyeClosedCB.CheckedChanged += new System.EventHandler(this.modifyEyeClosedCB_CheckedChanged_1);
             // 
             // modifyYawnCB
             // 
@@ -537,6 +541,7 @@
             this.modifyYawnCB.TabIndex = 18;
             this.modifyYawnCB.Text = "하품";
             this.modifyYawnCB.UseVisualStyleBackColor = true;
+            this.modifyYawnCB.CheckedChanged += new System.EventHandler(this.modifyYawnCB_CheckedChanged_1);
             // 
             // modifyDropHeadCB
             // 
@@ -550,6 +555,7 @@
             this.modifyDropHeadCB.TabIndex = 19;
             this.modifyDropHeadCB.Text = "고개 떨굼";
             this.modifyDropHeadCB.UseVisualStyleBackColor = true;
+            this.modifyDropHeadCB.CheckedChanged += new System.EventHandler(this.modifyDropHeadCB_CheckedChanged_1);
             // 
             // flowLayoutPanel5
             // 
@@ -613,6 +619,7 @@
             this.modifyGazeForwardCB.TabIndex = 20;
             this.modifyGazeForwardCB.Text = "전방 주시(시선)";
             this.modifyGazeForwardCB.UseVisualStyleBackColor = true;
+            this.modifyGazeForwardCB.CheckedChanged += new System.EventHandler(this.modifyGazeForwardCB_CheckedChanged_1);
             // 
             // modifyFaceForwardCB
             // 
@@ -626,6 +633,7 @@
             this.modifyFaceForwardCB.TabIndex = 21;
             this.modifyFaceForwardCB.Text = "전방 주시(얼굴)";
             this.modifyFaceForwardCB.UseVisualStyleBackColor = true;
+            this.modifyFaceForwardCB.CheckedChanged += new System.EventHandler(this.modifyFaceForwardCB_CheckedChanged_1);
             // 
             // flowLayoutPanel6
             // 
@@ -737,6 +745,7 @@
             this.sideViewSwitch.Text = "사이드 뷰";
             this.sideViewSwitch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.sideViewSwitch.UseVisualStyleBackColor = true;
+            this.sideViewSwitch.CheckedChanged += new System.EventHandler(this.sideViewSwitch_CheckedChanged);
             // 
             // currentSelectDataLog
             // 
@@ -794,7 +803,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.ClientSize = new System.Drawing.Size(1884, 999);
+            this.ClientSize = new System.Drawing.Size(1854, 999);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label11);
@@ -817,8 +826,8 @@
             this.Controls.Add(this.Log);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximumSize = new System.Drawing.Size(1900, 1050);
-            this.MinimumSize = new System.Drawing.Size(1900, 1038);
+            this.MaximumSize = new System.Drawing.Size(1870, 1050);
+            this.MinimumSize = new System.Drawing.Size(1870, 1038);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
