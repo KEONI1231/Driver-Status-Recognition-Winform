@@ -53,7 +53,7 @@ namespace Semi_Auto_Labeling
         string fileContent;
         public Form1()
         {
-            
+
             InitializeComponent();
             poseCheckBox.Enabled = false;
             pictureBox1.MouseDown += PictureBox1_MouseDown;
@@ -100,11 +100,12 @@ namespace Semi_Auto_Labeling
                                 {
                                     dataSetSideImgFilePath.Add(file);
                                     dataSetSideImgFilePath.Sort((a, b) => {
-                                    int aNumber = ExtractNumberFromFilePath(a);
-                                    int bNumber = ExtractNumberFromFilePath(b);
+                                        int aNumber = ExtractNumberFromFilePath(a);
+                                        int bNumber = ExtractNumberFromFilePath(b);
 
-                                    return aNumber.CompareTo(bNumber);
-                                });}
+                                        return aNumber.CompareTo(bNumber);
+                                    });
+                                }
                                 lock (dataSetSideImgNameList)
                                 {
                                     dataSetSideImgNameList.Add(Path.GetFileName(file));
@@ -116,21 +117,21 @@ namespace Semi_Auto_Labeling
                                 {
                                     dataSetImgFilePath.Add(file);
                                     dataSetImgFilePath.Sort((a, b) => {
-                                    int aNumber = ExtractNumberFromFilePath(a);
-                                    int bNumber = ExtractNumberFromFilePath(b);
-                                    return aNumber.CompareTo(bNumber);
+                                        int aNumber = ExtractNumberFromFilePath(a);
+                                        int bNumber = ExtractNumberFromFilePath(b);
+                                        return aNumber.CompareTo(bNumber);
                                     });
                                 }
                                 lock (dataSetImgNameList)
                                 {
                                     dataSetImgNameList.Add(Path.GetFileName(file));
                                     dataSetImgNameList.Sort((a, b) =>
-                                        {
-                                    int aNumber = ExtractNumber(a);
-                                    int bNumber = ExtractNumber(b);
+                                    {
+                                        int aNumber = ExtractNumber(a);
+                                        int bNumber = ExtractNumber(b);
 
-                                    return aNumber.CompareTo(bNumber);
-                                });
+                                        return aNumber.CompareTo(bNumber);
+                                    });
                                 }
                             }
                         }
@@ -144,8 +145,9 @@ namespace Semi_Auto_Labeling
                         progressBar1.Invoke((MethodInvoker)delegate
                         {
                             progressBar1.Value++;
-                            Log.Text = " > 이미지 불러오는 중..." + "\n > 진행률 : " + Math.Round(((double)(progressBar1.Value) / progressBar1.Maximum) * 100, 2).ToString()+"%";});
-                        await Task.Delay(10);   
+                            Log.Text = " > 이미지 불러오는 중..." + "\n > 진행률 : " + Math.Round(((double)(progressBar1.Value) / progressBar1.Maximum) * 100, 2).ToString() + "%";
+                        });
+                        await Task.Delay(10);
                     }
                 });
                 await Task.WhenAll(tasks);
@@ -158,7 +160,7 @@ namespace Semi_Auto_Labeling
                     poseLabelPoints.Add(new List<Point>());
                     eyeLabelPoints.Add(new List<Point>());
                     mouthLabelPoints.Add(new List<Point>());
-               
+
                     FlowLayoutPanel fl_panel = new FlowLayoutPanel();
                     fl_panel.Size = new Size(265, 280);
                     fl_panel.FlowDirection = FlowDirection.TopDown; // Top to Bottom 설정
@@ -246,27 +248,7 @@ namespace Semi_Auto_Labeling
             MessageBox.Show("불러오기 성공");
             progressBar1.Value = 0;
         }
-        private Task UpdateUI(int index, int maxCount)
-        {
-            return Task.Run(() =>
-            {
-                if (Log.InvokeRequired)
-                {
-                    Log.Invoke((MethodInvoker)delegate
-                    {
-                        Log.Text = " > 제이슨 데이터 처리중...\n > 진행률 " + Math.Round(((double)(index + 1) / maxCount) * 100, 2).ToString() + "%\n";
-                        Log.SelectionStart = Log.Text.Length;
-                        Log.ScrollToCaret();
-                    });
-                }
-                else
-                {
-                    Log.Text = " > 제이슨 데이터 처리중...\n > 진행률 " + Math.Round(((double)(index + 1) / maxCount) * 100, 2).ToString() + "%\n";
-                    Log.SelectionStart = Log.Text.Length;
-                    Log.ScrollToCaret();
-                }
-            });
-        }
+        
         static int ExtractNumber(string fileName)
         {
             string numericPart = new string(fileName.Where(char.IsDigit).ToArray());
@@ -321,9 +303,6 @@ namespace Semi_Auto_Labeling
 
                 poseCheckBox.Checked = false;
                 poseCheckBox.Enabled = false;
-
-
-
 
             }
         }
@@ -395,17 +374,40 @@ namespace Semi_Auto_Labeling
             //abnormalCationValueList.Add(abnormalCationValue);
             //driableStateValueList.Add(driableStateValue);
 
-            Console.WriteLine(i);
+            DrowsinessTextBox.TextChanged += (sender1, e1) => DrowsinessTextBox_TextChanged(sender, e);
+            lookForwardValueTextBox.TextChanged += (sender1, e1) => lookForwardValueTextBox_TextChanged(sender, e);
+
+            textBox1.TextChanged += (sender1, e1) => textBox1_TextChanged(sender, e);
+            textBox2.TextChanged += (sender1, e1) => textBox2_TextChanged(sender, e);
+
+            // modifyEyeClosedCB.Checked = statusEyeClosedList[i];
+            //   modifyDropHeadCB.Checked = statusDropheadList[i];
+            // modifyFaceForwardCB.Checked = statusFaceForwardList[i];
+            modifyEyeClosedCB.CheckedChanged += (sender1, e1) => modifyEyeClosedCB_CheckedChanged(sender, e);
+            modifyYawnCB.CheckedChanged += (sender1, e1) => modifyYawnCB_CheckedChanged(sender, e);
+            modifyDropHeadCB.CheckedChanged += (sender1, e1) => modifyDropHeadCB_CheckedChanged(sender, e);
+            modifyGazeForwardCB.CheckedChanged += (sender1, e1) => modifyGazeForwardCB_CheckedChanged(sender, e);
+            modifyFaceForwardCB.CheckedChanged += (sender1, e1) => modifyFaceForwardCB_CheckedChanged(sender, e);
+
+       
+            
+
+            caputed_index = i;
+
+            Console.WriteLine("인덱스" + i + ":" + lookForwardValueList[i]);
+            
             DrowsinessTextBox.Text = drowsinessValueList[i].ToString();
             lookForwardValueTextBox.Text = lookForwardValueList[i].ToString();
 
             textBox1.Text = abnormalCationValueList[i].ToString();
             textBox2.Text = driableStateValueList[i].ToString();
+
             modifyEyeClosedCB.Checked = statusEyeClosedList[i];
             modifyDropHeadCB.Checked = statusDropheadList[i];
             modifyFaceForwardCB.Checked = statusFaceForwardList[i];
             modifyGazeForwardCB.Checked = statusGazeForwardList[i];
             modifyYawnCB.Checked = statusYawnList[i];
+           // Console.WriteLine(statusEyeClosedList[i] + " : " + modifyEyeClosedCB);
 
         }
 
@@ -434,29 +436,32 @@ namespace Semi_Auto_Labeling
                             labelPoint[i].Add(poseLabelPointsFrame[index]);
                         }
 
-                        var drowsinessStatus = frame.GetProperty("driver status").GetProperty("DROWSINESS");
-                        bool statusEyeClosed = drowsinessStatus.GetProperty("EYE OPENED").GetBoolean();
-                        bool statusYawn = drowsinessStatus.GetProperty("YAWN").GetBoolean();
-                        bool statusDrophead = drowsinessStatus.GetProperty("DROP HEAD").GetBoolean();
-                        int drowsinessValue = drowsinessStatus.GetProperty("DROWSINESS VALUE").GetInt32();
-                        var lookForwardStatus = frame.GetProperty("driver status").GetProperty("LOOK FORWARD");
-                        bool statusGazeForward = lookForwardStatus.GetProperty("GAZE FORWARD").GetBoolean();
-                        bool statusFaceForward = lookForwardStatus.GetProperty("FACE FORWARD").GetBoolean();
-                        int lookForwardValue = lookForwardStatus.GetProperty("LOOK FORWARD VALUE").GetInt32();
-                        var abnormalCation = frame.GetProperty("driver status").GetProperty("ABNORMAL CATION");
-                        int abnormalCationValue = abnormalCation.GetProperty("ABNORMAL CATION VALUE").GetInt32();
-                        int driableStateValue = abnormalCation.GetProperty("DRIABLE STATE VALUE").GetInt32();
-                        // Update the corresponding lists
-                        statusEyeClosedList.Add(statusEyeClosed);
-                        statusDropheadList.Add(statusDrophead);
-                        statusGazeForwardList.Add(statusGazeForward);
-                        statusFaceForwardList.Add(statusFaceForward);
-                        statusYawnList.Add(statusYawn);
-                        drowsinessValueList.Add(drowsinessValue);
-                        lookForwardValueList.Add(lookForwardValue);
-                        abnormalCationValueList.Add(abnormalCationValue);
-                        driableStateValueList.Add(driableStateValue);
+                        
                     }
+                    var drowsinessStatus = frame.GetProperty("driver status").GetProperty("DROWSINESS");
+                    bool statusEyeClosed = drowsinessStatus.GetProperty("EYE OPENED").GetBoolean();
+                    bool statusYawn = drowsinessStatus.GetProperty("YAWN").GetBoolean();
+                    bool statusDrophead = drowsinessStatus.GetProperty("DROP HEAD").GetBoolean();
+                    int drowsinessValue = drowsinessStatus.GetProperty("DROWSINESS VALUE").GetInt32();
+                    var lookForwardStatus = frame.GetProperty("driver status").GetProperty("LOOK FORWARD");
+                    bool statusGazeForward = lookForwardStatus.GetProperty("GAZE FORWARD").GetBoolean();
+                    bool statusFaceForward = lookForwardStatus.GetProperty("FACE FORWARD").GetBoolean();
+                    int lookForwardValue = lookForwardStatus.GetProperty("LOOK FORWARD VALUE").GetInt32();
+                    Log.Text = lookForwardValue.ToString();
+                    var abnormalCation = frame.GetProperty("driver status").GetProperty("ABNORMAL CATION");
+                    int abnormalCationValue = abnormalCation.GetProperty("ABNORMAL CATION VALUE").GetInt32();
+                    int driableStateValue = abnormalCation.GetProperty("DRIABLE STATE VALUE").GetInt32();
+                    
+                    statusEyeClosedList.Add(statusEyeClosed);
+                    statusDropheadList.Add(statusDrophead);
+                    statusGazeForwardList.Add(statusGazeForward);
+                    statusFaceForwardList.Add(statusFaceForward);
+                    statusYawnList.Add(statusYawn);
+                    drowsinessValueList.Add(drowsinessValue);
+                    lookForwardValueList.Add(lookForwardValue);
+                    abnormalCationValueList.Add(abnormalCationValue);
+                    driableStateValueList.Add(driableStateValue);
+                    Console.WriteLine("인덱스" + i + ":" + lookForwardValueList[i]);
                 }
                 if (discri == 0)
                 {
@@ -473,7 +478,10 @@ namespace Semi_Auto_Labeling
                             labelPoint[i].Add(faceLabelPointsFrame[index]);
                         }
                     }
+                    
                 }
+
+                
             }
         }
 
@@ -612,27 +620,54 @@ namespace Semi_Auto_Labeling
             }
             //초기화 끝
 
+            // modifyEyeClosedCB.Checked = statusEyeClosedList[i];
+            //   modifyDropHeadCB.Checked = statusDropheadList[i];
+            // modifyFaceForwardCB.Checked = statusFaceForwardList[i];
+
+            Console.WriteLine("크기 : "+ statusEyeClosedList.Count + " : " + eyeClosedCbState.Length);
+            Console.WriteLine("크기 : " + statusYawnList.Count + " : " + yawnCbState.Length);
+            Console.WriteLine("크기 : " + statusDropheadList.Count + " : " + dropHeadCbState.Length);
+            Console.WriteLine("크기 : " + statusGazeForwardList.Count + " : " + gazeForwardCbState.Length);
+            Console.WriteLine("크기 : " + statusFaceForwardList.Count + " : " + faceForwardCbState.Length);
+
+            Console.WriteLine("크기 : " + drowsinessValueList.Count + " : " + setDrowsinessValue.Length);
+            Console.WriteLine("크기 : " + lookForwardValueList.Count + " : " + setLookForwardValueJson.Length);
+            Console.WriteLine("크기 : " + abnormalCationValueList.Count + " : " + setTextBox1.Length);
+            Console.WriteLine("크기 : " + driableStateValueList.Count + " : " + setTextBox2.Length);
+
+            Console.WriteLine("크기 : " + dataSetSideImgFilePath.Count);
             for (int index = 0; index < dataSetSideImgFilePath.Count; index++)
             {
                 //if(eyeClosedCheckBox.Checked) 
-                    eyeClosedCbState[index] = modifyEyeClosedCB.Checked;
+                eyeClosedCbState[index] = statusEyeClosedList[index];
                 //if(yawnCB.Checked) 
-                    yawnCbState[index] = modifyYawnCB.Checked;
+                yawnCbState[index] = statusYawnList[index];
                 //if(DropHeadCB.Checked)
-                    dropHeadCbState[index] = modifyDropHeadCB.Checked;
+                dropHeadCbState[index] = statusDropheadList[index];
                 //if(gazeFowardCB.Checked)
-                    gazeForwardCbState[index] = modifyGazeForwardCB.Checked;
+                gazeForwardCbState[index] = statusGazeForwardList[index];
                 //if(FaceForwardCB.Checked)
-                    faceForwardCbState[index] = modifyFaceForwardCB.Checked;
+                faceForwardCbState[index] = statusFaceForwardList[index];
+
+
+                setDrowsinessValue[index] = drowsinessValueList[index];
+                //if(LookForwardCB.Checked)
+                setLookForwardValueJson[index] = lookForwardValueList[index];
+                //if(abnormalBehaviorCheckBox.Checked)
+                setTextBox1[index] = abnormalCationValueList[index];
+                //if(DriableCB.Checked) 
+                setTextBox2[index] = driableStateValueList[index];
+
+                //DrowsinessTextBox.Text = drowsinessValueList[i].ToString();
+                //lookForwardValueTextBox.Text = lookForwardValueList[i].ToString();
+
+                //textBox1.Text = abnormalCationValueList[i].ToString();
+                //textBox2.Text = driableStateValueList[i].ToString();
+
+
 
                 //if(drowsinessCB.Checked)
-                    setDrowsinessValue[index] = Int32.Parse(DrowsinessTextBox.Text);
-                //if(LookForwardCB.Checked)
-                    setLookForwardValueJson[index] = Int32.Parse(lookForwardValueTextBox.Text);
-                //if(abnormalBehaviorCheckBox.Checked)
-                    setTextBox1[index] = Int32.Parse(textBox1.Text);
-                //if(DriableCB.Checked) 
-                    setTextBox2[index] = Int32.Parse(textBox2.Text);
+
                 Console.WriteLine(index);
                 int j = 0;
 
@@ -707,10 +742,10 @@ namespace Semi_Auto_Labeling
                         totalPoseLabelPoints[index, i] = poseLabelPoints[index][i];
                     }
                 }
-                    // Console.WriteLine("여긴가4");
-                }
-                jsonUpdateOutput(inputFilePath, outputFilePath, totalLabelPoints, totalPoseLabelPoints, eyeClosedCbState, yawnCbState, dropHeadCbState, gazeForwardCbState,
-                   faceForwardCbState, setDrowsinessValue, setLookForwardValueJson, setTextBox1, setTextBox2);
+                 Console.WriteLine("여긴가4");
+            }
+            jsonUpdateOutput(inputFilePath, outputFilePath, totalLabelPoints, totalPoseLabelPoints, eyeClosedCbState, yawnCbState, dropHeadCbState, gazeForwardCbState,
+               faceForwardCbState, setDrowsinessValue, setLookForwardValueJson, setTextBox1, setTextBox2);
         }
         private void jsonUpdateOutput(string inputFilePath, string outputFilePath, Point[,] totalLabelPoints, Point[,] totalPoseLabelPoints
             , bool[] eyeClosedCbState, bool[] yawnCbState, bool[] dropHeadCbState,
@@ -1066,13 +1101,21 @@ namespace Semi_Auto_Labeling
             pictureBox1.Invalidate();
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
+       
+
+
+        private void DrowsinessTextBox_TextChanged(object sender, EventArgs e)
         {
             Regex regexNumber = new Regex(@"^[0-9]*$"); // 이 정규 표현식은 숫자만 허용합니다.
             if (!regexNumber.IsMatch(DrowsinessTextBox.Text))
             {
                 MessageBox.Show("숫자만 입력 가능합니다."); // 사용자에게 오류 메시지를 표시합니다.
                 DrowsinessTextBox.Text = ""; // 텍스트박스의 값을 공백으로 설정합니다.
+            }
+            else
+            {
+                drowsinessValueList[caputed_index] = Int32.Parse(DrowsinessTextBox.Text);
+
             }
         }
         private void lookForwardValueTextBox_TextChanged(object sender, EventArgs e)
@@ -1082,6 +1125,10 @@ namespace Semi_Auto_Labeling
             {
                 MessageBox.Show("숫자만 입력 가능합니다."); // 사용자에게 오류 메시지를 표시합니다.
                 lookForwardValueTextBox.Text = ""; // 텍스트박스의 값을 공백으로 설정합니다.
+            }
+            else
+            {
+                lookForwardValueList[caputed_index] = Int32.Parse(lookForwardValueTextBox.Text);
             }
         }
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -1093,8 +1140,13 @@ namespace Semi_Auto_Labeling
                 MessageBox.Show("숫자만 입력 가능합니다."); // 사용자에게 오류 메시지를 표시합니다.
                 textBox1.Text = ""; // 텍스트박스의 값을 공백으로 설정합니다.
             }
+            else
+            {
+                abnormalCationValueList[caputed_index] = Int32.Parse(textBox1.Text);
+            }
+            
         }
-        private void textBox2_TextChanged_1(object sender, EventArgs e)
+        private void textBox2_TextChanged(object sender, EventArgs e)
         {
             Regex regexNumber = new Regex(@"^[0-9]*$"); // 이 정규 표현식은 숫자만 허용합니다.
             if (!regexNumber.IsMatch(textBox2.Text))
@@ -1102,6 +1154,45 @@ namespace Semi_Auto_Labeling
                 MessageBox.Show("숫자만 입력 가능합니다."); // 사용자에게 오류 메시지를 표시합니다.
                 textBox2.Text = ""; // 텍스트박스의 값을 공백으로 설정합니다.
             }
+            else
+            {
+                driableStateValueList[caputed_index] = Int32.Parse(textBox2.Text);
+            }
+        }
+
+       // modifyEyeClosedCB.Checked = statusEyeClosedList[i];
+         //   modifyDropHeadCB.Checked = statusDropheadList[i];
+           // modifyFaceForwardCB.Checked = statusFaceForwardList[i];
+          
+          
+        private void modifyEyeClosedCB_CheckedChanged(object sender, EventArgs e)
+        {
+            statusEyeClosedList[caputed_index] = modifyEyeClosedCB.Checked;
+            modifyEyeClosedCB.Checked = statusEyeClosedList[caputed_index];
+        }
+
+        private void modifyYawnCB_CheckedChanged(object sender, EventArgs e)
+        {
+            statusYawnList[caputed_index] = modifyYawnCB.Checked;
+            modifyYawnCB.Checked = statusYawnList[caputed_index];
+        }
+
+        private void modifyDropHeadCB_CheckedChanged(object sender, EventArgs e)
+        {
+            statusDropheadList[caputed_index] = modifyDropHeadCB.Checked;
+            modifyDropHeadCB.Checked = statusDropheadList[caputed_index];
+        }
+
+        private void modifyGazeForwardCB_CheckedChanged(object sender, EventArgs e)
+        {
+             statusGazeForwardList[caputed_index] = modifyGazeForwardCB.Checked;
+            modifyGazeForwardCB.Checked = statusGazeForwardList[caputed_index];
+        }
+
+        private void modifyFaceForwardCB_CheckedChanged(object sender, EventArgs e)
+        {
+            statusFaceForwardList[caputed_index] = modifyFaceForwardCB.Checked;
+            modifyFaceForwardCB.Checked = statusFaceForwardList[caputed_index];
         }
         private void label8_Click(object sender, EventArgs e)
         {

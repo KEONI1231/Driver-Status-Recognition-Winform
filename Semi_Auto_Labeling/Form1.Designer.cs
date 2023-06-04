@@ -42,6 +42,9 @@
             this.gazeFowardCB = new System.Windows.Forms.CheckBox();
             this.FaceForwardCB = new System.Windows.Forms.CheckBox();
             this.abnormalBehaviorCheckBox = new System.Windows.Forms.CheckBox();
+            this.DriableCB = new System.Windows.Forms.CheckBox();
+            this.drowsinessCB = new System.Windows.Forms.CheckBox();
+            this.LookForwardCB = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.faceLandmarkCheckBox = new System.Windows.Forms.CheckBox();
             this.poseCheckBox = new System.Windows.Forms.CheckBox();
@@ -79,9 +82,6 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.label2 = new System.Windows.Forms.Label();
-            this.DriableCB = new System.Windows.Forms.CheckBox();
-            this.drowsinessCB = new System.Windows.Forms.CheckBox();
-            this.LookForwardCB = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
@@ -281,6 +281,51 @@
             this.abnormalBehaviorCheckBox.UseVisualStyleBackColor = true;
             this.abnormalBehaviorCheckBox.CheckedChanged += new System.EventHandler(this.abnormalBehaviorCheckBox_CheckedChanged);
             // 
+            // DriableCB
+            // 
+            this.DriableCB.AutoSize = true;
+            this.DriableCB.Checked = true;
+            this.DriableCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DriableCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.DriableCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.DriableCB.Location = new System.Drawing.Point(142, 3);
+            this.DriableCB.Name = "DriableCB";
+            this.DriableCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.DriableCB.Size = new System.Drawing.Size(136, 21);
+            this.DriableCB.TabIndex = 24;
+            this.DriableCB.Text = "운전전환가능상태";
+            this.DriableCB.UseVisualStyleBackColor = true;
+            // 
+            // drowsinessCB
+            // 
+            this.drowsinessCB.AutoSize = true;
+            this.drowsinessCB.Checked = true;
+            this.drowsinessCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.drowsinessCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.drowsinessCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.drowsinessCB.Location = new System.Drawing.Point(142, 30);
+            this.drowsinessCB.Name = "drowsinessCB";
+            this.drowsinessCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.drowsinessCB.Size = new System.Drawing.Size(81, 21);
+            this.drowsinessCB.TabIndex = 25;
+            this.drowsinessCB.Text = "졸음(값)";
+            this.drowsinessCB.UseVisualStyleBackColor = true;
+            // 
+            // LookForwardCB
+            // 
+            this.LookForwardCB.AutoSize = true;
+            this.LookForwardCB.Checked = true;
+            this.LookForwardCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.LookForwardCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.LookForwardCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.LookForwardCB.Location = new System.Drawing.Point(142, 57);
+            this.LookForwardCB.Name = "LookForwardCB";
+            this.LookForwardCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.LookForwardCB.Size = new System.Drawing.Size(120, 21);
+            this.LookForwardCB.TabIndex = 26;
+            this.LookForwardCB.Text = "전방미주시(값)";
+            this.LookForwardCB.UseVisualStyleBackColor = true;
+            // 
             // flowLayoutPanel3
             // 
             this.flowLayoutPanel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
@@ -475,9 +520,9 @@
             this.modifyEyeClosedCB.Location = new System.Drawing.Point(3, 44);
             this.modifyEyeClosedCB.Name = "modifyEyeClosedCB";
             this.modifyEyeClosedCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.modifyEyeClosedCB.Size = new System.Drawing.Size(76, 21);
+            this.modifyEyeClosedCB.Size = new System.Drawing.Size(63, 21);
             this.modifyEyeClosedCB.TabIndex = 17;
-            this.modifyEyeClosedCB.Text = "눈 감김";
+            this.modifyEyeClosedCB.Text = "눈 뜸";
             this.modifyEyeClosedCB.UseVisualStyleBackColor = true;
             // 
             // modifyYawnCB
@@ -742,51 +787,6 @@
             this.label2.Size = new System.Drawing.Size(91, 22);
             this.label2.TabIndex = 37;
             this.label2.Text = "작업 진행률";
-            // 
-            // DriableCB
-            // 
-            this.DriableCB.AutoSize = true;
-            this.DriableCB.Checked = true;
-            this.DriableCB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.DriableCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.DriableCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.DriableCB.Location = new System.Drawing.Point(142, 3);
-            this.DriableCB.Name = "DriableCB";
-            this.DriableCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.DriableCB.Size = new System.Drawing.Size(136, 21);
-            this.DriableCB.TabIndex = 24;
-            this.DriableCB.Text = "운전전환가능상태";
-            this.DriableCB.UseVisualStyleBackColor = true;
-            // 
-            // drowsinessCB
-            // 
-            this.drowsinessCB.AutoSize = true;
-            this.drowsinessCB.Checked = true;
-            this.drowsinessCB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.drowsinessCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.drowsinessCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.drowsinessCB.Location = new System.Drawing.Point(142, 30);
-            this.drowsinessCB.Name = "drowsinessCB";
-            this.drowsinessCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.drowsinessCB.Size = new System.Drawing.Size(81, 21);
-            this.drowsinessCB.TabIndex = 25;
-            this.drowsinessCB.Text = "졸음(값)";
-            this.drowsinessCB.UseVisualStyleBackColor = true;
-            // 
-            // LookForwardCB
-            // 
-            this.LookForwardCB.AutoSize = true;
-            this.LookForwardCB.Checked = true;
-            this.LookForwardCB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.LookForwardCB.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.LookForwardCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.LookForwardCB.Location = new System.Drawing.Point(142, 57);
-            this.LookForwardCB.Name = "LookForwardCB";
-            this.LookForwardCB.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.LookForwardCB.Size = new System.Drawing.Size(120, 21);
-            this.LookForwardCB.TabIndex = 26;
-            this.LookForwardCB.Text = "전방미주시(값)";
-            this.LookForwardCB.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
